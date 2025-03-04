@@ -3,7 +3,7 @@ Market Trybe
 Market Trybe is a student-centered mobile marketplace that enables users to buy, sell, and provide services within their university community. The app facilitates secure transactions by allowing buyers and sellers to communicate via an in-app chat system before finalizing deals.
 
 🚀 Features
-🔹 User Authentication (Firebase Auth with JWT)
+🔹 User Authentication (Firebase Auth)
 🔹 Product Listings (Buy/Sell Items & Services)
 🔹 In-App Chat System (Firestore Real-Time Messaging)
 🔹 Order History (Track Purchases & Sales)
@@ -61,6 +61,6 @@ Push to your branch (git push origin feature-name)
 Open a Pull Request
 
 🛡 License
+MIT
 
-
-💡 Need Help? Contact the team at support@markettrybe.com 🚀
+💡 Need Help? Contact the team at *comming soon!!* 🚀
