@@ -62,7 +62,6 @@ Open a Pull Request
 🛡 License
 MIT
 
-
 💡 Need Help? Contact the team at support@markettrybe.com 🚀
 
 For the Eslint Prettier configuration
