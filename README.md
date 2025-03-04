@@ -38,19 +38,18 @@ iOS: Use Expo Go (or run expo run:ios if using Xcode)
 
 🏗 Project Structure
 📂 MarketTrybe/
- ├── 📂 src/
-  |     |-----📂 app/ expo navigation
- │    ├── 📂 components/    # Reusable UI components
- │    ├── 📂 screens/       # App screens
- │    ├── 📂 navigation/    # Navigation setup
- │    ├── 📂 utils/         # Helper functions
- │    ├── 📂 hooks/         # Custom React hooks
- │    ├── 📂 config/        # Firebase & environment variables
- ├── 📂 assets/             # Images, animations, fonts
- ├── App.js                 # Main app entry
- ├── tailwind.config.js      # Tailwind setup
- ├── firebaseConfig.js       # Firebase setup
-
+├── 📂 src/
+| |-----📂 app/ expo navigation
+│ ├── 📂 components/ # Reusable UI components
+│ ├── 📂 screens/ # App screens
+│ ├── 📂 navigation/ # Navigation setup
+│ ├── 📂 utils/ # Helper functions
+│ ├── 📂 hooks/ # Custom React hooks
+│ ├── 📂 config/ # Firebase & environment variables
+├── 📂 assets/ # Images, animations, fonts
+├── App.js # Main app entry
+├── tailwind.config.js # Tailwind setup
+├── firebaseConfig.js # Firebase setup
 
 📜 Contributing
 We welcome contributions from the community! To contribute:
@@ -63,4 +62,13 @@ Open a Pull Request
 🛡 License
 MIT
 
-💡 Need Help? Contact the team at *comming soon!!* 🚀
+
+💡 Need Help? Contact the team at support@markettrybe.com 🚀
+
+For the Eslint Prettier configuration
+Run
+
+> npx install-peerdeps --dev eslint-config-airbnb
+> npm install eslint-config-prettier
+
+At VScode Settings, set your formatter to prettier
