@@ -61,6 +61,6 @@ Push to your branch (git push origin feature-name)
 Open a Pull Request
 
 🛡 License
-This project is licensed under the MIT License.
+
 
 💡 Need Help? Contact the team at support@markettrybe.com 🚀
