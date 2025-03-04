@@ -8,7 +8,6 @@
       "bundler": "metro"
     },
     "scheme": "your-app-scheme",
-
     "experiments": {
       "tsconfigPaths": true
     },
@@ -23,13 +22,15 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "newArchEnabled": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "newArchEnabled": true
     }
   }
 }
