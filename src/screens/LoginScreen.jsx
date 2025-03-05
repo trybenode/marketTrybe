@@ -1,6 +1,8 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'; 
+
+
 export default function LoginScreen() {
   const navigation = useNavigation();
 
@@ -17,7 +19,7 @@ export default function LoginScreen() {
           className="mb-3 rounded-md bg-white p-3"
         />
 
-        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Market')}>
           <Text className="mb-3 text-center text-blue-600">Don't have an account? Sign Up.</Text>
         </TouchableOpacity>
 
@@ -26,9 +28,9 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         <View className="my-4 flex-row items-center justify-center">
-          <View className="flex-1 border-b border-black"></View>
+          <View className="flex-1 border-b border-black" />
           <Text className="mx-3 text-gray-600">Or login with</Text>
-          <View className="flex-1 border-b border-black"></View>
+          <View className="flex-1 border-b border-black" />
         </View>
 
         <View className="mt-3 flex-row justify-center space-x-6">
