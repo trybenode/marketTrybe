@@ -11,15 +11,15 @@ export default function LoginScreen() {
   return (
     <View className="flex-1 items-center justify-center bg-gray-100">
       <View className="w-4/5 rounded-lg bg-gray-300 p-6">
-        <Text className="mb-4 text-center text-xl font-semibold">Log In</Text>
+        <Text className="mb-6 text-center text-xl font-semibold">Log In</Text>
 
         {/* Reusable Text Inputs */}
         <CustomTextInput placeholder="Email" />
         <CustomTextInput placeholder="Password" secureTextEntry />
 
-        {/* Navigate to Sign Up */}
+        {/* Navigate to Reset PPassword */}
         <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-          <Text className="mb-3 text-center text-blue-600">Don't have an account? Sign Up.</Text>
+          <Text className="mb-4 text-left text-blue-600">Forgot Password? Reset.</Text>
         </TouchableOpacity>
 
         {/* Reusable Login Button */}
@@ -52,6 +52,12 @@ export default function LoginScreen() {
             color="black"
             onPress={() => console.log('Apple Login')}
           />
+        </View>
+
+        <View>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <Text className="mt-8 text-center text-blue-600">New Member? Sign Up.</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

@@ -7,7 +7,7 @@ export default function CustomTextInput({ placeholder, secureTextEntry, ...props
   const [isPasswordVisible, setIsPasswordVisible] = useState(secureTextEntry);
 
   return (
-    <View className="mb-3 flex-row items-center rounded-md border border-gray-300 bg-white px-3">
+    <View className="mb-5 flex-row items-center rounded-md border border-gray-300 bg-white px-3">
       {/* Input Field */}
       <TextInput
         placeholder={placeholder}
