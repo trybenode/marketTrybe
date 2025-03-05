@@ -17,9 +17,12 @@ export default function LoginScreen() {
         <CustomTextInput placeholder="Email" />
         <CustomTextInput placeholder="Password" secureTextEntry />
 
+
         {/* Navigate to Reset PPassword */}
         <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
           <Text className="mb-4 text-left text-blue-600">Forgot Password? Reset.</Text>
+
+      
         </TouchableOpacity>
 
         {/* Reusable Login Button */}
@@ -27,9 +30,9 @@ export default function LoginScreen() {
 
         {/* OR Divider */}
         <View className="my-4 flex-row items-center justify-center">
-          <View className="flex-1 border-b border-black"></View>
+          <View className="flex-1 border-b border-black" />
           <Text className="mx-3 text-gray-600">Or login with</Text>
-          <View className="flex-1 border-b border-black"></View>
+          <View className="flex-1 border-b border-black" />
         </View>
 
         {/* Social Authentication Buttons */}
