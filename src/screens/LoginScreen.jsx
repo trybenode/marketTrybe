@@ -23,7 +23,7 @@ export default function LoginScreen() {
         </TouchableOpacity>
 
         {/* Reusable Login Button */}
-        <CustomButton title="Log In" onPress={() => console.log('Login Button Clicked')} />
+        <CustomButton title="Log In" onPress={() => navigation.navigate('Profile')} />
 
         {/* OR Divider */}
         <View className="my-4 flex-row items-center justify-center">
