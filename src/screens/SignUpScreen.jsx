@@ -18,10 +18,10 @@ export default function SignUpScreen() {
         <CustomTextInput placeholder="Password" secureTextEntry />
 
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text className="mb-3 text-center text-blue-600">Already have an account? Login.</Text>
+          <Text className="mb-3 text-left text-blue-600">Already have an account? Login.</Text>
         </TouchableOpacity>
 
-        <CustomButton title="Sign-up" onPress={() => console.log('Sign-up pressed')} />
+        <CustomButton title="Sign-up" onPress={() => navigation.navigate('Profile')} />
 
         <View className="my-4 flex-row items-center justify-center">
           <View className="flex-1 border-b border-black"></View>

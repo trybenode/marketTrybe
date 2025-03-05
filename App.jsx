@@ -6,8 +6,8 @@ import BottomTabNavigator from './src/BottomTabNavigator';
 import HomeScreen from './src/screens/HomeScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
-// import HomeScreen from './src/screens/HomeScreen';
 import './global.css';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +18,9 @@ export default function App() {
         <Stack.Screen name="NavBar" component={BottomTabNavigator} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="Market" component={HomeScreen} />
+
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
