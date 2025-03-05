@@ -18,12 +18,12 @@ export default function LoginScreen() {
         <CustomTextInput placeholder="Password" secureTextEntry />
 
         {/* Navigate to Sign Up */}
-        <TouchableOpacity onPress={() => navigation.navigate('Market')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
           <Text className="mb-3 text-center text-blue-600">Don't have an account? Sign Up.</Text>
         </TouchableOpacity>
 
         {/* Reusable Login Button */}
-        <CustomButton title="Log In" onPress={() => console.log('Login Button Clicked')} />
+        <CustomButton title="Log In" onPress={() => navigation.navigate('MainTabs')} />
 
         {/* OR Divider */}
         <View className="my-4 flex-row items-center justify-center">

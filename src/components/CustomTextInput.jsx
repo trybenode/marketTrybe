@@ -3,7 +3,7 @@ import { View, TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // Custom Text Input to increase reusability
-export default function CustomTextInput({ placeholder, secureTextEntry, ...props }) {
+function CustomTextInput({ placeholder, secureTextEntry, ...props }) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(secureTextEntry);
 
   return (
@@ -25,3 +25,4 @@ export default function CustomTextInput({ placeholder, secureTextEntry, ...props
     </View>
   );
 }
+export default CustomTextInput;  
