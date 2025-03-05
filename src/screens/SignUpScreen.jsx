@@ -21,7 +21,7 @@ export default function SignUpScreen() {
           <Text className="mb-3 text-left text-blue-600">Already have an account? Login.</Text>
         </TouchableOpacity>
 
-        <CustomButton title="Sign-up" onPress={() => navigation.navigate('Profile')} />
+        <CustomButton title="Sign-up" onPress={() => navigation.navigate('MainTabs')} />
 
         <View className="my-4 flex-row items-center justify-center">
           <View className="flex-1 border-b border-black"></View>

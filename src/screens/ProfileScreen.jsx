@@ -21,7 +21,7 @@ export default function ProfileScreen() {
       </View>
 
       {/* Menu Options */}
-      <View className="flex flex-col gap-8">
+      <View className="flex flex-col gap-6">
         <CustomProfileOption
           title="Edit Profile"
           onPress={() => console.log('Edit Profile')}

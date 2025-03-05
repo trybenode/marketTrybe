@@ -5,7 +5,6 @@ import * as React from 'react';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
-
 import './global.css';
 
 const Stack = createNativeStackNavigator();

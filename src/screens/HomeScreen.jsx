@@ -8,18 +8,20 @@ export default function HomeScreen() {
   const navigation = useNavigation();
 
   return (
-      <SafeAreaView className="flex-1 ">
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Profile')}
-          className="absolute right-5 top-10 p-2">
-          <FontAwesome name="user-circle-o" size={30} color="blue" />
-        </TouchableOpacity>
-
-        {/* Main Content */}
-        <View className="flex-1 items-center justify-center">
-          <Text className="text-lg font-bold text-blue-500">Welcome to Market Trybe!</Text>
+    <SafeAreaView className="flex-1 ">
+      <TouchableOpacity
+        onPress={() => navigation.navigate('Profile')}
+        className="absolute right-5 top-10 px-4 py-5">
+        {/* <FontAwesome name="user-circle-o" size={40} className="text-gray-800" /> */}
+        <View className="h-16 w-16 items-center justify-center rounded-full bg-gray-300">
+          <FontAwesome name="user" size={40} color="black" />
         </View>
-      </SafeAreaView>
-    
+      </TouchableOpacity>
+
+      {/* Main Content */}
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-xl font-bold text-gray-700">Welcome To Market Trybe!</Text>
+      </View>
+    </SafeAreaView>
   );
 }
