@@ -17,12 +17,10 @@ export default function LoginScreen() {
         <CustomTextInput placeholder="Email" />
         <CustomTextInput placeholder="Password" secureTextEntry />
 
-
         {/* Navigate to Reset PPassword */}
         <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
           <Text className="mb-4 text-left text-blue-600">Forgot Password? Reset.</Text>
-
-      
+        </TouchableOpacity>
         {/* Navigate to Sign Up */}
         <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
           <Text className="mb-3 text-center text-blue-600">Don't have an account? Sign Up.</Text>

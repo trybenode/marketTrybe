@@ -6,6 +6,7 @@ import FavouritesScreen  from './screens/FavouritesScreen';
 import HistoryScreen from './screens/HistoryScreen';
 import HomeScreen from './screens/HomeScreen';
 import MessagesScreen from './screens/MessagesScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import SellScreen from './screens/SellScreen';
 
 const Tab = createBottomTabNavigator();
@@ -18,6 +19,7 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="Sell" component={SellScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Messages" component={MessagesScreen} options={{ headerShown: false }} />
       <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
