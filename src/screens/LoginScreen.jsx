@@ -1,7 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image } from 'react-native'; 
-
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import CustomTextInput from '../components/CustomTextInput';
+import CustomButton from '../components/CustomButton';
+import SocialAuthButton from '../components/SocialAuthButton';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -11,40 +13,45 @@ export default function LoginScreen() {
       <View className="w-4/5 rounded-lg bg-gray-300 p-6">
         <Text className="mb-4 text-center text-xl font-semibold">Log In</Text>
 
-        <TextInput placeholder="Email" className="mb-3 rounded-md bg-white p-3" />
+        {/* Reusable Text Inputs */}
+        <CustomTextInput placeholder="Email" />
+        <CustomTextInput placeholder="Password" secureTextEntry />
 
-        <TextInput
-          placeholder="Password"
-          secureTextEntry
-          className="mb-3 rounded-md bg-white p-3"
-        />
-
+        {/* Navigate to Sign Up */}
         <TouchableOpacity onPress={() => navigation.navigate('Market')}>
           <Text className="mb-3 text-center text-blue-600">Don't have an account? Sign Up.</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className="rounded-md bg-white p-3">
-          <Text className="text-center font-semibold">Log In</Text>
-        </TouchableOpacity>
+        {/* Reusable Login Button */}
+        <CustomButton title="Log In" onPress={() => console.log('Login Button Clicked')} />
 
+        {/* OR Divider */}
         <View className="my-4 flex-row items-center justify-center">
           <View className="flex-1 border-b border-black" />
           <Text className="mx-3 text-gray-600">Or login with</Text>
           <View className="flex-1 border-b border-black" />
         </View>
 
-        <View className="mt-3 flex-row justify-center space-x-6">
-          <TouchableOpacity onPress={() => console.log('Google Login')}>
-            <Image source={require('../../assets/google.png')} className="h-8 w-11" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => console.log('Facebook Login')}>
-            <Image source={require('../../assets/facebook.png')} className="h-8 w-8" />
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => console.log('Apple Login')}>
-            <Image source={require('../../assets/apple.png')} className="h-8 w-8" />
-          </TouchableOpacity>
+        {/* Social Authentication Buttons */}
+        <View className="mt-3 flex-row justify-center gap-2 space-x-6">
+          <SocialAuthButton
+            name="google"
+            type="FontAwesome"
+            color="#DB4437"
+            onPress={() => console.log('Google Login')}
+          />
+          <SocialAuthButton
+            name="facebook"
+            type="FontAwesome"
+            color="#1877F2"
+            onPress={() => console.log('Facebook Login')}
+          />
+          <SocialAuthButton
+            name="logo-apple"
+            type="Ionicons"
+            color="black"
+            onPress={() => console.log('Apple Login')}
+          />
         </View>
       </View>
     </View>
