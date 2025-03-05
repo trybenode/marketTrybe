@@ -21,13 +21,9 @@ export default function LoginScreen() {
         <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
           <Text className="mb-4 text-left text-blue-600">Forgot Password? Reset.</Text>
         </TouchableOpacity>
-        {/* Navigate to Sign Up */}
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text className="mb-3 text-center text-blue-600">Don't have an account? Sign Up.</Text>
-        </TouchableOpacity>
 
         {/* Reusable Login Button */}
-        <CustomButton title="Log In" onPress={() => navigation.navigate('Profile')} />
+
         <CustomButton title="Log In" onPress={() => navigation.navigate('MainTabs')} />
 
         {/* OR Divider */}
