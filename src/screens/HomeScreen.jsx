@@ -1,13 +1,13 @@
-import React from "react";
-import { View, Text } from "react-native";
+import { useNavigation } from 'expo-router';
+import React from 'react';
+import { View, Text } from 'react-native';
 // import { StatusBar } from "expo-status-bar";
 
-function HomeScreen() {
+export default function HomeScreen() {
+  const navigation = useNavigation();
   return (
     <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-lg font-bold text-blue-500">
-        Welcome to Market Trybe!
-      </Text>
+      <Text className="text-lg font-bold text-blue-500">Welcome to </Text>
     </View>
   );
 }
@@ -20,5 +20,3 @@ function HomeScreen() {
 //     justifyContent: "center",
 //   },
 // });
-
-export default HomeScreen;
