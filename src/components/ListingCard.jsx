@@ -15,8 +15,7 @@ const ListingCard = ({ image, title, price, seller, onPress }) => {
 
         {/* Seller Info */}
         <View className="flex-row items-center mt-2">
-          <Avatar.Image size={30} source={{ uri: seller.avatar }} />
-          <Text className="ml-2 text-sm">{seller.name}</Text>
+          <Text className="text-lg font-bold">{seller.name}</Text>
         </View>
       </Card.Content>
 

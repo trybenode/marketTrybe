@@ -14,6 +14,8 @@ export default function HomeScreen() {
   const listings = [
     { id: '1', title: 'Leather Shoes', price: '45', image: 'https://via.placeholder.com/150', seller: { name: 'John Doe', avatar: 'https://via.placeholder.com/50' } },
     { id: '2', title: 'Wrist Watch', price: '75', image: 'https://via.placeholder.com/150', seller: { name: 'Jane Doe', avatar: 'https://via.placeholder.com/50' } },
+    { id: '3', title: 'Backpack', price: '50', image: 'https://via.placeholder.com/150', seller: { name: 'Mike Smith', avatar: 'https://via.placeholder.com/50' } },
+    { id: '4', title: 'Headphones', price: '120', image: 'https://via.placeholder.com/150', seller: { name: 'Alice Brown', avatar: 'https://via.placeholder.com/50' } },
   ];
 
   return (
@@ -43,11 +45,17 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* Listings */}
+        {/* Listings - 2 Columns */}
         <FlatList
           data={listings}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <ListingCard {...item} />}
+          numColumns={2} // Ensure two columns
+          columnWrapperStyle={{ justifyContent: 'space-between' }} // Add spacing between items
+          renderItem={({ item }) => (
+            <View className="w-[48%] mb-4">
+              <ListingCard {...item} />
+            </View>
+          )}
           showsVerticalScrollIndicator={false}
         />
       </View>
