@@ -34,3 +34,22 @@
 //     </Stack.Navigator>
 //   );
 // }
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+
+import HomeScreen from "../screens/HomeScreen";
+import ListingDetails from "../screens/ListingDetails";
+
+
+const Stack = createStackNavigator();
+
+export default function StackNavigator() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="ListingDetails" component={ListingDetails} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
