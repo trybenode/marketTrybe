@@ -1,5 +1,5 @@
+import React, { useEffect, useState, memo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, Button } from 'react-native';
-import React, { useState,useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 const categories = [
@@ -12,7 +12,8 @@ const categories = [
   {
     id: '2',
     name: 'Clothing',
-    image: 'https://www.pexels.com/photo/low-angle-view-of-shoes-322207/',
+    image:
+      'https://images.pexels.com/photos/8306370/pexels-photo-8306370.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
   {
     id: '3',
@@ -22,7 +23,7 @@ const categories = [
   },
   {
     id: '4',
-    name: 'Foot Wear ',
+    name: 'Foot Wear',
     image:
       'https://images.pexels.com/photos/6153367/pexels-photo-6153367.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
@@ -34,7 +35,7 @@ const categories = [
   },
   {
     id: '6',
-    name: 'Hair Accesories ',
+    name: 'Hair Accessories',
     image:
       'https://images.pexels.com/photos/30988728/pexels-photo-30988728/free-photo-of-elegant-flat-lay-of-beauty-accessories-on-magazine.jpeg?auto=compress&cs=tinysrgb&w=400',
   },
@@ -52,43 +53,58 @@ const categories = [
   },
 ];
 
-// useEffect(() => {
-//   const fetchCategories = async () => {
-//     try {
-//       const querySnapshot = await getDocs(collection(db, 'categories'));
-//       const categoryList = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-//       setCategories(categoryList.length > 0 ? categoryList.slice(0, 6) : dummyCategories);
-//     } catch (error) {
-//       console.error('Error fetching categories:', error);
-//     }
-//   };
-//   fetchCategories();
-// }, []);
-const Categories = () => {
+const CategoryList = memo(() => {
   //   const [categories, setCategories] = useState(dummyCategories);
   const navigation = useNavigation();
+
+  //   useEffect(() => {
+  //     const fetchCategories = async () => {
+  //       try {
+  //         const querySnapshot = await getDocs(collection(db, 'categories'));
+  //         const categoryList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  //         setCategories(categoryList.length > 0 ? categoryList.slice(0, 6) : dummyCategories);
+  //       } catch (error) {
+  //         console.error('Error fetching categories:', error);
+  //       }
+  //     };
+  //     fetchCategories();
+  //   }, []);
+
   return (
-    <View>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Categories</Text>
-        <Button> see all </Button>
+    <View className="fixed top-0">
+      <View className="mx-1 mt-14 mb-2 flex flex-row items-center justify-between">
+        <Text className="font-bold">Categories</Text>
+        <TouchableOpacity
+          onPress={() => console.log('See All Pressed')}
+          className="rounded bg-blue-500 px-3 py-2">
+          <Text className="text-black font-semibold">See All</Text>
+        </TouchableOpacity>
       </View>
       <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
         data={categories.slice(0, 6)}
         keyExtractor={(item) => item.id}
+        className=" p-2"
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('ProductList', { categoryId: item.id })}>
+            accessible
+            accessibilityLabel={`Category: ${item.name}`}
+            onPress={() => navigation.navigate('ProductList', { categoryId: item.id })}
+            className="items-center pl-2">
             <Image
               source={{ uri: item.image }}
-              style={{ width: 100, height: 100, borderRadius: 10 }}
+              className="h-24 w-24 rounded-full"
+              // onError={(e) => console.log('Image failed to load', e.nativeEvent.error)}
+              // defaultSource={require('../assets/fallback-image.png')}
             />
-            <Text style={{ padding: 10, fontSize: 18 }}>{item.name}</Text>
+            <Text className="font-light">{item.name}</Text>
           </TouchableOpacity>
         )}
       />
     </View>
   );
-};
+});
 
-export default Categories;
+export default CategoryList;
+
