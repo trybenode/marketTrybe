@@ -37,18 +37,20 @@ const ListingCards = memo(() => {
   ];
   return (
     // Listings - 2 Columns
-    <FlatList
-      data={listings}
-      keyExtractor={(item) => item.id}
-      numColumns={2} // Ensure two columns
-      columnWrapperStyle={{ justifyContent: 'space-between' }} // Add spacing between items
-      renderItem={({ item }) => (
-        <View className="mb-4 w-[48%]">
-          <ListingCard {...item} />
-        </View>
-      )}
-      showsVerticalScrollIndicator={false}
-    />
+    <View className="flex-1">
+      <FlatList
+        data={listings}
+        keyExtractor={(item) => item.id}
+        numColumns={2} // Ensure two columns
+        columnWrapperStyle={{ justifyContent: 'space-between' }} // Add spacing between items
+        renderItem={({ item }) => (
+          <View className="mb-4 w-[48%]">
+            <ListingCard {...item} />
+          </View>
+        )}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 });
 
