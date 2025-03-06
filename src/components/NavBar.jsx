@@ -9,10 +9,7 @@ function NavBar({ navigation }) {
 
   return (
     <>
-      <View>
-       
-      </View>
-      <View className="bottom-0 left-0  right-0  flex-row items-center bg-blue-800 p-5 ">
+      <View className="bottom-0 left-0  right-0  flex-row items-center bg-gray-800 px-7 py-6 ">
         {/* Left Side Buttons */}
         <TouchableOpacity
           onPress={() => navigation.navigate('Market')}
@@ -29,11 +26,11 @@ function NavBar({ navigation }) {
         </TouchableOpacity>
 
         {/* Floating Button in Center */}
-        <View className="absolute -top-7 right-1/2 ">
+        <View className="s absolute -top-7 right-1/2">
           <TouchableOpacity
-            className="h-16 w-16 items-center justify-center rounded-full bg-blue-800"
+            className="h-16 w-16 items-center justify-center rounded-full bg-gray-800"
             onPress={() => navigation.navigate('Sell')}>
-            <Text className="text-2xl font-bold text-white">+</Text>
+            <Text className="text-4xl font-bold text-white">+</Text>
           </TouchableOpacity>
         </View>
 

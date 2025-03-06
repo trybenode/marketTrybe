@@ -5,8 +5,8 @@ import * as React from 'react';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import LoginScreen from './src/screens/LoginScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
-
 import './global.css';
+import KycScreen from './src/screens/KycScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +16,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
         <Stack.Screen
           name="MainTabs"
           component={BottomTabNavigator}
