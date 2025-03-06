@@ -4,7 +4,7 @@ import { Card, Text, Avatar, Button } from 'react-native-paper';
 
 const ListingCard = ({ image, title, price, seller, onPress }) => {
   return (
-    <Card className="m-2 overflow-hidden rounded-xl shadow-md" onPress={onPress}>
+    <Card className="m-2 overflow-hidden rounded-xl shadow-md" onPress={() => navigation.navigate('ProductDetails')}>
       {/* Product Image */}
       <Image source={{ uri: image }} className="h-40 w-full" />
 
