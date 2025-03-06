@@ -20,9 +20,8 @@ const ListingCard = ({ image, title, price, seller, onPress }) => {
       </Card.Content>
 
       {/* Actions */}
-      <Card.Actions className="flex-row justify-between">
-        <Button mode="contained" className="bg-gray-800">View</Button>
-        <Button mode="text" className="text-gray-700">Favorite</Button>
+      <Card.Actions className="flex-col items-center">
+      <Button mode="contained" buttonColor="#2563eb">View Product</Button>
       </Card.Actions>
     </Card>
   );
