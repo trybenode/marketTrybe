@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Image } from 'react-native';
-import { Card, Text, Avatar, Button } from 'react-native-paper';
+import { Card, Text, Button } from 'react-native-paper';
 
-const ListingCard = ({ image, title, price, seller, onPress }) => {
+const ListingCard = memo(({ image, title, price, seller, onPress }) => {
   return (
     <Card className="m-2 overflow-hidden rounded-xl shadow-md" onPress={onPress}>
       {/* Product Image */}
@@ -29,6 +29,6 @@ const ListingCard = ({ image, title, price, seller, onPress }) => {
       </View>
     </Card>
   );
-};
+});
 
 export default ListingCard;

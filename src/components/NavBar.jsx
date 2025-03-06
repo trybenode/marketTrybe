@@ -9,26 +9,26 @@ function NavBar({ navigation }) {
 
   return (
     <>
-      <View className="bottom-0 left-0  right-0  flex-row items-center bg-gray-800 px-7 py-6 ">
+      <View className="bottom-0 left-0  right-0  flex-row justify-between  bg-gray-800 px-2 py-3 ">
         {/* Left Side Buttons */}
         <TouchableOpacity
           onPress={() => navigation.navigate('Market')}
-          className="flex-1 items-center justify-center">
+          className="items-center justify-center">
           <FontAwesome name="home" size={24} color="white" />
           <Text className="text-gray-300">Marketplace</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate('Favourite')}
-          className="flex-1 items-center justify-center">
+          className=" items-center justify-center">
           <Fontisto name="favorite" size={24} color="white" />
           <Text className="text-gray-300">Favourites</Text>
         </TouchableOpacity>
 
         {/* Floating Button in Center */}
-        <View className="s absolute -top-7 right-1/2">
+        <View className=" ">
           <TouchableOpacity
-            className="h-16 w-16 items-center justify-center rounded-full bg-gray-800"
+            className=" -top-8 right-1/3  h-16 w-16 items-center justify-center rounded-full bg-gray-800"
             onPress={() => navigation.navigate('Sell')}>
             <Text className="text-4xl font-bold text-white">+</Text>
           </TouchableOpacity>
@@ -37,14 +37,14 @@ function NavBar({ navigation }) {
         {/* Right Side Buttons */}
         <TouchableOpacity
           onPress={() => navigation.navigate('Messages')}
-          className="flex-1 items-center justify-center">
+          className=" items-center justify-center">
           <FontAwesome name="wechat" size={24} color="white" />
           <Text className="text-gray-300">Messages</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => navigation.navigate('History')}
-          className="flex-1 items-center justify-center">
+          className="items-center justify-center">
           <FontAwesome name="history" size={24} color="white" />
           <Text className="text-gray-300">History</Text>
         </TouchableOpacity>
