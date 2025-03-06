@@ -31,7 +31,7 @@ export default function ProfileScreen() {
 
         <CustomProfileOption
           title="KYC Verification"
-          onPress={() => console.log('KYC Verification')}
+          onPress={() => navigation.navigate('Kyc')}
           iconName="verified-user"
           iconType="MaterialIcons"
         />

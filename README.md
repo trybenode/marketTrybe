@@ -1,8 +1,8 @@
 Market Trybe
 📌 Overview
 Market Trybe is a student-centered mobile marketplace that enables users to buy, sell, and provide services within their university community. The app facilitates secure transactions by allowing buyers and sellers to communicate via an in-app chat system before finalizing deals.
-Notion Board: https://www.notion.so/Market-trybe-1acdc71e233a801c9fedc80a2d3ea6e8?pvs=4 
-Figma Design and User Research: https://www.figma.com/design/PbCVyjIUsnLLW7gwb6ApQg/Tech-Trybe?node-id=1-2&t=qJzeF9F9YU3GjXG2-1 
+Notion Board: https://www.notion.so/Market-trybe-1acdc71e233a801c9fedc80a2d3ea6e8?pvs=4
+Figma Design and User Research: https://www.figma.com/design/PbCVyjIUsnLLW7gwb6ApQg/Tech-Trybe?node-id=1-2&t=qJzeF9F9YU3GjXG2-1
 
 Icons: (https://icons.expo.fyi/Index)
 🚀 Features

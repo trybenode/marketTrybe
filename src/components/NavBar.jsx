@@ -9,7 +9,6 @@ function NavBar({ navigation }) {
 
   return (
     <>
-      <View></View>
       <View className="bottom-0 left-0  right-0  flex-row items-center bg-gray-800 px-7 py-6 ">
         {/* Left Side Buttons */}
         <TouchableOpacity
