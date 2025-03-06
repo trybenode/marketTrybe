@@ -38,7 +38,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 import HomeScreen from "../screens/HomeScreen";
-import ListingDetails from "../screens/ListingDetails";
+import ListingDetailsScreen from "../screens/ListingDetailsScreen";
 
 
 const Stack = createStackNavigator();
@@ -48,7 +48,7 @@ export default function StackNavigator() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="ListingDetails" component={ListingDetails} />
+        <Stack.Screen name="ListingDetails" component={ListingDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

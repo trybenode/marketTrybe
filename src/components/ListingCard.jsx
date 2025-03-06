@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Image } from 'react-native';
 import { Card, Text, Avatar, Button } from 'react-native-paper';
 
-const ListingCard = ({ image, title, price, seller, onPress }) => {
+const ListingCard = ({ image, title, price, seller }) => {
   return (
-    <Card className="m-2 overflow-hidden rounded-xl shadow-md" onPress={() => navigation.navigate('ProductDetails')}>
+    <Card className="m-2 overflow-hidden rounded-xl shadow-md">
       {/* Product Image */}
       <Image source={{ uri: image }} className="h-40 w-full" />
 

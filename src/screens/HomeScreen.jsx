@@ -52,9 +52,9 @@ export default function HomeScreen() {
           numColumns={2} // Ensure two columns
           columnWrapperStyle={{ justifyContent: 'space-between' }} // Add spacing between items
           renderItem={({ item }) => (
-            <View className="w-[48%] mb-4">
+            <TouchableOpacity onPress={() => navigation.navigate('ListingDetails', { id: item.id })}>
               <ListingCard {...item} />
-            </View>
+            </TouchableOpacity>
           )}
           showsVerticalScrollIndicator={false}
         />
