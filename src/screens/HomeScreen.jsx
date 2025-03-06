@@ -1,13 +1,16 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import React from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import Categories from '../components/Categories';
-import ListingCard from '../components/ListingCard'; // Import your ListingCard component
+import ListingCards from '../components/ListingCards'; //import listing card component
+import SearchBar from '../components/SearchBar';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
+
   const [searchQuery, setSearchQuery] = useState('');
 
   // Dummy Listings (Replace with real data)
@@ -42,6 +45,7 @@ export default function HomeScreen() {
     },
   ];
 
+
   return (
     <SafeAreaView className="flex-1">
       {/* Profile Button */}
@@ -69,6 +73,7 @@ export default function HomeScreen() {
         <Categories />
 
         {/* Search Bar */}
+
         <View className="my-4 rounded-lg border border-gray-300 bg-white px-4 py-2">
           <TextInput
             placeholder="Search listings..."
@@ -91,10 +96,17 @@ export default function HomeScreen() {
           )}
           showsVerticalScrollIndicator={false}
         />
+
+        <SearchBar />
+
+        {/*Product Listings */}
+        <ListingCards />
+
       </View>
     </SafeAreaView>
   );
 }
+
 
 /* <TouchableOpacity
         onPress={() => navigation.navigate('Profile')}
@@ -103,3 +115,4 @@ export default function HomeScreen() {
           <FontAwesome name="user" size={30} color="black" />
         </View>
       </TouchableOpacity> */
+

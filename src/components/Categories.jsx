@@ -1,7 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState, memo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
+//dummyy data to be replaced
 const categories = [
   {
     id: '1',
@@ -80,6 +81,7 @@ const CategoryList = memo(() => {
           <Text className="font-semibold text-white">See All</Text>
         </TouchableOpacity>
       </View>
+      {/* category listing */}
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
