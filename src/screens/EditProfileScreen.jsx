@@ -8,15 +8,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function EditProfileScreen() {
   const navigation = useNavigation();
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [bio, setBio] = useState('');
   const [image, setImage] = useState(null);
 
   // Pick Image from Gallery
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images, // ✅ Fixed
+      mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -68,7 +66,7 @@ export default function EditProfileScreen() {
       {/* Save Button */}
       <TouchableOpacity
         onPress={() => alert('Profile Updated!')}
-        className="items-center rounded-md bg-blue-500 p-4">
+        className="items-center rounded-md bg-black p-4">
         <Text className="text-xl font-bold text-white">Save Changes</Text>
       </TouchableOpacity>
     </SafeAreaView>
