@@ -3,12 +3,12 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import CustomProfileOption from '../components/CustomProfileOption';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 export default function ProfileScreen() {
   const navigation = useNavigation();
 
   return (
-    <View className="flex-1 gap-12 bg-white p-6">
+    <SafeAreaView className="flex-1 gap-12 bg-white p-6">
       {/* Profile Info */}
       <View className="mb-10 mt-12 flex flex-row items-center">
         <View className="h-16 w-16 items-center justify-center rounded-full bg-gray-300">
@@ -24,7 +24,7 @@ export default function ProfileScreen() {
       <View className="flex flex-col gap-6">
         <CustomProfileOption
           title="Edit Profile"
-          onPress={() => console.log('Edit Profile')}
+          onPress={() => navigation.navigate('EditProfile')}
           iconName="user"
           iconType="FontAwesome"
         />
@@ -48,6 +48,7 @@ export default function ProfileScreen() {
       <TouchableOpacity className="mt-6" onPress={() => navigation.navigate('Login')}>
         <Text className="text-center text-red-600">Sign Out</Text>
       </TouchableOpacity>
-    </View>
+      {/* <NavBar navigation={navigation} /> */}
+    </SafeAreaView>
   );
 }

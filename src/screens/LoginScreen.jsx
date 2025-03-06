@@ -18,7 +18,7 @@ export default function LoginScreen() {
         <CustomTextInput placeholder="Password" secureTextEntry />
 
         {/* Navigate to Reset PPassword */}
-        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+        <TouchableOpacity onPress={() => console.login('Reset Password Clicked!')}>
           <Text className="mb-4 text-left text-blue-600">Forgot Password? Reset.</Text>
         </TouchableOpacity>
 
