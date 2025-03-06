@@ -1,10 +1,9 @@
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome, MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native';
 
 export default function KycScreen() {
   const [fullName, setFullName] = useState('');
