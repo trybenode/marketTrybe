@@ -5,7 +5,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function NavBar({ navigation }) {
-  const insets = useSafeAreaInsets(); // ✅ Fixed missing function call
+  const insets = useSafeAreaInsets(); // Fixed missing function call
 
   return (
     <>
