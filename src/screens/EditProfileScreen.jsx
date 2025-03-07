@@ -25,13 +25,6 @@ export default function EditProfileScreen() {
       <Text className="mb-2 text-lg text-gray-500">Matric Number</Text>
       <CustomTextInput value={matricNum} onChangeText={setMatricNum} placeholder="Matric Number" />
 
-      <Text className="mb-2 text-lg text-gray-500">More Information</Text>
-      <CustomTextInput
-        value={moreInfo}
-        onChangeText={setMoreInfo}
-        placeholder="Room Number, Hostel Name, etc."
-      />
-
       {/* Location Selection */}
       <Text className="mb-3 text-left text-lg text-gray-500">Location</Text>
       <View className="flex-row items-center justify-between">
@@ -46,6 +39,13 @@ export default function EditProfileScreen() {
           onPress={() => setSelected('non-hostelite')}
         />
       </View>
+
+      <Text className="mb-2 text-lg text-gray-500">More Information</Text>
+      <CustomTextInput
+        value={moreInfo}
+        onChangeText={setMoreInfo}
+        placeholder="Room Number, Hostel Name, etc."
+      />
 
       <SaveButton onPress={() => alert('Profile Updated!')} />
     </SafeAreaView>
