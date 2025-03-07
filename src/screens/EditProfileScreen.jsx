@@ -47,7 +47,7 @@ export default function EditProfileScreen() {
         placeholder="Room Number, Hostel Name, etc."
       />
 
-      <SaveButton onPress={() => alert('Profile Updated!')} />
+      <SaveButton onPress={() => alert('Profile Updated!')} title="Save" />
     </SafeAreaView>
   );
 }
