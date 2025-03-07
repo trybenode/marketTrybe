@@ -80,4 +80,10 @@ const listings = [
     seller: { name: 'Alice Brown', avatar: 'https://via.placeholder.com/50' },
   },
 ];
-export { categories, listings };
+
+const images = [
+  { id: 1, url: 'https://via.placeholder.com/300' },
+  { id: 2, url: 'https://via.placeholder.com/300/111' },
+  { id: 3, url: 'https://via.placeholder.com/300/222' },
+];
+export { categories, listings, images};
