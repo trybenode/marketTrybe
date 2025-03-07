@@ -2,6 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 
 import NavBar from '../components/NavBar';
+import CategoryScreen from '../screens/CategoryScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 import FavouritesScreen from '../screens/FavouritesScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -10,7 +12,6 @@ import MessagesScreen from '../screens/MessagesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SellScreen from '../screens/SellScreen';
 import SuccessKycScreen from '../screens/SuccessKycScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,6 +31,7 @@ export default function BottomTabNavigator() {
       />
       <Tab.Screen name="SuccessKyc" component={SuccessKycScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Categories" component={CategoryScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
