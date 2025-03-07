@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#000033', // Dark gray background
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 25,
     alignItems: 'center',
   },
   navItem: {
