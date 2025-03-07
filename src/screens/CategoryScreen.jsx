@@ -25,7 +25,11 @@ export default function CategoryScreen() {
         keyExtractor={(item) => item.id}
         className="mb-2 p-2"
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
-        renderItem={({ item }) => <CategoriesListing item={item} />}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => navigation.navigate('Products', item.id)}>
+            <CategoriesListing {...item} />
+          </TouchableOpacity>
+        )}
       />
     </View>
   );

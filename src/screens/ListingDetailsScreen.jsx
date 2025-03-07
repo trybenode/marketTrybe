@@ -1,10 +1,15 @@
-import { View, Text} from "react-native-animatable";
+import { View, Text } from 'react-native-animatable';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-function ListingDetailsScreen() {
+function ListingDetailsScreen({ route }) {
+  const ID = route.params;
+
   return (
-    <View className="flex-1 justify-center">
-      <Text className="text-center"> Na Allen Shop be this</Text>
-    </View>
+    <SafeAreaView>
+      <View className="flex-1 justify-center">
+        <Text className="text-center"> Na Allen Shop be this {ID}</Text>
+      </View>
+    </SafeAreaView>
   );
 }
 

@@ -1,9 +1,10 @@
+import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { FontAwesome } from '@expo/vector-icons';
-import CustomProfileOption from '../components/CustomProfileOption';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import CustomProfileOption from '../components/CustomProfileOption';
 export default function ProfileScreen() {
   const navigation = useNavigation();
 
