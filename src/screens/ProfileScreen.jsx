@@ -9,7 +9,7 @@ export default function ProfileScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView className="flex-1 gap-12 bg-white p-6">
+    <SafeAreaView className="flex-1 gap-12 p-6">
       {/* Profile Info */}
       <View className="mb-10 mt-12 flex flex-row items-center">
         <View className="h-16 w-16 items-center justify-center rounded-full bg-gray-300">

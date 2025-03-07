@@ -53,7 +53,7 @@ export default function KycScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-3">
+    <SafeAreaView className="flex-1 p-3">
       {/* Header containing back button and Profile picture */}
       <View className="align-center mb-3 flex-row items-center justify-between">
         <BackButton />
