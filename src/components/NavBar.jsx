@@ -104,9 +104,9 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#000033', // Dark gray background
+    backgroundColor: '#2563eb', // Dark gray background
     paddingHorizontal: 16,
-    paddingVertical: 25,
+    paddingVertical: 22,
     alignItems: 'center',
   },
   navItem: {
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     borderRadius: '50%',
-    backgroundColor: '#000033', // Slightly lighter gray
+    backgroundColor: '#2563ed', // Slightly lighter gray
     alignItems: 'center',
     justifyContent: 'center',
     // elevation: 4, // Shadow effect on Android
