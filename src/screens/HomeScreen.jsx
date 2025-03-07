@@ -65,7 +65,6 @@ export default function HomeScreen() {
         {/* Categories */}
         <Categories />
 
-
         <SearchBar />
 
         {/*Product Listings */}
@@ -73,6 +72,4 @@ export default function HomeScreen() {
       </View>
     </SafeAreaView>
   );
-
 }
-
