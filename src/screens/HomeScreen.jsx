@@ -72,30 +72,6 @@ export default function HomeScreen() {
         {/* Categories */}
         <Categories />
 
-        {/* Search Bar */}
-
-        <View className="my-4 rounded-lg border border-gray-300 bg-white px-4 py-2">
-          <TextInput
-            placeholder="Search listings..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            className="text-base"
-          />
-        </View>
-
-        {/* Listings - 2 Columns */}
-        <FlatList
-          data={listings}
-          keyExtractor={(item) => item.id}
-          numColumns={2} // Ensure two columns
-          columnWrapperStyle={{ justifyContent: 'space-between' }} // Add spacing between items
-          renderItem={({ item }) => (
-            <View className="mb-4 w-[48%]">
-              <ListingCards {...item} />
-            </View>
-          )}
-          showsVerticalScrollIndicator={false}
-        />
 
         <SearchBar />
 
@@ -106,6 +82,38 @@ export default function HomeScreen() {
   );
 }
 
+{
+  /* Search Bar */
+}
+
+{
+  /* <View className="my-4 rounded-lg border border-gray-300 bg-white px-4 py-2">
+          <TextInput
+            placeholder="Search listings..."
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            className="text-base"
+          />
+        </View> */
+}
+
+{
+  /* Listings - 2 Columns */
+}
+{
+  /* <FlatList
+          data={listings}
+          keyExtractor={(item) => item.id}
+          numColumns={2} // Ensure two columns
+          columnWrapperStyle={{ justifyContent: 'space-between' }} // Add spacing between items
+          renderItem={({ item }) => (
+            <View className="mb-4 w-[48%]">
+              <ListingCard {...item} />
+            </View>
+          )}
+          showsVerticalScrollIndicator={false}
+        /> */
+}
 /* <TouchableOpacity
         onPress={() => navigation.navigate('Profile')}
         className="absolute right-3 top-10 px-2 py-3">
