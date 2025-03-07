@@ -23,7 +23,7 @@ const CategoryList = memo(() => {
   //   }, []);
 
   return (
-    <View className="fixed top-0 mt-1">
+    <View className=" mt-1">
       <View className="mx-1 mb-2 flex flex-row items-center justify-between">
         <Text className="text-xl font-bold">Categories</Text>
         <TouchableOpacity
@@ -39,7 +39,7 @@ const CategoryList = memo(() => {
         data={categories.slice(0, 6)}
         keyExtractor={(item) => item.id}
         className=" p-2"
-        renderItem={({ item }) => <CategoriesListing item={item} />}
+        renderItem={({ item }) => <CategoriesListing {...item} />}
       />
     </View>
   );

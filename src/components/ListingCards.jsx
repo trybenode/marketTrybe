@@ -1,13 +1,12 @@
-import React, { memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import React, { memo } from 'react';
 import { View, FlatList, TouchableOpacity } from 'react-native';
-import { listings } from  '../data/dummyData'
+
+import { listings } from '../data/dummyData';
 import ListingCard from './ListingCard';
 
 const ListingCards = memo(() => {
-
-  const navigation = useNavigation()
-  // Dummy Listings (Replace with real data)
+  const navigation = useNavigation();
 
   return (
     // Listings - 2 Columns
@@ -21,9 +20,9 @@ const ListingCards = memo(() => {
           <TouchableOpacity
             onPress={() => navigation.navigate('ListingDetails', item.id)}
             className="mb-4 w-[48%]">
-            <ListingCard {...item} /> 
-            </TouchableOpacity>
-        )}  
+            <ListingCard {...item} />
+          </TouchableOpacity>
+        )}
         showsVerticalScrollIndicator={false}
       />
     </View>

@@ -9,6 +9,7 @@ import HistoryScreen from '../screens/HistoryScreen';
 import HomeScreen from '../screens/HomeScreen';
 import KycScreen from '../screens/KycScreen';
 import MessagesScreen from '../screens/MessagesScreen';
+import ProductList from '../screens/ProductList';
 import ProfileScreen from '../screens/ProfileScreen';
 import SellScreen from '../screens/SellScreen';
 import SuccessKycScreen from '../screens/SuccessKycScreen';
@@ -32,6 +33,7 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="SuccessKyc" component={SuccessKycScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Categories" component={CategoryScreen} options={{ headerShown: false }} />
+      <Tab.Screen name="Products" component={ProductList} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }
