@@ -13,6 +13,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import FavouritesScreen from './src/screens/FavouritesScreen';
 import MessagesScreen from './src/screens/MessagesScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
+import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ export default function App() {
           component={BottomTabNavigator}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="ListingDetails" component={ListingDetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

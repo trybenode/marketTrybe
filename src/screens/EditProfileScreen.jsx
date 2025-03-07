@@ -8,8 +8,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function EditProfileScreen() {
   const navigation = useNavigation();
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [matricNum, setMatricNum] = useState('');
   const [image, setImage] = useState(null);
+  const [moreInfo, setMoreInfo] = useState('');
+  const [selected, setSelected] = useState(null);
 
   // Pick Image from Gallery
   const pickImage = async () => {
@@ -48,26 +50,62 @@ export default function EditProfileScreen() {
       </View>
 
       {/* Input Fields */}
-      <Text className="text-black-400 mb-2 text-xl">Full Name</Text>
+      <Text className="mb-2 text-lg text-gray-500">Full Name</Text>
       <TextInput
         value={name}
         onChangeText={setName}
-        className="mb-10 rounded-md border  border-gray-300 p-3"
+        placeholder="Full Name"
+        className="mb-6 rounded-md border  border-gray-300 p-3"
       />
 
-      <Text className="text-black-400 mb-2 text-xl">Phone Number</Text>
+      <Text className="mb-2 text-lg text-gray-500">Matric Number</Text>
       <TextInput
-        value={phone}
-        onChangeText={setPhone}
-        keyboardType="phone-pad"
+        value={matricNum}
+        onChangeText={setMatricNum}
+        placeholder="Matric Number"
         className="mb-5 rounded-md border  border-gray-300 p-3"
       />
+
+      <Text className="mb-2 text-lg text-gray-500">Resident Address or Hostel Info</Text>
+      <TextInput
+        value={moreInfo}
+        onChangeText={setMoreInfo}
+        placeholder="Room Number, Hostel Name, etc."
+        className="mb-5 rounded-md border  border-gray-300 p-3"
+      />
+
+      <View className="">
+        <Text className="mb-3 text-left text-lg text-gray-500">Location</Text>
+
+        {/* Radio Buttons */}
+        <View className="flex-row items-center justify-between">
+          {/* Hostelite */}
+          <TouchableOpacity
+            className="mb-6 flex-row items-center"
+            onPress={() => setSelected('hostelite')}>
+            <View className="mr-2 h-5 w-5 items-center justify-center rounded-full border-2 border-gray-400">
+              {selected === 'hostelite' && <View className="h-3 w-3 rounded-full bg-black" />}
+            </View>
+            <Text className="text-lg text-gray-500">Hostelite</Text>
+          </TouchableOpacity>
+
+          {/* Non-Hostelite */}
+          <TouchableOpacity
+            className="mb-6 flex-row items-center"
+            onPress={() => setSelected('non-hostelite')}>
+            <View className="mr-2 h-5 w-5 items-center justify-center rounded-full border-2 border-gray-400">
+              {selected === 'non-hostelite' && <View className="h-3 w-3 rounded-full bg-black" />}
+            </View>
+            <Text className="text-lg text-gray-500">Non-Hostelite</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
 
       {/* Save Button */}
       <TouchableOpacity
         onPress={() => alert('Profile Updated!')}
-        className="items-center rounded-md bg-black p-4">
-        <Text className="text-xl font-bold text-white">Save Changes</Text>
+        className="mt-8 items-center rounded-md bg-black p-3">
+        <Text className="text-lg text-white">Save Changes</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );

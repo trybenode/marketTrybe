@@ -1,7 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState, memo } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, Button } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
+//dummyy data to be replaced
 const categories = [
   {
     id: '1',
@@ -71,15 +72,16 @@ const CategoryList = memo(() => {
   //   }, []);
 
   return (
-    <View className="fixed top-0">
-      <View className="mx-1 mb-2 mt-14 flex flex-row items-center justify-between">
-        <Text className="font-bold">Categories</Text>
+    <View className="fixed top-0 mt-1">
+      <View className="mx-1 mb-2 flex flex-row items-center justify-between">
+        <Text className="text-xl font-bold">Categories</Text>
         <TouchableOpacity
           onPress={() => console.log('See All Pressed')}
           className="rounded bg-blue-500 px-3 py-2">
-          <Text className="font-semibold text-black">See All</Text>
+          <Text className="font-semibold text-white">See All</Text>
         </TouchableOpacity>
       </View>
+      {/* category listing */}
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
