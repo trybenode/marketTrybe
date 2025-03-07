@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 
-const CustomButton = ({ title, onPress }) => {
+const CustomButton = memo(({ title, onPress }) => {
   return (
     <View className="mb-2 mt-2 w-full items-center">
       <TouchableOpacity onPress={onPress} className="w-1/3 rounded-md bg-white p-3">
@@ -9,6 +9,6 @@ const CustomButton = ({ title, onPress }) => {
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 export default CustomButton;
