@@ -23,7 +23,7 @@ function ListingDetailsScreen({ route }) {
         {/* Add to Favourites */}
         <TouchableOpacity className="flex items-center space-y-1">
           <Fontisto name="favorite" size={24} color="black" />
-          <Text className="text-sm text-black mt-2">Add to Favourites</Text>
+          <Text className="text-lg text-black mt-2">Add to Favourites</Text>
         </TouchableOpacity>
       </View>
 
