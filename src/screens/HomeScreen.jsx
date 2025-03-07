@@ -37,19 +37,35 @@ export default function HomeScreen() {
         {/* Categories */}
         <Categories />
 
-        {/* Search Bar */}
+        <SearchBar />
 
-        {/* <View className="my-4 rounded-lg border border-gray-300 bg-white px-4 py-2">
+        {/*Product Listings */}
+        <ListingCards />
+      </View>
+    </SafeAreaView>
+  );
+}
+
+{
+  /* Search Bar */
+}
+
+{
+  /* <View className="my-4 rounded-lg border border-gray-300 bg-white px-4 py-2">
           <TextInput
             placeholder="Search listings..."
             value={searchQuery}
             onChangeText={setSearchQuery}
             className="text-base"
           />
-        </View> */}
+        </View> */
+}
 
-        {/* Listings - 2 Columns */}
-        {/* <FlatList
+{
+  /* Listings - 2 Columns */
+}
+{
+  /* <FlatList
           data={listings}
           keyExtractor={(item) => item.id}
           numColumns={2} // Ensure two columns
@@ -60,17 +76,8 @@ export default function HomeScreen() {
             </View>
           )}
           showsVerticalScrollIndicator={false}
-        /> */}
-
-        <SearchBar />
-
-        {/*Product Listings */}
-        <ListingCards />
-      </View>
-    </SafeAreaView>
-  );
+        /> */
 }
-
 /* <TouchableOpacity
         onPress={() => navigation.navigate('Profile')}
         className="absolute right-3 top-10 px-2 py-3">

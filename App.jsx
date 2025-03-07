@@ -47,7 +47,7 @@ export default function App() {
           component={BottomTabNavigator}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="ListingDetails" component={ListingDetailsScreen} />
+        <Stack.Screen name="ListingDetails" component={ListingDetailsScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

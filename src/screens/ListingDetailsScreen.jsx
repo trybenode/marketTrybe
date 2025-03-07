@@ -1,10 +1,10 @@
-import React from 'react';
+import { View, Text} from "react-native-animatable";
 
 function ListingDetailsScreen() {
   return (
-    <div>
-      <h1>Listing Details Screen</h1>
-    </div>
+    <View className="flex-1 justify-center">
+      <Text className="text-center"> Na Allen Shop be this</Text>
+    </View>
   );
 }
 
