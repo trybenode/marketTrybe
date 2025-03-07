@@ -1,9 +1,12 @@
 import React, { memo } from 'react';
-import { View, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, FlatList, TouchableOpacity } from 'react-native';
 
 import ListingCard from './ListingCard';
 
 const ListingCards = memo(() => {
+
+  const navigation = useNavigation()
   // Dummy Listings (Replace with real data)
   const listings = [
     {
@@ -44,10 +47,12 @@ const ListingCards = memo(() => {
         numColumns={2} // Ensure two columns
         columnWrapperStyle={{ justifyContent: 'space-between', flexWrap: 'wrap' }} // Add spacing between items
         renderItem={({ item }) => (
-          <View className="mb-4 w-[48%]">
-            <ListingCard {...item} />
-          </View>
-        )}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('ListingDetails', item.id)}
+            className="mb-4 w-[48%]">
+            <ListingCard {...item} /> 
+            </TouchableOpacity>
+        )}  
         showsVerticalScrollIndicator={false}
       />
     </View>
