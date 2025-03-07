@@ -29,6 +29,6 @@ const ListingCard = ({ image, title, price, seller }) => {
       </View>
     </Card>
   );
-});
+};
 
 export default ListingCard;

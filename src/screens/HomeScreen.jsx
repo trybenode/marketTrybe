@@ -39,17 +39,17 @@ export default function HomeScreen() {
 
         {/* Search Bar */}
 
-        <View className="my-4 rounded-lg border border-gray-300 bg-white px-4 py-2">
+        {/* <View className="my-4 rounded-lg border border-gray-300 bg-white px-4 py-2">
           <TextInput
             placeholder="Search listings..."
             value={searchQuery}
             onChangeText={setSearchQuery}
             className="text-base"
           />
-        </View>
+        </View> */}
 
         {/* Listings - 2 Columns */}
-        <FlatList
+        {/* <FlatList
           data={listings}
           keyExtractor={(item) => item.id}
           numColumns={2} // Ensure two columns
@@ -60,7 +60,7 @@ export default function HomeScreen() {
             </View>
           )}
           showsVerticalScrollIndicator={false}
-        />
+        /> */}
 
         <SearchBar />
 
