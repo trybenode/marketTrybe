@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { View, TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function CustomTextInput({ placeholder, secureTextEntry, ...props }) {
+const CustomTextInput = memo(({ placeholder, secureTextEntry, ...props }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(secureTextEntry);
 
   return (
@@ -23,6 +23,6 @@ function CustomTextInput({ placeholder, secureTextEntry, ...props }) {
       )}
     </View>
   );
-}
+});
 
 export default CustomTextInput;

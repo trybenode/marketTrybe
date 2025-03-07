@@ -37,12 +37,12 @@ const ListingCards = memo(() => {
   ];
   return (
     // Listings - 2 Columns
-    <View className="flex-1">
+    <View style={{ flexBasis: '52%', paddingBottom: '20' }}>
       <FlatList
         data={listings}
         keyExtractor={(item) => item.id}
         numColumns={2} // Ensure two columns
-        columnWrapperStyle={{ justifyContent: 'space-between' }} // Add spacing between items
+        columnWrapperStyle={{ justifyContent: 'space-between', flexWrap: 'wrap' }} // Add spacing between items
         renderItem={({ item }) => (
           <View className="mb-4 w-[48%]">
             <ListingCard {...item} />

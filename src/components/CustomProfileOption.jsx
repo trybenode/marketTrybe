@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
-const CustomProfileOption = ({ title, onPress, iconName, iconType = 'MaterialIcons' }) => {
+const CustomProfileOption = memo(({ title, onPress, iconName, iconType = 'MaterialIcons' }) => {
   // Function to select the correct icon component
   const renderIcon = () => {
     if (iconType === 'FontAwesome') {
@@ -22,6 +22,6 @@ const CustomProfileOption = ({ title, onPress, iconName, iconType = 'MaterialIco
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 export default CustomProfileOption;

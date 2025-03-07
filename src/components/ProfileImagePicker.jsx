@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FontAwesome } from '@expo/vector-icons';
 
-const ProfileImagePicker = ({ image, setImage }) => {
+const ProfileImagePicker = memo(({ image, setImage }) => {
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
@@ -31,6 +31,6 @@ const ProfileImagePicker = ({ image, setImage }) => {
       <Text className="mt-2 text-gray-500">Tap to change photo</Text>
     </View>
   );
-};
+});
 
 export default ProfileImagePicker;
