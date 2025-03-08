@@ -27,6 +27,16 @@ function ListingDetailsScreen({ route }) {
     setSelectedImage(image);
     setModalVisible(true);
   };
+
+  const details = [
+    { label: "Condition", value: "New" },
+    { label: "Brand", value: "Samsung" },
+    { label: "Model", value: "Galaxy S21" },
+    { label: "Color", value: "Black" },
+    { label: "Storage", value: "128GB" },
+    { label: "Battery", value: "4000mAh" },
+  ];
+  
   // const images = [
   //   'https://via.placeholder.com/300',
   //   'https://via.placeholder.com/300/111',
@@ -77,30 +87,45 @@ function ListingDetailsScreen({ route }) {
             </View>
           )}
 
-          <View className="p-2 my-4">
+          <View className="my-4 p-2">
             <Text className="text-2xl font-bold">Brand new flat screen TV</Text>
             <Text className="text-xl font-bold">Price: #40,000:00</Text>
           </View>
 
           {/* Details Section */}
-          <Text className="p-2 text-lg font-bold">Extra Information:</Text>
-          <View className="mb-4 grid grid-cols-3 gap-4 rounded-lg bg-gray-100 p-4">
-            <Text className="text-lg font-bold">Listing Details</Text>
-            <Text className="text-gray-600">Here are some details about the listing...</Text>
-          </View>
-          {/* More Info Section */}
-          <Text className="p-2 text-lg font-bold">Sellers Information:</Text>
-          <View className="mt-4 rounded-lg bg-gray-100 p-4">
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Shop');
-              }}>
-              <Text className="text-lg">Demilade Femi</Text>
-              <Text className="mb-4 font-bold text-gray-600">Name</Text>
-            </TouchableOpacity>
+          <View className="">
+            <Text className="p-2 text-lg font-bold">Listing Details</Text>
 
-            <Text className="text-lg">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima deserunt inventore dolore quisquam nulla! Quisquam, obcaecati, molestiae et cupiditate quo facere consequatur voluptatum facilis vel voluptates modi non dolor reiciendis.</Text>
-            <Text className="mb-4 font-bold text-gray-600">Detailed Product description </Text>
+            <View className="mb-4 rounded-lg bg-gray-100 p-2">
+              {details.map((item, index) => (
+                <View key={index} className="w-1/3 p-2">
+                  <Text className="font-semibold text-gray-800">{item.label}</Text>
+                  <Text className="text-gray-600">{item.value} </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          {/* More Info Section */}
+
+          <View>
+            <Text className="p-2 text-lg font-bold">Sellers Information:</Text>
+            <View className="mt-4 rounded-lg bg-gray-100 p-4">
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Shop');
+                }}>
+                <Text className="text-lg">Demilade Femi</Text>
+                <Text className="mb-4 font-bold text-gray-600">Name</Text>
+              </TouchableOpacity>
+
+              <Text className="text-lg">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima deserunt inventore
+                dolore quisquam nulla! Quisquam, obcaecati, molestiae et cupiditate quo facere
+                consequatur voluptatum facilis vel voluptates modi non dolor reiciendis.
+              </Text>
+              <Text className="mb-4 font-bold text-gray-600">Detailed Product description </Text>
+            </View>
           </View>
 
           {/* ⚠️ MODAL KEEP AT BOTTOM */}
