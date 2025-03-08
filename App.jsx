@@ -13,6 +13,7 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import SuccessKycScreen from './src/screens/SuccessKycScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import MessagesScreen from './src/screens/MessagesScreen';
+import ShopScreen from './src/screens/ShopScreen';
 // import ProductList from './src/screens/ProductList';
 import './global.css';
 
@@ -53,6 +54,7 @@ export default function App() {
           component={ListingDetailsScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="Shop" component={ShopScreen} options={{ headerShown: false }} />
         {/* <Stack.Screen name="ProductList" component={ProductList} options={{ headerShown: false }} /> */}
       </Stack.Navigator>
     </NavigationContainer>

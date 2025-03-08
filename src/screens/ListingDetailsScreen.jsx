@@ -32,7 +32,7 @@ function ListingDetailsScreen({ route }) {
         </TouchableOpacity>
 
         {/* Add to Favourites */}
-        <TouchableOpacity className="flex items-center space-y-1">
+        <TouchableOpacity onPress={() => navigation.navigate("Shop")} className="flex items-center space-y-1">
           <Fontisto name="favorite" size={24} color="black" />
           <Text className="mt-2 text-lg text-black">Add to Favourites</Text>
         </TouchableOpacity>
@@ -75,6 +75,11 @@ function ListingDetailsScreen({ route }) {
         </View>
       </Modal>
     </View>
+<View>
+
+</View>
+
+
     </SafeAreaView>
   );
 }
