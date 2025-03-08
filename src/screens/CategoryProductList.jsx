@@ -1,8 +1,10 @@
 import { useRoute } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView, View, Text } from 'react-native';
 
+import BackButton from '../components/BackButton';
 import ListingCards from '../components/ListingCards';
+import UserProfile from '../components/UserProfile';
 import { categories, listings } from '../data/dummyData';
 
 function CategoryProductList() {
@@ -21,6 +23,10 @@ function CategoryProductList() {
 
   return (
     <SafeAreaView className="flex-1">
+      <View className="flex-row items-center justify-between px-4">
+        <BackButton screenName="Categories" />
+        <UserProfile />
+      </View>
       <Text className="py-4 text-center text-xl font-semibold">
         {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}
         {selectedCategory}
