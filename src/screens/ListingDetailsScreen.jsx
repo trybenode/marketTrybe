@@ -1,14 +1,22 @@
-import { View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, FlatList, Image, Modal, Pressable} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // import Carousel from 'react-native-reanimated-carousel';
 import BackButton from '../components/BackButton';
 import Fontisto from '@expo/vector-icons/Fontisto';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { images } from '../data/dummyData';
 
 function ListingDetailsScreen({ route }) {
   const ID = route.params;
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setModalVisible(true);
+  };
   // const images = [
   //   'https://via.placeholder.com/300',
   //   'https://via.placeholder.com/300/111',
@@ -19,8 +27,8 @@ function ListingDetailsScreen({ route }) {
     <SafeAreaView className="flex-1 bg-white p-4">
       <View className="flex-row items-center justify-between">
         {/* Back to Homepage */}
-        <TouchableOpacity onPress={() => navigation.goBack()} className="p-2">
-          <BackButton screenName="MainTabs" />
+        <TouchableOpacity className="p-2">
+          <BackButton screenName="Market" />
         </TouchableOpacity>
 
         {/* Add to Favourites */}
@@ -29,21 +37,44 @@ function ListingDetailsScreen({ route }) {
           <Text className="mt-2 text-lg text-black">Add to Favourites</Text>
         </TouchableOpacity>
       </View>
-      <View>
-        <FlatList
-          data={images}
-          keyExtractor={(item) => item.id.toString()} // Ensure it's a string
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => (
+
+      {/* Carousel with pop-up (modal) on click */}
+      <View className="flex-1 mt-5">
+      <FlatList
+        data={images}
+        keyExtractor={(item) => item.id}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => openModal(item.url)}>
             <Image
               source={{ uri: item.url }}
-              style={{ width: 300, height: 300, borderRadius: 10, marginRight: 10 }}
+              className="w-80 h-80 rounded-lg mr-3"
               resizeMode="cover"
             />
+          </TouchableOpacity>
+        )}
+      />
+
+      {/* Modal for full-screen image */}
+      <Modal visible={modalVisible} transparent animationType="fade">
+        <View className="flex-1 bg-black/90 justify-center items-center">
+          {selectedImage && (
+            <Image
+              source={{ uri: selectedImage }}
+              className="w-11/12 h-4/5 rounded-lg"
+              resizeMode="contain"
+            />
           )}
-        />
-      </View>
+          <Pressable
+            onPress={() => setModalVisible(false)}
+            className="mt-5 bg-white px-4 py-2 rounded"
+          >
+            <Text className="text-lg font-bold">Close</Text>
+          </Pressable>
+        </View>
+      </Modal>
+    </View>
     </SafeAreaView>
   );
 }
