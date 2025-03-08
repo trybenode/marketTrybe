@@ -80,4 +80,10 @@ const listings = [
     seller: { name: 'Alice Brown', avatar: 'https://via.placeholder.com/50' },
   },
 ];
-export { categories, listings };
+
+const images = [
+  { id: 1, url: 'https://images.pexels.com/photos/30957062/pexels-photo-30957062/free-photo-of-stack-of-delicious-homemade-chocolate-cookies.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 2, url: 'https://images.pexels.com/photos/28771662/pexels-photo-28771662/free-photo-of-vintage-electronics-and-media-shelf-display.jpeg?auto=compress&cs=tinysrgb&w=400' },
+  { id: 3, url: 'https://images.pexels.com/photos/682933/pexels-photo-682933.jpeg?auto=compress&cs=tinysrgb&w=400' },
+];
+export { categories, listings, images};
