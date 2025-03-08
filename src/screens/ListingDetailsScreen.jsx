@@ -1,30 +1,18 @@
-
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
-
-import { View, Text, TouchableOpacity, Dimensions, FlatList, Image} from 'react-native';
-
+import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import Carousel from 'react-native-reanimated-carousel';
 import BackButton from '../components/BackButton';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { useNavigation } from '@react-navigation/native';
-import { images } from '../data/dummyData';
 
 function ListingDetailsScreen({ route }) {
   const ID = route.params;
   const navigation = useNavigation();
 
   const images = [
-    'https://via.placeholder.com/300',
-    'https://via.placeholder.com/300/111',
-    'https://via.placeholder.com/300/222',
+    { id: '1', url: 'https://via.placeholder.com/300' },
+    { id: '2', url: 'https://via.placeholder.com/300/111' },
+    { id: '3', url: 'https://via.placeholder.com/300/222' },
   ];
-
-  // const images = [
-  //   'https://via.placeholder.com/300',
-  //   'https://via.placeholder.com/300/111',
-  //   'https://via.placeholder.com/300/222',
-  // ];
 
   return (
     <SafeAreaView className="flex-1 bg-white p-4">
@@ -41,54 +29,24 @@ function ListingDetailsScreen({ route }) {
         </TouchableOpacity>
       </View>
 
-      <View>
-
-        {/* <Carousel
-
-        <FlatList>
-          {/* Images Carousel */}
-          <FlatList
-            data={images}
-            keyExtractor={(item) => item.id}
-            horizontal
-            renderItem={({ item }) => (
-              <Image
-                source={{ uri: item.url }}
-                style={{ width: 300, height: 300, borderRadius: 10 }}
-                resizeMode="cover"
-              />
-            )}
-          />
-        </FlatList>
+      {/* Image Carousel */}
+      <View className="mt-4">
+        <FlatList
+          data={images}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <Image
+              source={{ uri: item.url }}
+              style={{ width: 300, height: 300, borderRadius: 10, marginRight: 10 }}
+              resizeMode="cover"
+            />
+          )}
+        />
       </View>
     </SafeAreaView>
   );
 }
 
 export default ListingDetailsScreen;
-
-{
-  /* <Carousel
-
-        loop
-        width={width}
-        height={250}
-        autoPlay={true}
-        data={images}
-        scrollAnimationDuration={500}
-        renderItem={({ item }) => (
-          <Image
-            source={{ uri: item }}
-            style={{ width: "100%", height: "100%", borderRadius: 10 }}
-            resizeMode="cover"
-          />
-        )}
-
-      /> */}
-      </View>
-    </SafeAreaView>
-  );
-
-      /> */
-
-}

@@ -22,7 +22,7 @@ const ListingCard = ({ image, title, price, seller }) => {
       {/* Actions */}
       <View className="flex items-center justify-center py-2">
         <Card.Actions>
-          <Button mode="contained" buttonColor="#2563eb">
+          <Button mode="contained" buttonColor="#333333">
             View Product
           </Button>
         </Card.Actions>
