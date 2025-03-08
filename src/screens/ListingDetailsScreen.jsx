@@ -29,14 +29,14 @@ function ListingDetailsScreen({ route }) {
   };
 
   const details = [
-    { label: "Condition", value: "New" },
-    { label: "Brand", value: "Samsung" },
-    { label: "Model", value: "Galaxy S21" },
-    { label: "Color", value: "Black" },
-    { label: "Storage", value: "128GB" },
-    { label: "Battery", value: "4000mAh" },
+    { label: 'Condition', value: 'New' },
+    { label: 'Brand', value: 'Samsung' },
+    { label: 'Model', value: 'Galaxy S21' },
+    { label: 'Color', value: 'Black' },
+    { label: 'Storage', value: '128GB' },
+    { label: 'Battery', value: '4000mAh' },
   ];
-  
+
   // const images = [
   //   'https://via.placeholder.com/300',
   //   'https://via.placeholder.com/300/111',
@@ -45,12 +45,13 @@ function ListingDetailsScreen({ route }) {
 
   return (
     <SafeAreaView className="flex-1 bg-white p-4">
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex-row items-center justify-between">
           {/* Back to Homepage */}
-          <TouchableOpacity className="p-2">
+          {/* <TouchableOpacity className="p-2">
             <BackButton screenName="Market" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <BackButton screenName="MainTabs" />
 
           {/* Add to Favourites */}
           <TouchableOpacity

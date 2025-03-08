@@ -10,12 +10,12 @@ const ListingCard = ({ image, title, price, seller }) => {
 
       <Card.Content>
         {/* Title and Price */}
-        <Text className="text-lg font-semibold">{title}</Text>
-        <Text className="mt-2 text-lg font-bold">#{price}</Text>
+        <Text className="text-base font-bold">{title}</Text>
+        <Text className="mt-1 text-base font-bold">#{price}</Text>
 
         {/* Seller Info */}
         <View className="mt-2 flex-row items-center">
-          <Text className="text-lg font-bold">{seller.name}</Text>
+          <Text className="text- font-bold">{seller.name}</Text>
         </View>
       </Card.Content>
 

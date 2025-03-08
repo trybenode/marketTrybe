@@ -34,7 +34,7 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Categories" component={CategoryScreen} options={{ headerShown: false }} />
       <Tab.Screen
-        name="ProductList"
+        name="Products"
         component={CategoryProductList}
         options={{ headerShown: false }}
       />
