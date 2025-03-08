@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 
 import NavBar from '../components/NavBar';
+import CategoryProductList from '../screens/CategoryProductList';
 import CategoryScreen from '../screens/CategoryScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import FavouritesScreen from '../screens/FavouritesScreen';
@@ -9,7 +10,6 @@ import HistoryScreen from '../screens/HistoryScreen';
 import HomeScreen from '../screens/HomeScreen';
 import KycScreen from '../screens/KycScreen';
 import MessagesScreen from '../screens/MessagesScreen';
-import CategoryProductList from '../screens/CategoryProductList';
 import ProfileScreen from '../screens/ProfileScreen';
 import SellScreen from '../screens/SellScreen';
 import SuccessKycScreen from '../screens/SuccessKycScreen';
