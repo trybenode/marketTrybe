@@ -15,8 +15,8 @@ export default function EditProfileScreen() {
   const [selected, setSelected] = useState(null);
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-6">
-      <BackButton />
+    <SafeAreaView className="flex-1 p-6">
+      <BackButton screenName="Profile" />
       <ProfileImagePicker image={image} setImage={setImage} />
 
       <Text className="mb-2 text-lg text-gray-500">Full Name</Text>

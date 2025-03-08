@@ -56,7 +56,7 @@ export default function KycScreen() {
     <SafeAreaView className="flex-1 p-3">
       {/* Header containing back button and Profile picture */}
       <View className="align-center mb-3 flex-row items-center justify-between">
-        <BackButton />
+        <BackButton screenName="Profile" />
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
           <View className="h-12 w-12 items-center justify-center rounded-full bg-gray-300">
             <FontAwesome name="user" size={30} color="black" />
@@ -80,7 +80,7 @@ export default function KycScreen() {
         {/* Front ID Upload */}
         <View className="w-full">
           <TouchableOpacity
-            className="mb-2 w-full items-center rounded-md border border-gray-300 p-4"
+            className="mb-2 w-full items-center rounded-md border border-gray-300 bg-white p-4"
             onPress={() => pickImage(setFrontID)}>
             <Text>{frontID ? 'Image Selected' : 'Choose Image'}</Text>
           </TouchableOpacity>
@@ -94,7 +94,7 @@ export default function KycScreen() {
 
         <View className="w-full">
           <TouchableOpacity
-            className="mb-2 w-full items-center rounded-md border border-gray-300 p-4"
+            className="mb-2 w-full items-center rounded-md border border-gray-300 bg-white p-4"
             onPress={() => pickImage(setBackID)}>
             <Text>{backID ? 'Image Selected' : 'Choose Image'}</Text>
           </TouchableOpacity>
@@ -109,7 +109,7 @@ export default function KycScreen() {
         <View className="w-full items-center">
           <TouchableOpacity
             className={`w-1/3 items-center justify-center rounded-md p-4 ${
-              fullName && matricNumber && frontID && backID ? 'bg-black' : 'bg-gray-400'
+              fullName && matricNumber && frontID && backID ? 'bg-[#2563eb]' : 'bg-gray-400'
             }`}
             onPress={handleSubmit}
             disabled={!fullName || !matricNumber || !frontID || !backID}>
