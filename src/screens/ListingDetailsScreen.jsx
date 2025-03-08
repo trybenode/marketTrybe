@@ -1,4 +1,8 @@
+
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+
 import { View, Text, TouchableOpacity, Dimensions, FlatList, Image} from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
 // import Carousel from 'react-native-reanimated-carousel';
 import BackButton from '../components/BackButton';
@@ -9,17 +13,25 @@ import { images } from '../data/dummyData';
 function ListingDetailsScreen({ route }) {
   const ID = route.params;
   const navigation = useNavigation();
+
+  const images = [
+    'https://via.placeholder.com/300',
+    'https://via.placeholder.com/300/111',
+    'https://via.placeholder.com/300/222',
+  ];
+
   // const images = [
   //   'https://via.placeholder.com/300',
   //   'https://via.placeholder.com/300/111',
   //   'https://via.placeholder.com/300/222',
   // ];
+
   return (
-    <SafeAreaView className="flex-1 bg-white p-6">
+    <SafeAreaView className="flex-1 bg-white p-4">
       <View className="flex-row items-center justify-between">
         {/* Back to Homepage */}
         <TouchableOpacity onPress={() => navigation.goBack()} className="p-2">
-          <BackButton />
+          <BackButton screenName="MainTabs" />
         </TouchableOpacity>
 
         {/* Add to Favourites */}
@@ -30,6 +42,9 @@ function ListingDetailsScreen({ route }) {
       </View>
 
       <View>
+
+        {/* <Carousel
+
         <FlatList>
           {/* Images Carousel */}
           <FlatList
@@ -54,6 +69,7 @@ export default ListingDetailsScreen;
 
 {
   /* <Carousel
+
         loop
         width={width}
         height={250}
@@ -67,5 +83,12 @@ export default ListingDetailsScreen;
             resizeMode="cover"
           />
         )}
+
+      /> */}
+      </View>
+    </SafeAreaView>
+  );
+
       /> */
+
 }
