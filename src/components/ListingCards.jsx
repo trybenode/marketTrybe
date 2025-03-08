@@ -9,7 +9,7 @@ const ListingCards = memo(({ data }) => {
 
   return (
     // Listings - 2 Columns
-    <View style={{ flex: 1, paddingBottom: 20 }}>
+    <View style={{ flex: 1, paddingBottom: 100 }}>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
@@ -17,7 +17,6 @@ const ListingCards = memo(({ data }) => {
         columnWrapperStyle={{
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-        
         }} // Add spacing between items
         renderItem={({ item }) => (
           <TouchableOpacity
