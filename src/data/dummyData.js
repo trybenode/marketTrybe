@@ -82,7 +82,7 @@ const listings = [
     id: '4',
     title: 'Nike Running Shoes',
     price: '95.00',
-    category: 'Footwear',
+    category: 'Foot wear',
     image:
       'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=400',
     seller: { name: 'Alice Brown', avatar: 'https://via.placeholder.com/50' },

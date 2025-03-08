@@ -9,7 +9,7 @@ const CategoriesListing = ({ name, image, id }) => {
     <TouchableOpacity
       accessible
       accessibilityLabel={`Category: ${name}`}
-      onPress={() => navigation.navigate('Products', { categoryID: id })}
+      onPress={() => navigation.navigate('ProductList', { categoryID: id })}
       className="items-center pl-2">
       <Image
         source={{ uri: image }}

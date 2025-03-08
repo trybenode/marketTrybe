@@ -24,20 +24,21 @@ function CategoryProductList() {
   return (
     <SafeAreaView className="flex-1">
       <View className="flex-row items-center justify-between px-4">
-        <BackButton screenName="Categories" />
+        <BackButton screenName="Market" />
         <UserProfile />
       </View>
       <Text className="py-4 text-center text-xl font-semibold">
         {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}
         {selectedCategory}
       </Text>
-
-      {/* Checks if filteredProducts is empty and display appropriate UI */}
-      {filteredProducts.length > 0 ? (
-        <ListingCards key={categoryID} data={filteredProducts} />
-      ) : (
-        <Text className="mt-5 text-center text-lg">No products found in this category.</Text>
-      )}
+      <View className="flex-1 px-4">
+        {/* Checks if filteredProducts is empty and display appropriate UI */}
+        {filteredProducts.length > 0 ? (
+          <ListingCards key={categoryID} data={filteredProducts} />
+        ) : (
+          <Text className="mt-5 text-center text-lg">No products found in this category.</Text>
+        )}
+      </View>
     </SafeAreaView>
   );
 }

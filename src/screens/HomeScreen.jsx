@@ -9,6 +9,8 @@ import UserProfile from '../components/UserProfile';
 import { listings } from '../data/dummyData';
 
 export default function HomeScreen() {
+  console.log('Listings Data:', listings);
+
   return (
     <SafeAreaView className="flex-1 p-0">
       <View className="flex-row items-center justify-between p-4">
@@ -20,7 +22,7 @@ export default function HomeScreen() {
       </View>
 
       {/* Main Content */}
-      <View className="flex-col px-4">
+      <View className=" flex-1 px-4">
         {/* Categories */}
         <Categories />
 

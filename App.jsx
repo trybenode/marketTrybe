@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import CategoryProductList from './src/screens/CategoryProductList';
+import CategoryScreen from './src/screens/CategoryScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import FavouritesScreen from './src/screens/FavouritesScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -59,6 +60,11 @@ export default function App() {
         <Stack.Screen
           name="ProductList"
           component={CategoryProductList}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Categories"
+          component={CategoryScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

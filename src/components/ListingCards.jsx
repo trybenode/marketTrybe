@@ -14,7 +14,11 @@ const ListingCards = memo(({ data }) => {
         data={data}
         keyExtractor={(item) => item.id}
         numColumns={2} // Ensure two columns
-        columnWrapperStyle={{ justifyContent: 'space-between', flexWrap: 'wrap' }} // Add spacing between items
+        columnWrapperStyle={{
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+        
+        }} // Add spacing between items
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => navigation.navigate('ListingDetails', { itemId: item.id })}
