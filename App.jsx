@@ -3,18 +3,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
+import CategoryProductList from './src/screens/CategoryProductList';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import FavouritesScreen from './src/screens/FavouritesScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import KycScreen from './src/screens/KycScreen';
 import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import MessagesScreen from './src/screens/MessagesScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+import ShopScreen from './src/screens/ShopScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SuccessKycScreen from './src/screens/SuccessKycScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
-import MessagesScreen from './src/screens/MessagesScreen';
-import ShopScreen from './src/screens/ShopScreen';
-// import ProductList from './src/screens/ProductList';
+
 import './global.css';
 
 const Stack = createNativeStackNavigator();
@@ -55,7 +56,11 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Shop" component={ShopScreen} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="ProductList" component={ProductList} options={{ headerShown: false }} /> */}
+        <Stack.Screen
+          name="ProductList"
+          component={CategoryProductList}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
