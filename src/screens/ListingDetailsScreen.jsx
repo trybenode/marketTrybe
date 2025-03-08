@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Dimensions, FlatList, Image} from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // import Carousel from 'react-native-reanimated-carousel';
 import BackButton from '../components/BackButton';
@@ -8,6 +8,7 @@ import { images } from '../data/dummyData';
 
 function ListingDetailsScreen({ route }) {
   const ID = route.params;
+
   const navigation = useNavigation();
   // const images = [
   //   'https://via.placeholder.com/300',
@@ -28,23 +29,20 @@ function ListingDetailsScreen({ route }) {
           <Text className="mt-2 text-lg text-black">Add to Favourites</Text>
         </TouchableOpacity>
       </View>
-
       <View>
-        <FlatList>
-          {/* Images Carousel */}
-          <FlatList
-            data={images}
-            keyExtractor={(item) => item.id}
-            horizontal
-            renderItem={({ item }) => (
-              <Image
-                source={{ uri: item.url }}
-                style={{ width: 300, height: 300, borderRadius: 10 }}
-                resizeMode="cover"
-              />
-            )}
-          />
-        </FlatList>
+        <FlatList
+          data={images}
+          keyExtractor={(item) => item.id.toString()} // Ensure it's a string
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <Image
+              source={{ uri: item.url }}
+              style={{ width: 300, height: 300, borderRadius: 10, marginRight: 10 }}
+              resizeMode="cover"
+            />
+          )}
+        />
       </View>
     </SafeAreaView>
   );
