@@ -8,15 +8,7 @@ import { images } from '../data/dummyData';
 
 function ListingDetailsScreen({ route }) {
   const ID = route.params;
-
   const navigation = useNavigation();
-
-  const images = [
-    'https://via.placeholder.com/300',
-    'https://via.placeholder.com/300/111',
-    'https://via.placeholder.com/300/222',
-  ];
-
   // const images = [
   //   'https://via.placeholder.com/300',
   //   'https://via.placeholder.com/300/111',
@@ -78,10 +70,3 @@ export default ListingDetailsScreen;
         )}
 
       /> */}
-      </View>
-    </SafeAreaView>
-  );
-
-      /> */
-
-}
