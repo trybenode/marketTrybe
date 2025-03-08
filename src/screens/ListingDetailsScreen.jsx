@@ -1,4 +1,13 @@
-import { View, Text, TouchableOpacity, Dimensions, FlatList, Image, Modal, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  FlatList,
+  Image,
+  Modal,
+  Pressable,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // import Carousel from 'react-native-reanimated-carousel';
 import BackButton from '../components/BackButton';
@@ -12,7 +21,7 @@ function ListingDetailsScreen({ route }) {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const isNegotaible = true;
   const openModal = (image) => {
     setSelectedImage(image);
     setModalVisible(true);
@@ -32,54 +41,87 @@ function ListingDetailsScreen({ route }) {
         </TouchableOpacity>
 
         {/* Add to Favourites */}
-        <TouchableOpacity onPress={() => navigation.navigate("Shop")} className="flex items-center space-y-1">
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Shop')}
+          className="flex items-center space-y-1">
           <Fontisto name="favorite" size={24} color="black" />
           <Text className="mt-2 text-lg text-black">Add to Favourites</Text>
         </TouchableOpacity>
       </View>
 
       {/* Carousel with pop-up (modal) on click */}
-      <View className="flex-1 mt-5">
-      <FlatList
-        data={images}
-        keyExtractor={(item) => item.id}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => openModal(item.url)}>
-            <Image
-              source={{ uri: item.url }}
-              className="w-80 h-80 rounded-lg mr-3"
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-        )}
-      />
-
-      {/* Modal for full-screen image */}
-      <Modal visible={modalVisible} transparent animationType="fade">
-        <View className="flex-1 bg-black/90 justify-center items-center">
-          {selectedImage && (
-            <Image
-              source={{ uri: selectedImage }}
-              className="w-11/12 h-4/5 rounded-lg"
-              resizeMode="contain"
-            />
+      <View className=" mt-5">
+        <FlatList
+          data={images}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 0 }} // ✅ Remove extra padding
+          className="flex-grow-0" // ✅ Prevents unnecessary space
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => openModal(item.url)}>
+              <Image
+                source={{ uri: item.url }}
+                className="mr-3 h-72 w-72 rounded-lg"
+                resizeMode="cover"
+              />
+            </TouchableOpacity>
           )}
-          <Pressable
-            onPress={() => setModalVisible(false)}
-            className="mt-5 bg-white px-4 py-2 rounded"
-          >
-            <Text className="text-lg font-bold">Close</Text>
-          </Pressable>
+        />
+
+        {isNegotaible && (
+          <View className="absolute rounded-full px-3 py-1" style={{ backgroundColor: 'green' }}>
+            <Text className="text-sm font-semibold text-white">Negotiable</Text>
+          </View>
+        )}
+
+        <View className='p-4'>
+          <Text className='text-2xl font-bold'>
+            Brand new flat screen TV
+          </Text>
+          <Text className='text-xl font-bold'>
+            Price: #40,000:00
+          </Text>
         </View>
-      </Modal>
-    </View>
-<View>
 
-</View>
+        {/* Details Section */}
+        <Text className='p-2 text-lg font-bold'>Extra Information:</Text>
+        <View className="grid grid-cols-3 gap-4 mb-4 rounded-lg bg-gray-100 p-4">
+          <Text className="text-lg font-bold">Listing Details</Text>
+          <Text className="text-gray-600">Here are some details about the listing...</Text>
+        </View>
+{/* onPress={() => {navigation.navigate("Shop")}} */}
+        {/* More Info Section */}
+        <Text className='p-2 text-lg font-bold'>Sellers Information:</Text>
+        <View className="mt-4 rounded-lg bg-gray-100 p-4">
+          <TouchableOpacity onPress={() => {navigation.navigate("Shop")}}>
+          <Text className="text-lg">Demilade Femi</Text>
+          <Text className="text-gray-600 font-bold mb-4">Name</Text>
+          </TouchableOpacity>
 
+          <Text className="text-lg">lorem</Text>
+          <Text className="text-gray-600 font-bold mb-4">Detailed Product description </Text>
+        </View>
 
+        {/* ⚠️ MODAL KEEP AT BOTTOM */}
+        {/* Modal for full-screen image */}
+        <Modal visible={modalVisible} transparent animationType="fade">
+          <View className="flex-1 items-center justify-center bg-black/90">
+            {selectedImage && (
+              <Image
+                source={{ uri: selectedImage }}
+                className="h-4/5 w-11/12 rounded-lg"
+                resizeMode="contain"
+              />
+            )}
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              className="mt-5 rounded bg-white px-4 py-2">
+              <Text className="text-lg font-bold">Close</Text>
+            </Pressable>
+          </View>
+        </Modal>
+      </View>
     </SafeAreaView>
   );
 }
