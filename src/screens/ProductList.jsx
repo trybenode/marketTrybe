@@ -1,8 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 function ProductList() {
-  return <View> </View>;
+  return (
+    <View>
+      <Text> Similar Products</Text>
+    </View>
+  );
 }
 
 export default ProductList;
