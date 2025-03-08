@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, Text, FlatList, TouchableOpacity } from 'react-native';
 
 import CategoriesListing from '../components/CategoriesListing';
 import { categories } from '../data/dummyData';
@@ -10,7 +10,7 @@ export default function CategoryScreen() {
   const navigation = useNavigation();
 
   return (
-    <View className="mt-10 flex-1 px-4">
+    <SafeAreaView className="flex-1 p-6">
       <TouchableOpacity onPress={() => navigation.navigate('Market')} className="mb-4 font-bold">
         <Ionicons name="arrow-back" size={30} color="black" />
       </TouchableOpacity>
@@ -26,11 +26,12 @@ export default function CategoryScreen() {
         className="mb-2 p-2"
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Products', item.id)}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Products', { category: item.name })}>
             <CategoriesListing {...item} />
           </TouchableOpacity>
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 }

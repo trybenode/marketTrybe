@@ -1,13 +1,13 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-
 import { View, TouchableOpacity, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Categories from '../components/Categories';
 import ListingCards from '../components/ListingCards'; //import listing card component
 import SearchBar from '../components/SearchBar';
+import { listings } from '../data/dummyData';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -34,7 +34,7 @@ export default function HomeScreen() {
         <SearchBar />
 
         {/*Product Listings */}
-        <ListingCards />
+        <ListingCards data={listings} />
       </View>
     </SafeAreaView>
   );

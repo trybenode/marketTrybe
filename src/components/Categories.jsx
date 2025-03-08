@@ -25,7 +25,7 @@ const CategoryList = memo(() => {
   return (
     <View className=" mt-1">
       <View className="mx-1 mb-2 flex flex-row items-center justify-between">
-        <Text className="text-xl font-bold">Categories</Text>
+        <Text className="text-xl font-semibold">Categories</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('Categories')}
           className="rounded bg-blue-500 px-3 py-2">
