@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-function ProductList() {
+function CategoryProductList() {
   return (
     <View>
       <Text> Similar Products</Text>
@@ -9,4 +9,4 @@ function ProductList() {
   );
 }
 
-export default ProductList;
+export default CategoryProductList;
