@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, TextInput, SafeAreaView, View, Text } from 'react-native';
+import { TouchableOpacity, TextInput, SafeAreaView, View, Text, ScrollView } from 'react-native';
 import BackButton from '../components/BackButton';
 import DropDownPicker from 'react-native-dropdown-picker';
 import UploadImages from '../components/UploadImages';
@@ -22,51 +22,106 @@ export default function SellScreen() {
   ]);
 
   const [isChecked, setIsChecked] = useState(false);
+  const [additionalInfo, setAdditionalInfo] = useState('');
+  const [type, setType] = useState('');
 
   return (
     <SafeAreaView className="flex-1 p-4">
       <BackButton screenName="MainTabs" />
+
       <View className="px-4">
         <Text className="mb-2 text-center text-lg font-bold">Product Information</Text>
-        <TextInput
-          className="mb-4 rounded border bg-white p-4"
-          placeholder="Product Name"
-          value={productName}
-          onChangeText={setProductName}
-        />
-
-        <DropDownPicker
-          open={open}
-          value={selectedValue}
-          items={items}
-          setOpen={setOpen}
-          setValue={setSelectedValue}
-          setItems={setItems}
-          placeholder="Select Category"
-          style={{ marginBottom: 10 }}
-        />
-
-        <TextInput
-          className="mb-4 rounded border bg-white p-4"
-          placeholder="Sub-Category"
-          value={subCategory}
-          onChangeText={setSubCategory}
-        />
-
-        <View className="flex-row items-center">
-          <Checkbox
-            status={isChecked ? 'checked' : 'unchecked'}
-            onPress={() => setIsChecked(!isChecked)}
-            color="#6200EE"
+        <ScrollView className="flex-grow" showsVerticalScrollIndicator={false}>
+          <TextInput
+            className="mb-4 rounded border bg-white p-4"
+            placeholder="Product Name"
+            value={productName}
+            onChangeText={setProductName}
           />
-          <Text className="ml-2 text-lg">Accept Terms & Conditions</Text>
-        </View>
 
-        <UploadImages />
+          <DropDownPicker
+            open={open}
+            value={selectedValue}
+            items={items}
+            setOpen={setOpen}
+            setValue={setSelectedValue}
+            setItems={setItems}
+            placeholder="Select Category"
+            style={{ marginBottom: 10 }}
+          />
 
-        <TouchableOpacity className="mt-6 rounded-lg bg-blue-500 p-3">
-          <Text className="text-center font-bold text-white">Submit</Text>
-        </TouchableOpacity>
+          <TextInput
+            className="mb-4 rounded border bg-white p-4"
+            placeholder="Sub-Category"
+            value={subCategory}
+            onChangeText={setSubCategory}
+          />
+
+          <View className="flex-row items-center justify-between">
+            <View className="flex-row items-center">
+              <Checkbox
+                status={isChecked ? 'checked' : 'unchecked'}
+                onPress={() => setIsChecked(!isChecked)}
+                color="#6200EE"
+              />
+              <Text className="ml-2 text-lg">Negotiable</Text>
+            </View>
+            <UploadImages />
+          </View>
+
+          <TextInput
+            className="mb-4 rounded border bg-white p-16"
+            placeholder="Product Description"
+            value={additionalInfo}
+            onChangeText={setAdditionalInfo}
+            multiline
+            textAlignVertical="top"
+          />
+          {/* Other Information */}
+          <View>
+            <Text>Other Information</Text>
+            <TextInput
+              className="mb-4 rounded border bg-white p-4"
+              placeholder="Type"
+              value={type}
+              onChangeText={setType}
+            />
+            <View className='flex-row justify-between'>
+              <View>
+                <TextInput
+                  className="mb-4 rounded border bg-white p-4 w-full"
+                  placeholder="Type"
+                  value={type}
+                  onChangeText={setType}
+                />
+                <TextInput
+                  className="mb-4 rounded border bg-white p-4"
+                  placeholder="Type"
+                  value={type}
+                  onChangeText={setType}
+                />
+              </View>
+              <View className=''>
+                <TextInput
+                  className="mb-4 rounded border bg-white p-4"
+                  placeholder="Type"
+                  value={type}
+                  onChangeText={setType}
+                />
+                <TextInput
+                  className="mb-4 rounded border bg-white p-4"
+                  placeholder="Type"
+                  value={type}
+                  onChangeText={setType}
+                />
+              </View>
+            </View>
+          </View>
+
+          <TouchableOpacity className="mt-6 rounded-lg bg-blue-500 p-3">
+            <Text className="text-center font-bold text-white">Submit</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
