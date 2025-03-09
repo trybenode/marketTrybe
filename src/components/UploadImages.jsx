@@ -1,7 +1,7 @@
 import React, { useState, memo } from 'react';
 import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-// import { PlusCircle } from 'lucide-react-native';
+
 
 const UploadImages = memo(() => {
   const [images, setImages] = useState([]);
@@ -27,7 +27,6 @@ const UploadImages = memo(() => {
         <TouchableOpacity
           onPress={selectImages}
           className="h-36 w-36 items-center justify-center rounded-lg border-2 border-gray-300">
-          {/* <PlusCircle size={32} color="gray" /> */}
           <Text className="mt-2 text-gray-500">Upload Images</Text>
         </TouchableOpacity>
       ) : (
