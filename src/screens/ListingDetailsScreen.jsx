@@ -17,6 +17,9 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { images } from '../data/dummyData';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import ListingCards from '../components/ListingCards';
+import { listings } from '../data/dummyData';
 
 function ListingDetailsScreen({ route }) {
   const ID = route.params;
@@ -47,7 +50,7 @@ function ListingDetailsScreen({ route }) {
 
   return (
     <SafeAreaView className="flex-1 bg-white p-4">
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
         <View className="flex-row items-center justify-between">
           {/* Back to Homepage */}
           {/* <TouchableOpacity className="p-2">
@@ -66,11 +69,7 @@ function ListingDetailsScreen({ route }) {
           <TouchableOpacity
             className="flex items-center space-y-1"
             onPress={() => setLiked(!liked)}>
-            <Icon
-              name={liked ? 'heart' : 'heart-outline'}
-              size={30}
-              color={liked ? 'red' : 'gray'}
-            />
+            <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
           </TouchableOpacity>
         </View>
 
