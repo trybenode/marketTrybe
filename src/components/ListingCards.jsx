@@ -4,12 +4,12 @@ import { View, FlatList, TouchableOpacity } from 'react-native';
 
 import ListingCard from './ListingCard';
 
-const ListingCards = memo(({ data }) => {
+const ListingCards = memo(({ data, buttomPad = 70}) => {
   const navigation = useNavigation();
 
   return (
     // Listings - 2 Columns
-    <View style={{ flex: 1, paddingBottom: 100 }}>
+    <View style={{ flex: 1, paddingBottom: buttomPad }}>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}

@@ -21,13 +21,13 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import ListingCards from '../components/ListingCards';
 import { listings } from '../data/dummyData';
 
-function ListingDetailsScreen({ route }) {
+export default function ListingDetailsScreen({ route }) {
   const ID = route.params;
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const isNegotaible = true;
+  const isNegotiable  = true;
   const openModal = (image) => {
     setSelectedImage(image);
     setModalVisible(true);
@@ -50,22 +50,14 @@ function ListingDetailsScreen({ route }) {
 
   return (
     <SafeAreaView className="flex-1 bg-white p-4">
-      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
-        <View className="flex-row items-center justify-between">
-          {/* Back to Homepage */}
-          {/* <TouchableOpacity className="p-2">
-            <BackButton screenName="Market" />
-          </TouchableOpacity> */}
+      <FlatList
+      data={listings}
+      keyExtractor={(item) => item.id}
+      ListFooterComponent={null}
+      ListHeaderComponent={
+        <View>
+           <View className="flex-row items-center justify-between">
           <BackButton screenName="MainTabs" />
-
-          {/* Add to Favourites */}
-          {/* <TouchableOpacity
-            onPress={() => navigation.navigate('Shop')}
-            className="flex items-center space-y-1">
-            <Fontisto name="favorite" size={24} color="black" />
-            <Text className="mt-2 text-lg text-black">Add to Favourites</Text>
-          </TouchableOpacity> */}
-
           <TouchableOpacity
             className="flex items-center space-y-1"
             onPress={() => setLiked(!liked)}>
@@ -94,7 +86,7 @@ function ListingDetailsScreen({ route }) {
           />
 
           {/* Ngotiable indicator */}
-          {isNegotaible && (
+          {isNegotiable  && (
             <View className="absolute rounded-full px-3 py-1" style={{ backgroundColor: 'green' }}>
               <Text className="text-sm font-semibold text-white">Negotiable</Text>
             </View>
@@ -111,12 +103,14 @@ function ListingDetailsScreen({ route }) {
             <Text className="p-2 text-lg font-bold">Listing Details</Text>
 
             <View className="mb-4 rounded-lg bg-gray-100 p-2">
-              {details.map((item, index) => (
-                <View key={index} className="w-1/3 p-2">
-                  <Text className="font-semibold text-gray-800">{item.label}</Text>
-                  <Text className="text-gray-600">{item.value} </Text>
-                </View>
-              ))}
+              <View className="flex-row flex-wrap">
+                {details.map((item, index) => (
+                  <View key={index} className="w-1/3 p-2">
+                    <Text className="font-semibold text-gray-800">{item.label}</Text>
+                    <Text className="text-gray-600">{item.value}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
 
@@ -128,19 +122,19 @@ function ListingDetailsScreen({ route }) {
                 onPress={() => {
                   navigation.navigate('Shop');
                 }}>
-                <Text className="text-lg">Demilade Femi</Text>
-                <Text className="mb-4 font-bold text-gray-600">Name</Text>
+                <Text className="font-bold text-gray-600">Name</Text>
+                <Text className="mb-4 text-lg">Demilade Femi</Text>
               </TouchableOpacity>
 
-              <Text className="text-lg">
+              <Text className="font-bold text-gray-600">Detailed Product description </Text>
+              <Text className="mb-4 text-lg">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima deserunt inventore
                 dolore quisquam nulla! Quisquam, obcaecati, molestiae et cupiditate quo facere
                 consequatur voluptatum facilis vel voluptates modi non dolor reiciendis.
               </Text>
-              <Text className="mb-4 font-bold text-gray-600">Detailed Product description </Text>
 
-              <Text className="text-lg">Hostile, blah blah blah</Text>
-              <Text className="mb-4 font-bold text-gray-600">Location</Text>
+              <Text className=" font-bold text-gray-600">Location</Text>
+              <Text className="mb-4 text-lg">Hostile, blah blah blah</Text>
             </View>
           </View>
 
@@ -159,9 +153,9 @@ function ListingDetailsScreen({ route }) {
             </View>
           </View>
 
-          <View className="p-2">
+          <View className="p-2 ">
             <Text className=" my-7 text-center text-lg font-semibold">Related Items</Text>
-            <ListingCards data={listings} />
+            <ListingCards data={listings} buttomPad={10} />
           </View>
 
           {/* ⚠️ MODAL KEEP AT BOTTOM */}
@@ -183,12 +177,16 @@ function ListingDetailsScreen({ route }) {
             </View>
           </Modal>
         </View>
-      </ScrollView>
+        </View>
+      } 
+      renderItem={({item}) => (
+        <ListingCards  {...item} buttomPad={0} />
+      )}
+      showsVerticalScrollIndicator={false}
+      />
     </SafeAreaView>
   );
 }
-
-export default ListingDetailsScreen;
 
 {
   /* <Carousel
