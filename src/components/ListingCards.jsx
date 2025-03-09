@@ -4,7 +4,7 @@ import { View, FlatList, TouchableOpacity } from 'react-native';
 
 import ListingCard from './ListingCard';
 
-const ListingCards = memo(({ data, buttomPad = 70}) => {
+const ListingCards = memo(({ data, buttomPad = 100 }) => {
   const navigation = useNavigation();
 
   return (

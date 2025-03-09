@@ -15,7 +15,7 @@ export default function ShopScreen() {
     <SafeAreaView className="flex-1 bg-white p-4">
       {/* Add style={{ marginBottom: 20 }} here */}
       {/* Header */}
-      <View className="my-4 flex-row items-center justify-between px-2">
+      <View className="my-10 flex-row items-center justify-between px-2">
         <BackButton screenName="ListingDetails" />
         <Text className="text-xl font-extrabold">Seller's Profile</Text>
         <USerProfile />
@@ -56,7 +56,7 @@ export default function ShopScreen() {
         <Text className="mt-4 text-center text-lg font-semibold">Demilade’s Shop</Text>
 
         {/* Product List */}
-        <View className=" mt-4  px-4 flex-row flex-wrap justify-between">
+        <View className=" mt-4  flex-row flex-wrap justify-between px-2">
           {/* Add mb-20 to the class name here */}
           {listings.map((product) => (
             <View key={product.id} className="mb-4 w-[48%]">
