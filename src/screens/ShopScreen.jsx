@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity, ScrollView, SafeAreaView, Text, Image } from 'react-native';
 import ListingCard from '../components/ListingCard';
+import USerProfile from '../components/UserProfile';
 import BackButton from '../components/BackButton';
-import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { listings } from '../data/dummyData'; // Import your product data
 import FastImage from 'react-native-fast-image';
@@ -15,14 +15,10 @@ export default function ShopScreen() {
     <SafeAreaView className="flex-1 bg-white p-4">
       {/* Add style={{ marginBottom: 20 }} here */}
       {/* Header */}
-      <View className="mb-6 mt-8 flex-row items-center justify-between">
+      <View className="my-4 flex-row items-center justify-between px-2">
         <BackButton screenName="ListingDetails" />
         <Text className="text-xl font-extrabold">Seller's Profile</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <View className="h-12 w-12 items-center justify-center rounded-full bg-gray-300">
-            <FontAwesome name="user" size={30} color="black" />
-          </View>
-        </TouchableOpacity>
+        <USerProfile />
       </View>
       <ScrollView className="mb-3 flex-col" showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
@@ -57,10 +53,10 @@ export default function ShopScreen() {
         </View>
 
         {/* Shop Title */}
-        <Text className="mt-12 text-center text-lg font-semibold">Demilade’s Shop</Text>
+        <Text className="mt-4 text-center text-lg font-semibold">Demilade’s Shop</Text>
 
         {/* Product List */}
-        <View className="mb-20 mt-4 flex-row flex-wrap justify-between">
+        <View className=" mt-4  px-4 flex-row flex-wrap justify-between">
           {/* Add mb-20 to the class name here */}
           {listings.map((product) => (
             <View key={product.id} className="mb-4 w-[48%]">
