@@ -3,7 +3,6 @@ import { View, TouchableOpacity, ScrollView, SafeAreaView, Text, Image } from 'r
 import ListingCard from '../components/ListingCard';
 import USerProfile from '../components/UserProfile';
 import BackButton from '../components/BackButton';
-import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { listings } from '../data/dummyData'; // Import your product data
 import FastImage from 'react-native-fast-image';
