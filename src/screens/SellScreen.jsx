@@ -36,7 +36,7 @@ export default function SellScreen() {
 
       <View className="flex-1 px-4">
         <Text className="mb-2 text-center text-lg font-bold">Product Information</Text>
-        <ScrollView contentContainerStyle={{ flexGrow: 1,  }} showsVerticalScrollIndicator={false}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
           <TextInput
             className="mb-4 rounded border bg-white p-4"
             placeholder="Product Name"
@@ -134,7 +134,7 @@ export default function SellScreen() {
 
           <TouchableOpacity
             disabled={!isAgreed}
-            className={`mx-auto w-[60%] mb-24 rounded-lg p-3 ${isAgreed ? 'bg-blue-500' : 'bg-gray-400'}`}>
+            className={`mx-auto mb-24 w-[60%] rounded-lg p-3 ${isAgreed ? 'bg-blue-500' : 'bg-gray-400'}`}>
             <Text className="text-center font-bold text-white">Submit</Text>
           </TouchableOpacity>
         </ScrollView>
