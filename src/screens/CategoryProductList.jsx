@@ -24,7 +24,7 @@ function CategoryProductList() {
   return (
     <SafeAreaView className="flex-1">
       <View className="flex-row items-center justify-between px-4">
-        <BackButton screenName="Market" />
+        <BackButton screenName="MainTabs" />
         <UserProfile />
       </View>
       <Text className="py-4 text-center text-xl font-semibold">
