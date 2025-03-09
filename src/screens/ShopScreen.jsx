@@ -9,9 +9,11 @@ import FastImage from 'react-native-fast-image';
 
 export default function ShopScreen() {
   const navigation = useNavigation();
+  // const screenHeight = Dimensions.get('window');
 
   return (
     <SafeAreaView className="flex-1 bg-white p-4">
+      {/* Add style={{ marginBottom: 20 }} here */}
       {/* Header */}
       <View className="mb-6 mt-8 flex-row items-center justify-between">
         <BackButton screenName="ListingDetails" />
@@ -22,7 +24,6 @@ export default function ShopScreen() {
           </View>
         </TouchableOpacity>
       </View>
-
       <ScrollView className="mb-3 flex-col" showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
         <View className="flex-row items-center justify-between rounded-lg bg-gray-100 p-4 px-1">
@@ -59,7 +60,8 @@ export default function ShopScreen() {
         <Text className="mt-12 text-center text-lg font-semibold">Demilade’s Shop</Text>
 
         {/* Product List */}
-        <View className="mt-4 flex-row flex-wrap justify-between">
+        <View className="mb-20 mt-4 flex-row flex-wrap justify-between">
+          {/* Add mb-20 to the class name here */}
           {listings.map((product) => (
             <View key={product.id} className="mb-4 w-[48%]">
               <TouchableOpacity onPress={() => navigation.navigate('ListingDetails')}>

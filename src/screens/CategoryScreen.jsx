@@ -10,8 +10,10 @@ export default function CategoryScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView className="flex-1 p-6">
-      <BackButton screenName="Market" />
+    <SafeAreaView className="flex-1 p-3">
+      <View className="mt-8 pt-3">
+        <BackButton screenName="Market" />
+      </View>
       <View className="mb-5 items-center">
         <Text className="text-lg font-semibold">All Available Categories</Text>
       </View>
