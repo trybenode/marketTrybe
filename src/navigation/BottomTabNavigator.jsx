@@ -13,6 +13,8 @@ import MessagesScreen from '../screens/MessagesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SellScreen from '../screens/SellScreen';
 import SuccessKycScreen from '../screens/SuccessKycScreen';
+// import ListingDetailsScreen from '../screens/ListingDetailsScreen';
+import ShopScreen from '../screens/ShopScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +27,12 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="Messages" component={MessagesScreen} options={{ headerShown: false }} />
       <Tab.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+      {/* <Tab.Screen
+        name="ListingDetails"
+        component={ListingDetailsScreen}
+        options={{ headerShown: false }}
+      /> */}
+      <Tab.Screen name="Shop" component={ShopScreen} options={{ headerShown: false }} />
       <Tab.Screen
         name="EditProfile"
         component={EditProfileScreen}

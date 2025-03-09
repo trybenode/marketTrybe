@@ -17,12 +17,11 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { images } from '../data/dummyData';
-import { listings } from '../data/dummyData';
-import ListingCards from '../components/ListingCards';
 
 function ListingDetailsScreen({ route }) {
   const ID = route.params;
   const navigation = useNavigation();
+  const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const isNegotaible = true;
@@ -57,11 +56,21 @@ function ListingDetailsScreen({ route }) {
           <BackButton screenName="MainTabs" />
 
           {/* Add to Favourites */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.navigate('Shop')}
             className="flex items-center space-y-1">
             <Fontisto name="favorite" size={24} color="black" />
             <Text className="mt-2 text-lg text-black">Add to Favourites</Text>
+          </TouchableOpacity> */}
+
+          <TouchableOpacity
+            className="flex items-center space-y-1"
+            onPress={() => setLiked(!liked)}>
+            <Icon
+              name={liked ? 'heart' : 'heart-outline'}
+              size={30}
+              color={liked ? 'red' : 'gray'}
+            />
           </TouchableOpacity>
         </View>
 
