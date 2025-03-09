@@ -140,12 +140,12 @@ function ListingDetailsScreen({ route }) {
           <View className="border-t border-gray-200 p-4">
             <Text className="mb-2 text-lg font-semibold">Send a Message:</Text>
 
-            <View className="flex-row items-center space-x-2">
+            <View className="flex-row items-center">
               <TextInput
                 className="flex-1 rounded-lg border border-gray-300 p-2 text-gray-800"
                 placeholder="Type your message..."
               />
-              <TouchableOpacity className="rounded-lg bg-blue-500 px-4 py-2">
+              <TouchableOpacity className="ml-4 rounded-lg bg-blue-500 px-4 py-2">
                 <Text className="font-semibold text-white">Send</Text>
               </TouchableOpacity>
             </View>
