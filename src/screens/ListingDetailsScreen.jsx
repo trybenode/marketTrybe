@@ -8,6 +8,7 @@ import {
   Modal,
   Pressable,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // import Carousel from 'react-native-reanimated-carousel';
@@ -16,7 +17,9 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { images } from '../data/dummyData';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import ListingCards from '../components/ListingCards';
+import { listings } from '../data/dummyData';
 
 function ListingDetailsScreen({ route }) {
   const ID = route.params;
@@ -47,7 +50,7 @@ function ListingDetailsScreen({ route }) {
 
   return (
     <SafeAreaView className="flex-1 bg-white p-4">
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
         <View className="flex-row items-center justify-between">
           {/* Back to Homepage */}
           {/* <TouchableOpacity className="p-2">
@@ -66,11 +69,7 @@ function ListingDetailsScreen({ route }) {
           <TouchableOpacity
             className="flex items-center space-y-1"
             onPress={() => setLiked(!liked)}>
-            <Icon
-              name={liked ? 'heart' : 'heart-outline'}
-              size={30}
-              color={liked ? 'red' : 'gray'}
-            />
+            <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
           </TouchableOpacity>
         </View>
 
@@ -94,12 +93,14 @@ function ListingDetailsScreen({ route }) {
             )}
           />
 
+          {/* Ngotiable indicator */}
           {isNegotaible && (
             <View className="absolute rounded-full px-3 py-1" style={{ backgroundColor: 'green' }}>
               <Text className="text-sm font-semibold text-white">Negotiable</Text>
             </View>
           )}
 
+          {/* Title and price */}
           <View className="my-4 p-2">
             <Text className="text-2xl font-bold">Brand new flat screen TV</Text>
             <Text className="text-xl font-bold">Price: #40,000:00</Text>
@@ -119,11 +120,10 @@ function ListingDetailsScreen({ route }) {
             </View>
           </View>
 
-          {/* More Info Section */}
-
+          {/* Seller's info Section */}
           <View>
             <Text className="p-2 text-lg font-bold">Sellers Information:</Text>
-            <View className="mt-4 rounded-lg bg-gray-100 p-4">
+            <View className="rounded-lg bg-gray-100 p-4">
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('Shop');
@@ -138,7 +138,30 @@ function ListingDetailsScreen({ route }) {
                 consequatur voluptatum facilis vel voluptates modi non dolor reiciendis.
               </Text>
               <Text className="mb-4 font-bold text-gray-600">Detailed Product description </Text>
+
+              <Text className="text-lg">Hostile, blah blah blah</Text>
+              <Text className="mb-4 font-bold text-gray-600">Location</Text>
             </View>
+          </View>
+
+          {/* Message user */}
+          <View className="border-t border-gray-200 p-4">
+            <Text className="mb-2 text-lg font-semibold">Send a Message:</Text>
+
+            <View className="flex-row items-center">
+              <TextInput
+                className="flex-1 rounded-lg border border-gray-300 p-2 text-gray-800"
+                placeholder="Type your message..."
+              />
+              <TouchableOpacity className="ml-4 rounded-lg bg-blue-500 px-4 py-2">
+                <Text className="font-semibold text-white">Send</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View className="p-2">
+            <Text className=" my-7 text-center text-lg font-semibold">Related Items</Text>
+            <ListingCards data={listings} />
           </View>
 
           {/* ⚠️ MODAL KEEP AT BOTTOM */}
