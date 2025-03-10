@@ -7,7 +7,7 @@ const CustomHeader = memo(({ screenName, title, extraComponent }) => {
   const navigation = useNavigation(); //
 
   return (
-    <View className="my-5 flex-row items-center justify-between p-2">
+    <View className="mb-2 flex-row items-center justify-between p-2">
       <TouchableOpacity onPress={() => navigation.navigate(screenName)}>
         <Ionicons name="arrow-back" size={30} color="black" />
       </TouchableOpacity>

@@ -1,14 +1,20 @@
 import React, { memo } from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import Fontisto from '@expo/vector-icons/Fontisto';
 
 const CustomProfileOption = memo(({ title, onPress, iconName, iconType = 'MaterialIcons' }) => {
   // Function to select the correct icon component
   const renderIcon = () => {
-    if (iconType === 'FontAwesome') {
-      return <FontAwesome name={iconName} size={20} color="black" />;
+    switch (iconType) {
+      case 'FontAwesome':
+        return <FontAwesome name={iconName} size={20} color="black" />;
+      case 'Fontisto':
+        return <Fontisto name={iconName} size={20} color="black" />;
+      case 'MaterialIcons':
+      default:
+        return <MaterialIcons name={iconName} size={20} color="black" />;
     }
-    return <MaterialIcons name={iconName} size={20} color="black" />;
   };
 
   return (

@@ -16,10 +16,10 @@ import BackButton from '../components/BackButton';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { images } from '../data/dummyData';
+import { images, listings } from '../data/dummyData';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import ListingCards from '../components/ListingCards';
-import { listings } from '../data/dummyData';
+// import { listings } from '../data/dummyData';
 
 export default function ListingDetailsScreen({ route }) {
   const ID = route.params;
