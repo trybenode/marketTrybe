@@ -6,6 +6,8 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
 import CustomTextInput from '../components/CustomTextInput';
+import CustomHeader from '../components/CustomHeader';
+import UserProfile from '../components/UserProfile';
 
 export default function KycScreen() {
   const [fullName, setFullName] = useState('');
@@ -53,24 +55,18 @@ export default function KycScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-3">
-      {/* Header containing back button and Profile picture */}
-      <View className="align-center mb-3 flex-row items-center justify-between">
-        <BackButton screenName="Profile" />
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <View className="h-12 w-12 items-center justify-center rounded-full bg-gray-300">
-            <FontAwesome name="user" size={30} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView className="flex-col p-3">
+      <CustomHeader
+        screenName="Profile"
+        title="Complete KYC Registration"
+        extraComponent={<UserProfile />}
+      />
 
-      <ScrollView showsVerticalScrollIndicator={false} className="p-3">
-        <Text className="mb-3 p-5 text-center text-xl font-bold">Complete KYC Registration</Text>
+      <ScrollView showsVerticalScrollIndicator={false} className="p-2">
+        {/* <Text className="mb-3 p-5 text-center text-xl font-bold">Complete KYC Registration</Text> */}
 
-        {/* Use CustomTextInput for Full Name */}
         <CustomTextInput placeholder="Full Name" value={fullName} onChangeText={setFullName} />
 
-        {/* Use CustomTextInput for Matric Number */}
         <CustomTextInput
           placeholder="Matric Number"
           value={matricNumber}
