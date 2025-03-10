@@ -152,7 +152,7 @@ export default function ListingDetailsScreen({ route }) {
 
               {/* Message user */}
               <View className="border-t border-gray-200 p-4">
-                <Text className="mb-2 text-lg font-semibold">Send a Message:</Text>
+                <Text className="mb-2 text-lg font-semibold">Make an Offer:</Text>
 
                 <View className="flex-row items-center">
                   <TextInput
