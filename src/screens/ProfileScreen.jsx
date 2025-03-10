@@ -11,7 +11,7 @@ export default function ProfileScreen() {
   return (
     <SafeAreaView className="flex-1 gap-12 p-6">
       {/* Profile Info */}
-      <View className="mb-10 mt-12 flex flex-row items-center">
+      <View className="mb-10 mt-8 flex flex-row items-center">
         <View className="h-16 w-16 items-center justify-center rounded-full bg-gray-300">
           <FontAwesome name="user" size={40} color="black" />
         </View>
@@ -23,6 +23,12 @@ export default function ProfileScreen() {
 
       {/* Menu Options */}
       <View className="flex flex-col gap-6">
+        <CustomProfileOption
+          title="My Shop"
+          onPress={() => console.log('My Shop')}
+          iconName="shopping-store"
+          iconType="Fontisto"
+        />
         <CustomProfileOption
           title="Edit Profile"
           onPress={() => navigation.navigate('EditProfile')}
