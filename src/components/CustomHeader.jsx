@@ -11,7 +11,7 @@ const CustomHeader = memo(({ screenName, title, extraComponent }) => {
       <TouchableOpacity onPress={() => navigation.navigate(screenName)}>
         <Ionicons name="arrow-back" size={30} color="black" />
       </TouchableOpacity>
-      <Text className="text-xl font-bold">{title}</Text>
+      <Text className="text-xl font-extrabold">{title}</Text>
       {extraComponent || <View />}
     </View>
   );

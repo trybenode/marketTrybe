@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, TextInput, SafeAreaView, View, Text, ScrollView } from 'react-native';
+import { TouchableOpacity, TextInput, View, Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
 import DropDownPicker from 'react-native-dropdown-picker';
 import UploadImages from '../components/UploadImages';
 import { Checkbox } from 'react-native-paper';
+import CustomHeader from '../components/CustomHeader';
 
 export default function SellScreen() {
   const [productName, setProductName] = useState('');
@@ -31,12 +33,13 @@ export default function SellScreen() {
   const [year, setYear] = useState('');
 
   return (
-    <SafeAreaView className="flex-1  p-4">
-      <BackButton screenName="MainTabs" />
+    <SafeAreaView className="mb-10 flex-1 p-3">
+      {/* <BackButton screenName="MainTabs" /> */}
+      <CustomHeader screenName="MainTabs" />
 
-      <View className="flex-1 px-4">
-        <Text className="mb-2 text-center text-lg font-bold">Product Information</Text>
+      <View className="mt-1 flex-1 px-4">
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+          <Text className="mb-6 text-center text-lg font-bold">Product Information</Text>
           <TextInput
             className="mb-4 rounded border bg-white p-4"
             placeholder="Product Name"

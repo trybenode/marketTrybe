@@ -56,15 +56,6 @@ export default function KycScreen() {
 
   return (
     <SafeAreaView className="flex-1 p-3">
-      {/* Header containing back button and Profile picture */}
-      {/* <View className="align-center mb-3 flex-row items-center justify-between">
-        <BackButton screenName="Profile" />
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <View className="h-12 w-12 items-center justify-center rounded-full bg-gray-300">
-            <FontAwesome name="user" size={30} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View> */}
       <CustomHeader
         screenName="Profile"
         title="Complete KYC Registration"

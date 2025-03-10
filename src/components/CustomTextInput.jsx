@@ -36,7 +36,7 @@ const CustomTextInput = memo(({ placeholder, secureTextEntry, ...props }) => {
 
   return (
     <View
-      style={tw`mb-5 flex-row items-center rounded-lg border border-gray-300 bg-white px-3 py-1`}>
+      style={tw`mb-5 flex-row items-center rounded-3xl border border-gray-300 bg-white px-3 py-1`}>
       {/* Input Field */}
       <TextInput
         placeholder={placeholder}

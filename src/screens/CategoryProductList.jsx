@@ -1,6 +1,7 @@
 import { useRoute } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaView, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import BackButton from '../components/BackButton';
 import CustomHeader from '../components/CustomHeader';
@@ -23,7 +24,7 @@ function CategoryProductList() {
     : [];
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 p-3">
       <CustomHeader screenName="MainTabs" title={selectedCategory} extraComponent=<UserProfile /> />
 
       {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}
