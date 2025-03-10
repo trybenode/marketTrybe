@@ -6,15 +6,15 @@ export default function WelcomeScreen() {
 
   return (
     <View className="flex-1 items-center justify-center bg-white p-2">
-      {/* Logo and Branding */}
-      {/* <Image
+      {/* Logo and */}
+      <Image
         source={require('../assets/logo.png')}
         className="mb-6 h-32 w-32"
         resizeMode="contain"
-      /> */}
-      <View>
+      />
+      {/* <View>
         <Text className="text-2xl font-extrabold color-black">MARKET TRYBE</Text>
-      </View>
+      </View> */}
       <Text className="mb-2 text-2xl font-bold text-gray-900">Welcome to Market Trybe</Text>
       <Text className="mb-6 px-4 text-center text-gray-600">Your personal pocket marketplace!</Text>
 
