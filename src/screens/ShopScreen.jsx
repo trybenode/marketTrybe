@@ -31,7 +31,7 @@ export default function ShopScreen() {
         />
 
         {/* Shop Title */}
-        <Text className="mt-4 text-center text-lg font-semibold">Demilade’s Shop</Text>
+        <Text className="mt-12 text-center text-lg font-semibold">Demilade’s Shop</Text>
 
         {/* Product List */}
         <View className=" mt-4  flex-row flex-wrap justify-between px-2">
