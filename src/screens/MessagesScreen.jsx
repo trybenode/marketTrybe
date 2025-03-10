@@ -1,10 +1,75 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 
 export default function MessagesScreen() {
+  const [chats, setChats] = useState();
+  useEffect(() => {
+    setChats(messages);
+  }, []);
+  // console.log(chats);
+  const messages = [
+    {
+      id: '1',
+      product: {
+        name: 'iPhone 12',
+        image:
+          'https://images.pexels.com/photos/28771662/pexels-photo-28771662/free-photo-of-vintage-electronics-and-media-shelf-display.jpeg?auto=compress&cs=tinysrgb&w=400',
+      },
+      user: 'John Doe',
+      lastMessage: 'Hey, is this still available?',
+      timestamp: '2:30 PM',
+      unread: true,
+    },
+    {
+      id: '2',
+      product: {
+        name: 'Gaming Laptop',
+        image:
+          'https://images.pexels.com/photos/28771662/pexels-photo-28771662/free-photo-of-vintage-electronics-and-media-shelf-display.jpeg?auto=compress&cs=tinysrgb&w=400',
+      },
+      user: 'Sarah Smith',
+      lastMessage: 'Can you deliver tomorrow?',
+      timestamp: '12:15 PM',
+      unread: false,
+    },
+  ];
+
   return (
-    <View className="flex-1 justify-center">
-      <Text className="text-center"> Our private messages are so secure </Text>
-    </View>
+    <SafeAreaView className="flex-1 bg-white p-2">
+      <FlatList
+        data={chats}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={
+          <View>
+            <Text className="mb-4 text-xl font-bold">Messages</Text>
+          </View>
+        }
+        className='p-2'
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            className="flex-row items-center border-b border-gray-200 py-4"
+            onPress={() =>
+              navigation.navigate('ChatScreen', { user: item.user, product: item.product })
+            }>
+            {/* Product Image */}
+            <Image source={{ uri: item.product.image }} className="h-12 w-12 rounded-lg" />
+
+            {/* Chat Details */}
+            <View className="ml-4 flex-1">
+              <Text className="text-md font-bold">{item.product.name}</Text>
+              <Text className="text-gray-500">
+                {item.user}: {item.lastMessage}
+              </Text>
+            </View>
+
+            {/* Timestamp & Unread Indicator */}
+            <View className="items-end">
+              <Text className="text-gray-400">{item.timestamp}</Text>
+              {item.unread && <View className="mt-1 h-3 w-3 rounded-full bg-blue-500" />}
+            </View>
+          </TouchableOpacity>
+        )}
+      />
+    </SafeAreaView>
   );
 }

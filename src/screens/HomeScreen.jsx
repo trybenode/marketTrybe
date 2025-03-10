@@ -9,7 +9,7 @@ import UserProfile from '../components/UserProfile';
 import { listings } from '../data/dummyData';
 
 export default function HomeScreen() {
-  console.log('Listings Data:', listings);
+  // console.log('Listings Data:', listings);
 
   return (
     <SafeAreaView className="flex-1 p-0">
