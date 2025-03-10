@@ -13,7 +13,7 @@ export default function ShopScreen() {
   // const screenHeight = Dimensions.get('window');
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-4">
+    <SafeAreaView className="flex-1 bg-white p-3">
       {/* Add style={{ marginBottom: 20 }} here */}
       {/* Header */}
       {/* <View className="my-10 flex-row items-center justify-between px-2">
