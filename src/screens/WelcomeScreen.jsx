@@ -5,36 +5,39 @@ export default function WelcomeScreen() {
   const navigation = useNavigation();
 
   return (
-    <View className="flex-1 bg-white items-center justify-center p-6">
+    <View className="flex-1 items-center justify-center bg-white p-2">
       {/* Logo and Branding */}
-      <Image 
-        source={require('../assets/logo.png')} 
-        className="w-32 h-32 mb-6"
+      {/* <Image
+        source={require('../assets/logo.png')}
+        className="mb-6 h-32 w-32"
         resizeMode="contain"
-      />
-      <Text className="text-2xl font-bold text-gray-900 mb-2">Welcome to Market Trybe</Text>
-      <Text className="text-gray-600 text-center mb-6 px-4">
-        Connecting buyers and sellers seamlessly.
-      </Text>
+      /> */}
+      <View>
+        <Text className="text-2xl font-extrabold color-black">MARKET TRYBE</Text>
+      </View>
+      <Text className="mb-2 text-2xl font-bold text-gray-900">Welcome to Market Trybe</Text>
+      <Text className="mb-6 px-4 text-center text-gray-600">Your personal pocket marketplace!</Text>
 
       {/* Buttons */}
-      <TouchableOpacity 
-        className="bg-blue-600 py-3 px-6 rounded-xl w-full mb-4" 
-        onPress={() => navigation.navigate('Signup')}
-      >
-        <Text className="text-white text-center text-lg font-semibold">Get Started</Text>
+      <TouchableOpacity
+        className="mb-4 w-full rounded-xl bg-blue-600 px-6 py-3"
+        onPress={() => navigation.navigate('SignUp')}>
+        <Text className="text-center text-lg font-semibold text-white">Get Started</Text>
       </TouchableOpacity>
-      
-      <TouchableOpacity 
-        className="border border-gray-300 py-3 px-6 rounded-xl w-full" 
-        onPress={() => navigation.navigate('Login')}
-      >
-        <Text className="text-gray-700 text-center text-lg font-semibold">Log In</Text>
+
+      <TouchableOpacity
+        className="w-full rounded-xl border border-gray-300 px-6 py-3"
+        onPress={() => navigation.navigate('Login')}>
+        <Text className="text-center text-lg font-semibold text-gray-700">Log In</Text>
       </TouchableOpacity>
 
       {/* Footer Links */}
-      <Text className="text-gray-500 text-sm mt-6">
-        By continuing, you agree to our <Text className="text-blue-600">Terms & Privacy Policy</Text>.
+      <Text className="mt-6 text-sm text-gray-500">
+        By continuing, you agree to our{' '}
+        <Text className="text-blue-600">Terms & Privacy Policy</Text>.
+      </Text>
+      <Text className="mb-6 px-4 text-center text-gray-600">
+        Connecting buyers and sellers seamlessly.
       </Text>
     </View>
   );

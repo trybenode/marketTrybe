@@ -16,6 +16,7 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import ShopScreen from './src/screens/ShopScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SuccessKycScreen from './src/screens/SuccessKycScreen';
+import WelcomeScreen from './src/screens/WelcomeScreen';
 
 import './global.css';
 
@@ -25,18 +26,9 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen
-          name="Favourite"
-          component={FavouritesScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Messages" component={MessagesScreen} options={{ headerShown: false }} />
-        <Stack.Screen
-          name="EditProfile"
-          component={EditProfileScreen}
-          options={{ headerShown: false }}
-        />
         <Stack.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
@@ -65,6 +57,17 @@ export default function App() {
         <Stack.Screen
           name="Categories"
           component={CategoryScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Favourite"
+          component={FavouritesScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Messages" component={MessagesScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfileScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
