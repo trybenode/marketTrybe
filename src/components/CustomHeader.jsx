@@ -1,10 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'; // ✅ Correct way
 import React, { memo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CustomHeader = memo(({ screenName, title, extraComponent }) => {
-  const navigation = useNavigation(); //
+  const navigation = useNavigation(); // ✅
 
   return (
     <View className="my-5 flex-row items-center justify-between p-2">

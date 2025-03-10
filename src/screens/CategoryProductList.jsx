@@ -3,6 +3,7 @@ import React from 'react';
 import { SafeAreaView, View, Text } from 'react-native';
 
 import BackButton from '../components/BackButton';
+import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import UserProfile from '../components/UserProfile';
 import { categories, listings } from '../data/dummyData';
@@ -23,14 +24,11 @@ function CategoryProductList() {
 
   return (
     <SafeAreaView className="flex-1">
-      <View className="flex-row items-center justify-between px-4">
-        <BackButton screenName="MainTabs" />
-        <UserProfile />
-      </View>
-      <Text className="py-4 text-center text-xl font-semibold">
-        {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}
-        {selectedCategory}
-      </Text>
+      <CustomHeader screenName="MainTabs" title={selectedCategory} extraComponent=<UserProfile /> />
+
+      {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}
+      {/* {selectedCategory} */}
+
       <View className="flex-1 px-4">
         {/* Checks if filteredProducts is empty and display appropriate UI */}
         {filteredProducts.length > 0 ? (

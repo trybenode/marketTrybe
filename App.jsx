@@ -29,6 +29,11 @@ export default function App() {
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="MainTabs"
+          component={BottomTabNavigator}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
@@ -36,11 +41,6 @@ export default function App() {
         <Stack.Screen
           name="SuccessKyc"
           component={SuccessKycScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="MainTabs"
-          component={BottomTabNavigator}
           options={{ headerShown: false }}
         />
         <Stack.Screen
