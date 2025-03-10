@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 import { messages } from '../data/dummyData';
+import { useNavigation } from '@react-navigation/native';
 export default function MessagesScreen() {
   const [chats, setChats] = useState(messages);
-  
+  const navigation = useNavigation()
   // useEffect(() => {
   //   setChats(messages);
   // }, []);
@@ -20,7 +21,7 @@ export default function MessagesScreen() {
             <Text className="mb-4 text-2xl font-bold">Messages</Text>
           </View>
         }
-        className='p-4'
+        className='p-4 mb-20'
         renderItem={({ item }) => (
           <TouchableOpacity
             className="flex-row items-center border-b border-gray-200 py-4"
