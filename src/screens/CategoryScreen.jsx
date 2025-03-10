@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaView, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import BackButton from '../components/BackButton';
 import CategoriesListing from '../components/CategoriesListing';
@@ -13,7 +14,7 @@ export default function CategoryScreen() {
   return (
     <SafeAreaView className="flex-1 p-3">
       <CustomHeader screenName="Market" title="All Available Category" />
-     
+
       <FlatList
         data={categories}
         showsHorizontalScrollIndicator={false}
