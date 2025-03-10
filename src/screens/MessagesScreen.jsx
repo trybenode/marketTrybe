@@ -138,10 +138,10 @@ export default function MessagesScreen() {
         keyExtractor={(item) => item.id}
         ListHeaderComponent={
           <View>
-            <Text className="mb-4 text-xl font-bold">Messages</Text>
+            <Text className="mb-4 text-2xl font-bold">Messages</Text>
           </View>
         }
-        className='p-2'
+        className='p-4'
         renderItem={({ item }) => (
           <TouchableOpacity
             className="flex-row items-center border-b border-gray-200 py-4"
