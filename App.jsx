@@ -50,13 +50,13 @@ export default function App() {
         />
         <Stack.Screen name="Shop" component={ShopScreen} options={{ headerShown: false }} />
         <Stack.Screen
-          name="ProductList"
-          component={CategoryProductList}
+          name="Categories"
+          component={CategoryScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Categories"
-          component={CategoryScreen}
+          name="ProductList"
+          component={CategoryProductList}
           options={{ headerShown: false }}
         />
         <Stack.Screen
