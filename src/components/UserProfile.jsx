@@ -7,7 +7,9 @@ const UserProfile = memo(() => {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('Profile')} className="flex flex-row">
+    <TouchableOpacity
+      onPress={() => navigation.navigate('MainTabs', { screen: 'Profile' })}
+      className="flex flex-row">
       <View className="h-12 w-12 items-center justify-center rounded-full bg-gray-300">
         <FontAwesome name="user" size={30} color="black" />
       </View>
