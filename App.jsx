@@ -17,6 +17,7 @@ import ShopScreen from './src/screens/ShopScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SuccessKycScreen from './src/screens/SuccessKycScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
+import ChatScreen from './src/screens/ChatScreen';
 
 import './global.css';
 
@@ -42,6 +43,7 @@ export default function App() {
           <Stack.Screen name="Favourite" component={FavouritesScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Messages" component={MessagesScreen} options={{ headerShown: false }} />
           <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

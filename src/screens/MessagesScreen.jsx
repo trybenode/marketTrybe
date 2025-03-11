@@ -15,17 +15,17 @@ export default function MessagesScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white p-2">
-      <CustomHeader title="Messages" screenName="Messages" extraComponent={<UserProfile />} />
+      <CustomHeader title="Messages" screenName="Market" extraComponent={<UserProfile />} />
       <FlatList
         data={chats}
         keyExtractor={(item) => item.id}
         className="p-4"
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 110 }}
         renderItem={({ item }) => (
           <TouchableOpacity
             className="flex-row items-center border-b border-gray-200 py-5"
             onPress={() =>
-              navigation.navigate('ChatScreen', { user: item.user, product: item.product })
+              navigation.navigate('Chat', { user: item.user, product: item.product })
             }>
             {/* Product Image */}
             <Image source={{ uri: item.product.image }} className="h-12 w-12 rounded-lg" />
