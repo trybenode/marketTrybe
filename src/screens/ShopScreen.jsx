@@ -1,59 +1,37 @@
 import React from 'react';
-import { View, TouchableOpacity, ScrollView, SafeAreaView, Text, Image } from 'react-native';
+import { View, TouchableOpacity, ScrollView, Text, Image } from 'react-native';
 import ListingCard from '../components/ListingCard';
-import USerProfile from '../components/UserProfile';
-import BackButton from '../components/BackButton';
+import UserProfile from '../components/UserProfile';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { useNavigation } from '@react-navigation/native';
 import { listings } from '../data/dummyData'; // Import your product data
-import FastImage from 'react-native-fast-image';
+
+import CustomHeader from '../components/CustomHeader';
+import SellerProfileCard from '../components/SellerProfileCard';
 
 export default function ShopScreen() {
   const navigation = useNavigation();
   // const screenHeight = Dimensions.get('window');
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-4">
-      {/* Add style={{ marginBottom: 20 }} here */}
-      {/* Header */}
-      <View className="my-10 flex-row items-center justify-between px-2">
-        <BackButton screenName="ListingDetails" />
-        <Text className="text-xl font-extrabold">Seller's Profile</Text>
-        <USerProfile />
-      </View>
+    <SafeAreaView className="flex-1 bg-white p-3">
+      <CustomHeader
+        screenName="ListingDetails"
+        title="Seller's Profile"
+        extraComponent={<UserProfile />}
+      />
       <ScrollView className="mb-3 flex-col" showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
-        <View className="flex-row items-center justify-between rounded-lg bg-gray-100 p-4 px-1">
-          {/* Seller Profile Image */}
-          <View className="overflow-hidden rounded-lg">
-            <Image
-              source={{
-                uri: 'https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg',
-              }}
-              style={{ width: 130, height: 130 }}
-              resizeMode={FastImage.resizeMode.contain}
-            />
-          </View>
-
-          <View className="w-full flex-col gap-6">
-            <View>
-              <Text className="text-sm font-bold">Demilade Femi</Text>
-              <Text className="text-xs text-gray-600">Name</Text>
-            </View>
-            <View>
-              <Text className="mt-2 text-sm font-bold">2025</Text>
-              <Text className="text-xs text-gray-600">Year Created</Text>
-            </View>
-            <View className="flex-col">
-              <Text className="mt-2 text-sm font-bold" style={{ width: '60%' }}>
-                Hostelite, Block C, Enterprise
-              </Text>
-              <Text className="text-xs text-gray-600">Location</Text>
-            </View>
-          </View>
-        </View>
+        <SellerProfileCard
+          name="Demilade Femi"
+          yearCreated="2025"
+          location="Hostelite, Block C, Enterprise"
+          imageUrl="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg"
+        />
 
         {/* Shop Title */}
-        <Text className="mt-4 text-center text-lg font-semibold">Demilade’s Shop</Text>
+        <Text className="mt-12 text-center text-lg font-semibold">Demilade’s Shop</Text>
 
         {/* Product List */}
         <View className=" mt-4  flex-row flex-wrap justify-between px-2">

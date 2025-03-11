@@ -6,6 +6,8 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
 import CustomTextInput from '../components/CustomTextInput';
+import CustomHeader from '../components/CustomHeader';
+import UserProfile from '../components/UserProfile';
 
 export default function KycScreen() {
   const [fullName, setFullName] = useState('');
@@ -54,19 +56,13 @@ export default function KycScreen() {
 
   return (
     <SafeAreaView className="flex-1 p-3">
-      {/* Header containing back button and Profile picture */}
-      <View className="align-center mb-3 flex-row items-center justify-between">
-        <BackButton screenName="Profile" />
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <View className="h-12 w-12 items-center justify-center rounded-full bg-gray-300">
-            <FontAwesome name="user" size={30} color="black" />
-          </View>
-        </TouchableOpacity>
-      </View>
+      <CustomHeader
+        screenName="Profile"
+        title="Complete KYC Registration"
+        extraComponent={<UserProfile />}
+      />
 
-      <ScrollView showsVerticalScrollIndicator={false} className="p-3">
-        <Text className="mb-3 p-5 text-center text-xl font-bold">Complete KYC Registration</Text>
-
+      <View className="mt-2 p-2">
         {/* Use CustomTextInput for Full Name */}
         <CustomTextInput placeholder="Full Name" value={fullName} onChangeText={setFullName} />
 
@@ -116,7 +112,36 @@ export default function KycScreen() {
             <Text className="text-xl font-bold text-white">Submit</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
+
+// import React, { useState } from 'react';
+// import { View, Text } from 'react-native';
+// import { SafeAreaView } from 'react-native-safe-area-context';
+// import CustomHeader from '../components/CustomHeader';
+// import CustomTextInput from '../components/CustomTextInput';
+// import BackButton from '../components/BackButton';
+// import ProfileImagePicker from '../components/ProfileImagePicker';
+// import RadioButton from '../components/RadioButton';
+// import SaveButton from '../components/SaveButton';
+
+// export default function KycScreen() {
+//   const [name, setName] = useState('');
+//   const [matricNum, setMatricNum] = useState('');
+//   const [image, setImage] = useState(null);
+//   const [moreInfo, setMoreInfo] = useState('');
+//   const [selected, setSelected] = useState(null);
+
+//   return (
+//     <SafeAreaView className="flex-1 p-3">
+//       {/* <BackButton screenName="Profile" /> */}
+//       <CustomHeader
+//         screenName="Profile"
+//         title="Complete KYC Registration"
+//         extraComponent={<UserProfile />}
+//       />
+//     </SafeAreaView>
+//   );
+// }

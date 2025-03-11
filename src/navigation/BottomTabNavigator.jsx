@@ -14,14 +14,13 @@ import ProfileScreen from '../screens/ProfileScreen';
 import SellScreen from '../screens/SellScreen';
 import SuccessKycScreen from '../screens/SuccessKycScreen';
 // import ListingDetailsScreen from '../screens/ListingDetailsScreen';
-import ShopScreen from '../screens/ShopScreen';
+// import ShopScreen from '../screens/ShopScreen';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   return (
-    <Tab.Navigator
-     tabBar={(props) => <NavBar {...props} />}>
+    <Tab.Navigator tabBar={(props) => <NavBar {...props} />}>
       <Tab.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Favourite" component={FavouritesScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Sell" component={SellScreen} options={{ headerShown: false }} />
@@ -33,7 +32,7 @@ export default function BottomTabNavigator() {
         component={ListingDetailsScreen}
         options={{ headerShown: false }}
       /> */}
-      <Tab.Screen name="Shop" component={ShopScreen} options={{ headerShown: false }} />
+      {/* <Tab.Screen name="Shop" component={ShopScreen} options={{ headerShown: false }} /> */}
       <Tab.Screen
         name="EditProfile"
         component={EditProfileScreen}

@@ -1,17 +1,16 @@
 import React from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 
-import BackButton from '../components/BackButton';
+import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import { listings } from '../data/dummyData';
+import UserProfile from '../components/UserProfile';
 
 export default function FavouritesScreen() {
   return (
     <SafeAreaView className="flex-1 p-2">
-      <View className="mt-8 py-2">
-        <BackButton screenName="Market" />
-      </View>
-      <Text className="texl-lg mb-2 py-3 text-center font-semibold"> Favourite Item </Text>
+      <CustomHeader title="Favourites" screenName="Market" extraComponent={<UserProfile />} />
       <View className="flex-1 px-4">
         <ListingCards data={listings} />
       </View>
