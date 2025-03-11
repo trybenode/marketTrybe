@@ -35,7 +35,7 @@ export default function ProfileScreen() {
       <View className="flex flex-col gap-6">
         <CustomProfileOption
           title="My Shop"
-          onPress={() => console.log('My Shop:', currentUser.favourites)}
+          onPress={() => console.log('My Shop')}
           iconName="shopping-store"
           iconType="Fontisto"
         />
