@@ -30,20 +30,52 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="MainTabs" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="MainTabs"
+            component={BottomTabNavigator}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="SuccessKyc" component={SuccessKycScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="ListingDetails" component={ListingDetailsScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="SuccessKyc"
+            component={SuccessKycScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ListingDetails"
+            component={ListingDetailsScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen name="Shop" component={ShopScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="ProductList" component={CategoryProductList} options={{ headerShown: false }} />
-          <Stack.Screen name="Categories" component={CategoryScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Favourite" component={FavouritesScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Messages" component={MessagesScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Chat" component={ChatScreen} options={{headerShown: false}} />
-          <Stack.Screen name="EditProfile" component={EditProfileScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="ProductList"
+            component={CategoryProductList}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Categories"
+            component={CategoryScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Favourite"
+            component={FavouritesScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Messages"
+            component={MessagesScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Chat" component={ChatScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfileScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>
