@@ -262,4 +262,34 @@ const messages = [
     unread: true,
   },
 ];
-export { categories, listings, images, messages };
+const dummyTradeHistory = [
+  {
+    id: '1',
+    productName: 'Laptop',
+    price: 1200,
+    productImage: 'https://images.pexels.com/photos/11227788/pexels-photo-11227788.jpeg?auto=compress&cs=tinysrgb&w=400',
+    status: 'Bought',
+  },
+  {
+    id: '2',
+    productName: 'Phone',
+    price: 800,
+    productImage: 'https://via.placeholder.com/50',
+    status: 'Bought',
+  },
+  {
+    id: '3',
+    productName: 'Headphones',
+    price: 200,
+    productImage: 'https://via.placeholder.com/50',
+    status: 'Sold',
+  },
+  {
+    id: '4',
+    productName: 'Smartwatch',
+    price: 300,
+    productImage: 'https://via.placeholder.com/50',
+    status: 'Sold',
+  },
+];
+export { categories, listings, images, messages, dummyTradeHistory };

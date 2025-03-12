@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { dummyTradeHistory } from '../data/dummyData';
+import TestHeader from '../components/TestHeader';
 // import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 // import { getAuth } from 'firebase/auth';
 
@@ -54,20 +57,17 @@ const HistoryScreen = () => {
       <View>
         <Text style={{ fontWeight: 'bold' }}>{item.productName}</Text>
         <Text>${item.price}</Text>
+        <Text style={{ color: item.status === 'Bought' ? 'green' : 'red' }}>{item.status}</Text>
       </View>
     </View>
   );
 
   return (
-    <View style={{ flex: 1, padding: 10 }}>
-      <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Bought Items</Text>
-      <FlatList data={boughtItems} renderItem={renderItem} keyExtractor={(item) => item.id} />
-
-      <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 20, marginBottom: 10 }}>
-        Sold Items
-      </Text>
-      <FlatList data={soldItems} renderItem={renderItem} keyExtractor={(item) => item.id} />
-    </View>
+    <SafeAreaView className="flex-1 p-3">
+      <TestHeader title="Trade History"/>
+      {/* <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Trade History</Text> */}
+      <FlatList data={tradeHistory} renderItem={renderItem} keyExtractor={(item) => item.id} />
+    </SafeAreaView>
   );
 };
 
