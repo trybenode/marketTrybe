@@ -48,6 +48,8 @@ export default function EditProfileScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white p-3">
+      {/* Header */}
+      <Customheader screenName="Profile" title="Edit Profile" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -58,9 +60,6 @@ export default function EditProfileScreen() {
             contentContainerStyle={{ paddingBottom: 30 }} // So Save button is not hidden
             keyboardShouldPersistTaps="handled" // Dismiss keyboard when tapping outside input
           >
-            {/* Header */}
-            <Customheader screenName="Profile" title="Edit Profile" />
-
             {/* Profile Image */}
             <ProfileImagePicker image={image} setImage={setImage} />
 
