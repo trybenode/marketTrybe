@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Modal, Pressable} from 'react-native';
+import { View, Text, TouchableOpacity} from 'react-native';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import React, { useState } from 'react';
 
@@ -13,7 +13,7 @@ const Options = () => {
     </TouchableOpacity>
 
     {isOpen && (
-      <View className="absolute p-2 rounded-lg shadow-lg" style={{ backgroundColor: '#2563eb', top: 35, right: 5, width: 100 }}>
+      <View className="absolute p-2 rounded-lg shadow-lg" style={{ backgroundColor: '#2563eb', top: 35, right: 5, width: 100, zIndex: 10 }}>
         <TouchableOpacity onPress={() => alert('Reported')}>
           <Text className="text-lg">Report</Text>
         </TouchableOpacity>
