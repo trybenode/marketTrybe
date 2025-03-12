@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native'; // Import navigation hook
+import { useNavigation } from '@react-navigation/native';
 
 import CustomTextInput from '../components/CustomTextInput';
 import BackButton from '../components/BackButton';
+import Customheader from '../components/CustomHeader';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import RadioButton from '../components/RadioButton';
 import SaveButton from '../components/SaveButton';
@@ -37,45 +47,65 @@ export default function EditProfileScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-3">
-      <BackButton screenName="Profile" />
-      <ProfileImagePicker image={image} setImage={setImage} />
+    <SafeAreaView className="flex-1 bg-white p-3">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20} // Adjust as needed for nav/header
+          className="flex-1">
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 30 }} // So Save button is not hidden
+            keyboardShouldPersistTaps="handled" // Dismiss keyboard when tapping outside input
+          >
+            {/* Header */}
+            <Customheader screenName="Profile" title="Edit Profile" />
 
-      <View className="p-3">
-        <Text className="mb-2 text-lg text-gray-500">Full Name</Text>
-        <CustomTextInput value={name} onChangeText={setName} placeholder="Full Name" />
+            {/* Profile Image */}
+            <ProfileImagePicker image={image} setImage={setImage} />
 
-        <Text className="mb-2 text-lg text-gray-500">Matric Number</Text>
-        <CustomTextInput
-          value={matricNum}
-          onChangeText={setMatricNum}
-          placeholder="Matric Number or Phone"
-        />
+            {/* Inputs Section */}
+            <View className="p-3">
+              <Text className="mb-2 text-lg text-gray-500">Full Name</Text>
+              <CustomTextInput value={name} onChangeText={setName} placeholder="Full Name" />
 
-        {/* Location Selection */}
-        <Text className="mb-3 text-left text-lg text-gray-500">Location</Text>
-        <View className="flex-row items-center justify-between">
-          <RadioButton
-            label="Hostelite"
-            selected={selected === 'hostelite'}
-            onPress={() => setSelected('hostelite')}
-          />
-          <RadioButton
-            label="Non-Hostelite"
-            selected={selected === 'non-hostelite'}
-            onPress={() => setSelected('non-hostelite')}
-          />
-        </View>
+              <Text className="mb-2 text-lg text-gray-500">Matric Number</Text>
+              <CustomTextInput
+                value={matricNum}
+                onChangeText={setMatricNum}
+                placeholder="Matric Number or Phone"
+              />
 
-        <Text className="mb-2 text-lg text-gray-500">More Information</Text>
-        <CustomTextInput
-          value={moreInfo}
-          onChangeText={setMoreInfo}
-          placeholder="Room Number, Hostel Name, etc."
-        />
-      </View>
+              {/* Location Selection */}
+              <Text className="mb-3 text-left text-lg text-gray-500">Location</Text>
+              <View className="mb-2 flex-row items-center justify-between">
+                <RadioButton
+                  label="Hostelite"
+                  selected={selected === 'hostelite'}
+                  onPress={() => setSelected('hostelite')}
+                />
+                <RadioButton
+                  label="Non-Hostelite"
+                  selected={selected === 'non-hostelite'}
+                  onPress={() => setSelected('non-hostelite')}
+                />
+              </View>
 
-      <SaveButton onPress={handleSave} title="Save" />
+              <Text className="mb-2 text-lg text-gray-500">More Information</Text>
+              <CustomTextInput
+                value={moreInfo}
+                onChangeText={setMoreInfo}
+                placeholder="Room Number, Hostel Name, etc."
+              />
+            </View>
+
+            {/* Save Button */}
+            <View className="mt-0">
+              <SaveButton onPress={handleSave} title="Save" />
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
