@@ -267,29 +267,41 @@ const dummyTradeHistory = [
     id: '1',
     productName: 'Laptop',
     price: 1200,
-    productImage: 'https://images.pexels.com/photos/11227788/pexels-photo-11227788.jpeg?auto=compress&cs=tinysrgb&w=400',
+    productImage:
+      'https://images.pexels.com/photos/2047905/pexels-photo-2047905.jpeg?auto=compress&cs=tinysrgb&w=400',
     status: 'Bought',
+    tradedWith: 'John Doe',
+    date: '2025-03-08',
   },
   {
     id: '2',
     productName: 'Phone',
     price: 800,
-    productImage: 'https://via.placeholder.com/50',
+    productImage:
+      'https://images.pexels.com/photos/7443663/pexels-photo-7443663.jpeg?auto=compress&cs=tinysrgb&w=400',
     status: 'Bought',
+    tradedWith: 'Jane Smith',
+    date: '2025-03-05',
   },
   {
     id: '3',
     productName: 'Headphones',
     price: 200,
-    productImage: 'https://via.placeholder.com/50',
+    productImage:
+      'https://images.pexels.com/photos/3394654/pexels-photo-3394654.jpeg?auto=compress&cs=tinysrgb&w=400',
     status: 'Sold',
+    tradedWith: 'Alice Johnson',
+    date: '2025-03-10',
   },
   {
     id: '4',
     productName: 'Smartwatch',
     price: 300,
-    productImage: 'https://via.placeholder.com/50',
+    productImage:
+      'https://images.pexels.com/photos/267394/pexels-photo-267394.jpeg?auto=compress&cs=tinysrgb&w=400',
     status: 'Sold',
+    tradedWith: 'Bob Brown',
+    date: '2025-03-12',
   },
 ];
 export { categories, listings, images, messages, dummyTradeHistory };

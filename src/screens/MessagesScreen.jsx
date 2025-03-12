@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { messages } from '../data/dummyData';
+
 import CustomHeader from '../components/CustomHeader';
 import UserProfile from '../components/UserProfile';
+import { messages } from '../data/dummyData';
 export default function MessagesScreen() {
   const [chats, setChats] = useState(messages);
   const navigation = useNavigation();
@@ -20,9 +21,7 @@ export default function MessagesScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             className="flex-row items-center border-b border-gray-200 py-5"
-            onPress={() =>
-              navigation.navigate('Chat', { user: item.user, product: item.product })
-            }>
+            onPress={() => navigation.navigate('Chat', { user: item.user, product: item.product })}>
             {/* Product Image */}
             <Image source={{ uri: item.product.image }} className="h-12 w-12 rounded-lg" />
 
