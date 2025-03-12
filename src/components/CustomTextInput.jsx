@@ -35,13 +35,12 @@ const CustomTextInput = memo(({ placeholder, secureTextEntry, ...props }) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(secureTextEntry);
 
   return (
-    <View
-      style={tw`mb-5 flex-row items-center rounded-lg border border-gray-300 bg-white px-3 py-1`}>
+    <View style={tw`mb-5 flex-row items-center rounded-lg border border-gray-300 bg-white px-3`}>
       {/* Input Field */}
       <TextInput
         placeholder={placeholder}
         secureTextEntry={isPasswordVisible}
-        style={tw`flex-1 text-base`}
+        style={tw`flex-1 text-sm py-4`}
         {...props}
       />
 
