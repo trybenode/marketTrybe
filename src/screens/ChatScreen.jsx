@@ -7,7 +7,7 @@ import Options from '../components/Options'
 export default function ChatScreen() {
   return (
    <SafeAreaView className='flex-1 bg-white p-2'>
-    <CustomHeader title="Chat" screenName="Chats" extraComponent={<Options />} />
+    <CustomHeader title="Chat" screenName="Messages" extraComponent={<Options />} />
         <View className=''>
             <Text className='text-2xl font-bold'>Chat Screen</Text>
         </ View>
