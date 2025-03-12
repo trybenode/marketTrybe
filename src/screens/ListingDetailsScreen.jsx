@@ -76,8 +76,8 @@ export default function ListingDetailsScreen({ route }) {
                 keyExtractor={(item) => item.id}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 0 }} // ✅ Remove extra padding
-                className="flex-grow-0" // ✅ Prevents unnecessary space
+                contentContainerStyle={{ paddingBottom: 0 }} //  Remove extra padding
+                className="flex-grow-0" //  Prevents unnecessary space
                 renderItem={({ item }) => (
                   <TouchableOpacity onPress={() => openModal(item.url)}>
                     <Image

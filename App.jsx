@@ -20,6 +20,7 @@ import WelcomeScreen from './src/screens/WelcomeScreen';
 import ChatScreen from './src/screens/ChatScreen';
 
 import './global.css';
+import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -74,6 +75,11 @@ export default function App() {
           <Stack.Screen
             name="EditProfile"
             component={EditProfileScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="HistoryDetial"
+            component={OrderHistoryScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
