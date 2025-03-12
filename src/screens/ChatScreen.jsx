@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomHeader from '../components/CustomHeader';
 import Options from '../components/Options';
 import { Ionicons } from '@expo/vector-icons';
+import TestHeader from '../components/TestHeader';
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([
@@ -31,7 +32,7 @@ export default function ChatScreen() {
   };
   return (
     <SafeAreaView className="flex-1 bg-white p-2">
-      <CustomHeader title="Chat" screenName="Messages" extraComponent={<Options />} />
+     <TestHeader title="Chat" extraComponent={<Options/>}/>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1 bg-gray-100">

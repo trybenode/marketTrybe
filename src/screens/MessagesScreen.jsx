@@ -8,10 +8,6 @@ import UserProfile from '../components/UserProfile';
 export default function MessagesScreen() {
   const [chats, setChats] = useState(messages);
   const navigation = useNavigation();
-  // useEffect(() => {
-  //   setChats(messages);
-  // }, []);
-  // console.log(chats);
 
   return (
     <SafeAreaView className="flex-1 bg-white p-2">
