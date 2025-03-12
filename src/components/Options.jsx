@@ -13,7 +13,7 @@ const Options = () => {
     </TouchableOpacity>
 
     {isOpen && (
-      <View className="absolute top-10 left-10 bg-white p-2 rounded-lg shadow-lg">
+      <View className="absolute p-2 rounded-lg shadow-lg" style={{ backgroundColor: '#2563eb', top: 35, right: 5, width: 100 }}>
         <TouchableOpacity onPress={() => alert('Reported')}>
           <Text className="text-lg">Report</Text>
         </TouchableOpacity>
