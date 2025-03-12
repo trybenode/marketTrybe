@@ -20,8 +20,7 @@ const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   return (
-    <Tab.Navigator
-     tabBar={(props) => <NavBar {...props} />}>
+    <Tab.Navigator tabBar={(props) => <NavBar {...props} />}>
       <Tab.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Favourite" component={FavouritesScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Sell" component={SellScreen} options={{ headerShown: false }} />
