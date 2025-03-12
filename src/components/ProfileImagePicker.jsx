@@ -20,7 +20,7 @@ const ProfileImagePicker = memo(({ image, setImage }) => {
   return (
     <View className="mb-6 items-center">
       <TouchableOpacity onPress={pickImage}>
-        {image ? (
+        {image && image !== 'null' && image !== '' ? (
           <Image source={{ uri: image }} className="h-24 w-24 rounded-full" />
         ) : (
           <View className="h-24 w-24 items-center justify-center rounded-full bg-gray-300">

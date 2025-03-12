@@ -1,18 +1,40 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native'; // Import navigation hook
+
 import CustomTextInput from '../components/CustomTextInput';
 import BackButton from '../components/BackButton';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import RadioButton from '../components/RadioButton';
 import SaveButton from '../components/SaveButton';
 
+import { useUser } from '../context/UserContext';
+
 export default function EditProfileScreen() {
-  const [name, setName] = useState('');
-  const [matricNum, setMatricNum] = useState('');
-  const [image, setImage] = useState(null);
-  const [moreInfo, setMoreInfo] = useState('');
-  const [selected, setSelected] = useState(null);
+  const { currentUser, setCurrentUser } = useUser();
+  const navigation = useNavigation();
+
+  const [name, setName] = useState(currentUser.fullName);
+  const [matricNum, setMatricNum] = useState(currentUser.matricNumber);
+  const [image, setImage] = useState(currentUser.profilePicture);
+  const [moreInfo, setMoreInfo] = useState(currentUser.address);
+  const [selected, setSelected] = useState(currentUser.locationType);
+
+  const handleSave = () => {
+    setCurrentUser((prevUser) => ({
+      ...prevUser,
+      fullName: name,
+      matricNumber: matricNum,
+      profilePicture: image,
+      address: moreInfo,
+      locationType: selected,
+    }));
+
+    Alert.alert('Success', 'Profile Updated Successfully!', [
+      { text: 'OK', onPress: () => navigation.navigate('Profile') },
+    ]);
+  };
 
   return (
     <SafeAreaView className="flex-1 p-3">
@@ -27,7 +49,7 @@ export default function EditProfileScreen() {
         <CustomTextInput
           value={matricNum}
           onChangeText={setMatricNum}
-          placeholder="Matric Number"
+          placeholder="Matric Number or Phone"
         />
 
         {/* Location Selection */}
@@ -53,7 +75,7 @@ export default function EditProfileScreen() {
         />
       </View>
 
-      <SaveButton onPress={() => alert('Profile Updated!')} title="Save" />
+      <SaveButton onPress={handleSave} title="Save" />
     </SafeAreaView>
   );
 }

@@ -35,7 +35,7 @@ export default function SellScreen() {
   return (
     <SafeAreaView className="mb-10 flex-1 p-3">
       {/* <BackButton screenName="MainTabs" /> */}
-      <CustomHeader screenName="MainTabs" />
+      <CustomHeader screenName="Market" />
 
       <View className="mt-1 flex-1 px-4">
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
