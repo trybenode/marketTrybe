@@ -12,7 +12,7 @@ export default function HomeScreen() {
   // console.log('Listings Data:', listings);
 
   return (
-    <SafeAreaView className="flex-1 p-0">
+    <SafeAreaView className="flex-1 bg-white p-0">
       <View className="flex-row items-center justify-between p-4">
         {/* Header containing Logo and Profile picture */}
         <View>

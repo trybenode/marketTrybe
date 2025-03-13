@@ -12,7 +12,7 @@ export default function CategoryScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <CustomHeader screenName="MainTabs" title="All Available Category" />
 
       <FlatList

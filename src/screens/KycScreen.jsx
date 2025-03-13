@@ -55,7 +55,7 @@ export default function KycScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <CustomHeader
         screenName="Profile"
         title="Complete KYC Registration"

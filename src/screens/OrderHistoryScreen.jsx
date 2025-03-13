@@ -7,7 +7,7 @@ const OrderHistoryScreen = ({ route }) => {
   const { item } = route.params;
   //   console.log('Item received:', item);
   return (
-    <SafeAreaView className=" flex-1">
+    <SafeAreaView className=" flex-1 bg-white">
       <TestHeader title="History Detail" extraComponent={<UserProfile />} />
 
       <View className="flex-1 p-4">

@@ -5,7 +5,8 @@ import BackButton from '../components/BackButton';
 import DropDownPicker from 'react-native-dropdown-picker';
 import UploadImages from '../components/UploadImages';
 import { Checkbox } from 'react-native-paper';
-import CustomHeader from '../components/CustomHeader';
+// import CustomHeader from '../components/CustomHeader';
+import TestHeader from '../components/TestHeader';
 
 export default function SellScreen() {
   const [productName, setProductName] = useState('');
@@ -33,9 +34,9 @@ export default function SellScreen() {
   const [year, setYear] = useState('');
 
   return (
-    <SafeAreaView className="mb-10 flex-1">
+    <SafeAreaView className="mb-10 flex-1 bg-white">
       {/* <BackButton screenName="MainTabs" /> */}
-      <CustomHeader screenName="Market" />
+      <TestHeader />
 
       <View className="mt-1 flex-1 px-4">
         <ScrollView
