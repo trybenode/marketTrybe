@@ -9,7 +9,7 @@ const CustomHeader = memo(({ screenName, title, extraComponent }) => {
 
   return (
     <View className="relative h-20 flex-row items-center justify-between px-3">
-      <StatusBar></StatusBar>
+      <StatusBar />
       {/* Left - Back Button */}
       <TouchableOpacity onPress={() => navigation.navigate(screenName)}>
         <Ionicons name="arrow-back" size={30} color="black" />

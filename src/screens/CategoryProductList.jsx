@@ -27,7 +27,7 @@ function CategoryProductList() {
 
   return (
     <SafeAreaView className="flex-1">
-      <CustomHeader screenName="Market" title={selectedCategory} extraComponent=<UserProfile /> />
+      <TestHeader title={selectedCategory} extraComponent=<UserProfile /> />
 
       {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}
       {/* {selectedCategory} */}

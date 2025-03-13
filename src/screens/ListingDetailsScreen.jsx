@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { images, listings } from '../data/dummyData';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import ListingCards from '../components/ListingCards';
+import CustomHeader from '../components/CustomHeader';
 // import { listings } from '../data/dummyData';
 
 export default function ListingDetailsScreen({ route }) {
@@ -49,14 +50,26 @@ export default function ListingDetailsScreen({ route }) {
   // ];
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-4">
+    <SafeAreaView className="flex-1 bg-white">
+      <CustomHeader
+        screenName="MainTabs"
+        extraComponent={
+          <TouchableOpacity
+            className="flex items-center space-y-1"
+            onPress={() => setLiked(!liked)}>
+            <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
+          </TouchableOpacity>
+        }
+      />
+
       <FlatList
         data={listings}
+        className="px-3"
         keyExtractor={(item) => item.id}
         ListFooterComponent={null}
         ListHeaderComponent={
           <View>
-            <View className="flex-row items-center justify-between">
+            {/* <View className="flex-row items-center justify-between">
               <BackButton screenName="MainTabs" />
               <TouchableOpacity
                 className="flex items-center space-y-1"
@@ -67,7 +80,7 @@ export default function ListingDetailsScreen({ route }) {
                   color="black"
                 />
               </TouchableOpacity>
-            </View>
+            </View> */}
 
             {/* Carousel with pop-up (modal) on click */}
             <View className=" mt-5">
