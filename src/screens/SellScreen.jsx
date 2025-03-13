@@ -33,12 +33,15 @@ export default function SellScreen() {
   const [year, setYear] = useState('');
 
   return (
-    <SafeAreaView className="mb-10 flex-1 p-3">
+    <SafeAreaView className="mb-10 flex-1">
       {/* <BackButton screenName="MainTabs" /> */}
       <CustomHeader screenName="Market" />
 
       <View className="mt-1 flex-1 px-4">
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}
+          className="px-2">
           <Text className="mb-6 text-center text-lg font-bold">Product Information</Text>
           <TextInput
             className="mb-4 rounded border bg-white p-4"

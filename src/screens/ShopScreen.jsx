@@ -15,13 +15,13 @@ export default function ShopScreen() {
   // const screenHeight = Dimensions.get('window');
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-3">
+    <SafeAreaView className="flex-1 bg-white">
       <CustomHeader
         screenName="ListingDetails"
         title="Seller's Profile"
         extraComponent={<UserProfile />}
       />
-      <ScrollView className="mb-3 flex-col" showsVerticalScrollIndicator={false}>
+      <ScrollView className="mb-3 flex-col p-3" showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
         <SellerProfileCard
           name="Demilade Femi"
@@ -39,12 +39,11 @@ export default function ShopScreen() {
           {listings.map((product) => (
             <View key={product.id} className="mb-4 w-[48%]">
               <TouchableOpacity onPress={() => navigation.navigate('ListingDetails')}>
-                <ListingCard {...product} btnName="view"/>
+                <ListingCard {...product} btnName="view" />
               </TouchableOpacity>
             </View>
           ))}
         </View>
-       
       </ScrollView>
     </SafeAreaView>
   );

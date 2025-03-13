@@ -47,14 +47,14 @@ export default function EditProfileScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-3">
+    <SafeAreaView className="flex-1 bg-white">
       {/* Header */}
       <Customheader screenName="Profile" title="Edit Profile" />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20} // Adjust as needed for nav/header
-          className="flex-1">
+          className="flex-1 p-3">
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 30 }} // So Save button is not hidden

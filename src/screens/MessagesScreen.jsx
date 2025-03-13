@@ -11,7 +11,7 @@ export default function MessagesScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-2">
+    <SafeAreaView className="flex-1 bg-white">
       <CustomHeader title="Messages" screenName="Market" extraComponent={<UserProfile />} />
       <FlatList
         data={chats}

@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import React, { memo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -7,7 +8,8 @@ const CustomHeader = memo(({ screenName, title, extraComponent }) => {
   const navigation = useNavigation();
 
   return (
-    <View className="relative mb-2 h-14 flex-row items-center justify-between px-2">
+    <View className="relative h-20 flex-row items-center justify-between px-3">
+      <StatusBar></StatusBar>
       {/* Left - Back Button */}
       <TouchableOpacity onPress={() => navigation.navigate(screenName)}>
         <Ionicons name="arrow-back" size={30} color="black" />
