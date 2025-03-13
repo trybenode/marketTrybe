@@ -11,7 +11,7 @@ export default function FavouritesScreen() {
   return (
     <SafeAreaView className="flex-1 p-2">
       <CustomHeader title="Favourites" screenName="Market" extraComponent={<UserProfile />} />
-      <View className="flex-1 px-4">
+      <View className="flex-1 ">
         <ListingCards data={listings} />
       </View>
     </SafeAreaView>

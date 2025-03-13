@@ -1,8 +1,9 @@
 import { TouchableOpacity, Image, Text } from 'react-native';
-import React from 'react';
+import React, { memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
+
 // import { categories } from '../data/dummyData';
-const CategoriesListing = ({ name, image, id }) => {
+const CategoriesListing = memo(({ name, image, id }) => {
   const navigation = useNavigation();
 
   return (
@@ -20,6 +21,6 @@ const CategoriesListing = ({ name, image, id }) => {
       <Text className="font-light">{name}</Text>
     </TouchableOpacity>
   );
-};
+});
 
 export default CategoriesListing;

@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-const SellerProfileCard = ({ name, yearCreated, location, imageUrl }) => {
+const SellerProfileCard = memo(({ name, yearCreated, location, imageUrl }) => {
   return (
     <View className="flex-row items-center justify-between rounded-lg bg-gray-100 p-4 px-1">
       {/* Seller Profile Image */}
       <View className="overflow-hidden rounded-lg">
         <Image
           source={{ uri: imageUrl }}
-          style={{ width: 130, height: 130 }}
+          style={{ width: 150, height: 150, borderRadius: "25%" }}
           resizeMode={FastImage.resizeMode.contain}
         />
       </View>
@@ -24,7 +24,7 @@ const SellerProfileCard = ({ name, yearCreated, location, imageUrl }) => {
           <Text className="text-xs text-gray-600">Year Created</Text>
         </View>
         <View className="flex-col">
-          <Text className="mt-2 text-sm font-bold" style={{ width: '60%' }}>
+          <Text className="mt-2 text-sm font-bold" style={{ width: '60%', flexWrap: 'wrap' }}>
             {location}
           </Text>
           <Text className="text-xs text-gray-600">Location</Text>
@@ -32,6 +32,6 @@ const SellerProfileCard = ({ name, yearCreated, location, imageUrl }) => {
       </View>
     </View>
   );
-};
+});
 
 export default SellerProfileCard;

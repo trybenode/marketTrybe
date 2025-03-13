@@ -25,6 +25,7 @@ import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
+
 export default function App() {
   return (
     <UserProvider>
@@ -32,20 +33,13 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
           <Stack.Screen
             name="MainTabs"
             component={BottomTabNavigator}
             options={{ headerShown: false }}
           />
           <Stack.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-          <Stack.Screen
-            name="SuccessKyc"
-            component={SuccessKycScreen}
-            options={{ headerShown: false }}
-          />
           <Stack.Screen
             name="ListingDetails"
             component={ListingDetailsScreen}
@@ -83,11 +77,9 @@ export default function App() {
             component={OrderHistoryScreen}
             options={{ headerShown: false }}
           />
-          <Stack.Screen
-            name="MyShop"
-            component={MyShopScreen}
-            options={{ headerShown: false }}
-          />
+          <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+
+          <Stack.Screen name="MyShop" component={MyShopScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserProvider>

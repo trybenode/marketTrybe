@@ -13,7 +13,7 @@ export default function CategoryScreen() {
 
   return (
     <SafeAreaView className="flex-1 p-3">
-      <CustomHeader screenName="Market" title="All Available Category" />
+      <CustomHeader screenName="MainTabs" title="All Available Category" />
 
       <FlatList
         data={categories}
@@ -25,7 +25,7 @@ export default function CategoryScreen() {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('Products', { category: item.name })}>
+            onPress={() => navigation.navigate('ProductList', { category: item.name })}>
             <CategoriesListing {...item} />
           </TouchableOpacity>
         )}

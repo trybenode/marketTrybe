@@ -13,6 +13,8 @@ import MessagesScreen from '../screens/MessagesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SellScreen from '../screens/SellScreen';
 import SuccessKycScreen from '../screens/SuccessKycScreen';
+import MyShopScreen from '../screens/MyShopScreen';
+
 // import ListingDetailsScreen from '../screens/ListingDetailsScreen';
 // import ShopScreen from '../screens/ShopScreen';
 
@@ -40,12 +42,13 @@ export default function BottomTabNavigator() {
       />
       <Tab.Screen name="SuccessKyc" component={SuccessKycScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="Categories" component={CategoryScreen} options={{ headerShown: false }} />
+      {/* <Tab.Screen name="Categories" component={CategoryScreen} options={{ headerShown: false }} /> */}
       <Tab.Screen
-        name="Products"
+        name="ProductList"
         component={CategoryProductList}
         options={{ headerShown: false }}
       />
+      <Tab.Screen name="MyShop" component={MyShopScreen} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
 }

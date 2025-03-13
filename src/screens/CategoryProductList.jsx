@@ -8,6 +8,7 @@ import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import UserProfile from '../components/UserProfile';
 import { categories, listings } from '../data/dummyData';
+import TestHeader from '../components/TestHeader';
 
 function CategoryProductList() {
   const route = useRoute();
@@ -25,7 +26,7 @@ function CategoryProductList() {
 
   return (
     <SafeAreaView className="flex-1 p-3">
-      <CustomHeader screenName="MainTabs" title={selectedCategory} extraComponent=<UserProfile /> />
+      <TestHeader screenName="MainTabs" title={selectedCategory} extraComponent=<UserProfile /> />
 
       {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}
       {/* {selectedCategory} */}

@@ -35,15 +35,16 @@ export default function ShopScreen() {
 
         {/* Product List */}
         <View className=" mt-4  flex-row flex-wrap justify-between px-2">
-          {/* Add mb-20 to the class name here */}
+          {/* // Add mb-20 to the class name here */}
           {listings.map((product) => (
             <View key={product.id} className="mb-4 w-[48%]">
               <TouchableOpacity onPress={() => navigation.navigate('ListingDetails')}>
-                <ListingCard {...product} />
+                <ListingCard {...product} btnName="view"/>
               </TouchableOpacity>
             </View>
           ))}
         </View>
+       
       </ScrollView>
     </SafeAreaView>
   );
