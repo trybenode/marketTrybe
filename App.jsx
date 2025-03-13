@@ -18,6 +18,7 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import SuccessKycScreen from './src/screens/SuccessKycScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import ChatScreen from './src/screens/ChatScreen';
+import MyShopScreen from './src/screens/MyShopScreen';
 
 import './global.css';
 import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
@@ -80,6 +81,11 @@ export default function App() {
           <Stack.Screen
             name="HistoryDetial"
             component={OrderHistoryScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MyShop"
+            component={MyShopScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

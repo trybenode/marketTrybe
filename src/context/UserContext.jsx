@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext } from 'react';
-
+// context provider manages user-related state and makes it accessible to all components in the app
 // Create context
 const UserContext = createContext();
 
