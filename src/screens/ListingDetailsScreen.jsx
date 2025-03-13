@@ -211,22 +211,22 @@ export default function ListingDetailsScreen({ route }) {
   );
 }
 
-{
-  /* <Carousel
+// {
+//   /* <Carousel
 
-        loop
-        width={width}
-        height={250}
-        autoPlay={true}
-        data={images}
-        scrollAnimationDuration={500}
-        renderItem={({ item }) => (
-          <Image
-            source={{ uri: item }}
-            style={{ width: "100%", height: "100%", borderRadius: 10 }}
-            resizeMode="cover"
-          />
-        )}
+//         loop
+//         width={width}
+//         height={250}
+//         autoPlay={true}
+//         data={images}
+//         scrollAnimationDuration={500}
+//         renderItem={({ item }) => (
+//           <Image
+//             source={{ uri: item }}
+//             style={{ width: "100%", height: "100%", borderRadius: 10 }}
+//             resizeMode="cover"
+//           />
+//         )}
 
-      /> */
-}
+//       /> */
+// }

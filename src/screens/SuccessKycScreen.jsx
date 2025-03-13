@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function SuccessKycScreen() {
   const navigation = useNavigation();
   return (
-    <SafeAreaView className="flex-1 p-3">
+    <SafeAreaView className="flex-1 bg-white p-3">
       <TouchableOpacity
         onPress={() => navigation.navigate('Profile')}
         className="absolute right-3 top-10 px-2 py-3">

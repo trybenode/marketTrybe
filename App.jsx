@@ -25,7 +25,6 @@ import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
-
 export default function App() {
   return (
     <UserProvider>

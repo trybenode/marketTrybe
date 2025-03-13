@@ -26,7 +26,7 @@ function CategoryProductList() {
     : [];
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <TestHeader title={selectedCategory} extraComponent=<UserProfile /> />
 
       {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}

@@ -43,7 +43,7 @@ const HistoryScreen = () => {
   );
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <CustomHeader title="Trade History" screenName="Market" />
       <FlatList
         data={tradeHistory}
