@@ -12,7 +12,7 @@ export default function CategoryScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView className="flex-1 p-3">
+    <SafeAreaView className="flex-1">
       <CustomHeader screenName="MainTabs" title="All Available Category" />
 
       <FlatList
@@ -21,7 +21,7 @@ export default function CategoryScreen() {
         numColumns={3}
         columnWrapperStyle={{ justifyContent: 'space-around', marginBottom: 20 }}
         keyExtractor={(item) => item.id}
-        className="mb-2 p-2"
+        className="mb-2 px-3 py-4"
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
         renderItem={({ item }) => (
           <TouchableOpacity

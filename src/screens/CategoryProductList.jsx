@@ -9,6 +9,7 @@ import ListingCards from '../components/ListingCards';
 import UserProfile from '../components/UserProfile';
 import { categories, listings } from '../data/dummyData';
 import TestHeader from '../components/TestHeader';
+import { ScrollView } from 'react-native-web';
 
 function CategoryProductList() {
   const route = useRoute();
@@ -25,13 +26,13 @@ function CategoryProductList() {
     : [];
 
   return (
-    <SafeAreaView className="flex-1 p-3">
-      <TestHeader screenName="MainTabs" title={selectedCategory} extraComponent=<UserProfile /> />
+    <SafeAreaView className="flex-1">
+      <CustomHeader screenName="Market" title={selectedCategory} extraComponent=<UserProfile /> />
 
       {/* {selectedCategory ? `${selectedCategory} Similar Products` : 'No Category Selected'} */}
       {/* {selectedCategory} */}
 
-      <View className="flex-1 px-4">
+      <View className="flex-1 px-4 py-3">
         {/* Checks if filteredProducts is empty and display appropriate UI */}
         {filteredProducts.length > 0 ? (
           <ListingCards key={categoryID} data={filteredProducts} />

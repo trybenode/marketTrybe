@@ -55,64 +55,65 @@ export default function KycScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-3">
+    <SafeAreaView className="flex-1">
       <CustomHeader
         screenName="Profile"
         title="Complete KYC Registration"
         extraComponent={<UserProfile />}
       />
+      <ScrollView className="flex-1 p-3">
+        <View className="mt-2 p-2">
+          {/* Use CustomTextInput for Full Name */}
+          <CustomTextInput placeholder="Full Name" value={fullName} onChangeText={setFullName} />
 
-      <View className="mt-2 p-2">
-        {/* Use CustomTextInput for Full Name */}
-        <CustomTextInput placeholder="Full Name" value={fullName} onChangeText={setFullName} />
+          {/* Use CustomTextInput for Matric Number */}
+          <CustomTextInput
+            placeholder="Matric Number"
+            value={matricNumber}
+            onChangeText={setMatricNumber}
+          />
 
-        {/* Use CustomTextInput for Matric Number */}
-        <CustomTextInput
-          placeholder="Matric Number"
-          value={matricNumber}
-          onChangeText={setMatricNumber}
-        />
+          {/* Front ID Upload */}
+          <View className="w-full">
+            <TouchableOpacity
+              className="mb-2 w-full items-center rounded-md border border-gray-300 bg-white p-4"
+              onPress={() => pickImage(setFrontID)}>
+              <Text>{frontID ? 'Image Selected' : 'Choose Image'}</Text>
+            </TouchableOpacity>
+            {frontID && (
+              <Image source={{ uri: frontID }} className="mb-2 h-20 w-32 self-start rounded-md" />
+            )}
+            <Text className="mb-4 w-full text-xs text-red-500">
+              * Upload photo of front of ID card
+            </Text>
+          </View>
 
-        {/* Front ID Upload */}
-        <View className="w-full">
-          <TouchableOpacity
-            className="mb-2 w-full items-center rounded-md border border-gray-300 bg-white p-4"
-            onPress={() => pickImage(setFrontID)}>
-            <Text>{frontID ? 'Image Selected' : 'Choose Image'}</Text>
-          </TouchableOpacity>
-          {frontID && (
-            <Image source={{ uri: frontID }} className="mb-2 h-20 w-32 self-start rounded-md" />
-          )}
-          <Text className="mb-4 w-full text-xs text-red-500">
-            * Upload photo of front of ID card
-          </Text>
+          <View className="w-full">
+            <TouchableOpacity
+              className="mb-2 w-full items-center rounded-md border border-gray-300 bg-white p-4"
+              onPress={() => pickImage(setBackID)}>
+              <Text>{backID ? 'Image Selected' : 'Choose Image'}</Text>
+            </TouchableOpacity>
+            {backID && (
+              <Image source={{ uri: backID }} className="mb-2 h-20 w-32 self-start rounded-md" />
+            )}
+            <Text className="mb-6 w-full text-xs text-red-500">
+              * Upload photo of back of ID card
+            </Text>
+          </View>
+
+          <View className="w-full items-center">
+            <TouchableOpacity
+              className={`w-1/3 items-center justify-center rounded-md p-4 ${
+                fullName && matricNumber && frontID && backID ? 'bg-[#2563eb]' : 'bg-gray-400'
+              }`}
+              onPress={handleSubmit}
+              disabled={!fullName || !matricNumber || !frontID || !backID}>
+              <Text className="text-xl font-bold text-white">Submit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <View className="w-full">
-          <TouchableOpacity
-            className="mb-2 w-full items-center rounded-md border border-gray-300 bg-white p-4"
-            onPress={() => pickImage(setBackID)}>
-            <Text>{backID ? 'Image Selected' : 'Choose Image'}</Text>
-          </TouchableOpacity>
-          {backID && (
-            <Image source={{ uri: backID }} className="mb-2 h-20 w-32 self-start rounded-md" />
-          )}
-          <Text className="mb-6 w-full text-xs text-red-500">
-            * Upload photo of back of ID card
-          </Text>
-        </View>
-
-        <View className="w-full items-center">
-          <TouchableOpacity
-            className={`w-1/3 items-center justify-center rounded-md p-4 ${
-              fullName && matricNumber && frontID && backID ? 'bg-[#2563eb]' : 'bg-gray-400'
-            }`}
-            onPress={handleSubmit}
-            disabled={!fullName || !matricNumber || !frontID || !backID}>
-            <Text className="text-xl font-bold text-white">Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

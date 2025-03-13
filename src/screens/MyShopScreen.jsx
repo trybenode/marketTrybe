@@ -16,9 +16,9 @@ export default function MyShopScreen() {
   //   const [isSeller, setIsSeller] = useState(false);
   const hasProducts = listings.length > 0;
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       <CustomHeader screenName="Profile" title="MyShop" extraComponent={<UserProfile />} />
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} className="mb-20 flex-1 p-3 pb-20">
         {hasProducts ? (
           <>
             <SellerProfileCard
@@ -31,7 +31,7 @@ export default function MyShopScreen() {
               {listings.map((product) => (
                 <View key={product.id} className="mb-4 w-[48%]">
                   <TouchableOpacity onPress={() => navigation.navigate('Sell')}>
-                    <ListingCard {...product} btnName="edit" />
+                    <ListingCard {...product} btnName="Edit" />
                   </TouchableOpacity>
                 </View>
               ))}

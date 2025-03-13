@@ -9,7 +9,7 @@ const SellerProfileCard = memo(({ name, yearCreated, location, imageUrl }) => {
       <View className="overflow-hidden rounded-lg">
         <Image
           source={{ uri: imageUrl }}
-          style={{ width: 150, height: 150, borderRadius: "25%" }}
+          style={{ width: 150, height: 150 }}
           resizeMode={FastImage.resizeMode.contain}
         />
       </View>
@@ -24,7 +24,7 @@ const SellerProfileCard = memo(({ name, yearCreated, location, imageUrl }) => {
           <Text className="text-xs text-gray-600">Year Created</Text>
         </View>
         <View className="flex-col">
-          <Text className="mt-2 text-sm font-bold" style={{ width: '60%', flexWrap: 'wrap' }}>
+          <Text className="mt-2 text-sm font-bold" style={{ width: '50%', flexWrap: 'wrap' }}>
             {location}
           </Text>
           <Text className="text-xs text-gray-600">Location</Text>

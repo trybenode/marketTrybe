@@ -9,9 +9,9 @@ import UserProfile from '../components/UserProfile';
 
 export default function FavouritesScreen() {
   return (
-    <SafeAreaView className="flex-1 p-2">
+    <SafeAreaView className="flex-1">
       <CustomHeader title="Favourites" screenName="Market" extraComponent={<UserProfile />} />
-      <View className="flex-1 ">
+      <View className="flex-1 px-3 py-1 pt-1">
         <ListingCards data={listings} />
       </View>
     </SafeAreaView>
