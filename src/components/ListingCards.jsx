@@ -9,7 +9,7 @@ const ListingCards = memo(({ data, buttomPad = 100 }) => {
 
   return (
     // Listings - 2 Columns
-    <View style={{ flex: 1, paddingBottom: buttomPad }}>
+    <View style={{ flex: 1, paddingBottom: buttomPad, paddingHorizontal:'3px' }}>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
@@ -22,7 +22,7 @@ const ListingCards = memo(({ data, buttomPad = 100 }) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('ListingDetails', { itemId: item.id })}
             className="mb-4 w-[48%]">
-            <ListingCard {...item} />
+            <ListingCard {...item} btnName='view'/>
           </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={false}
