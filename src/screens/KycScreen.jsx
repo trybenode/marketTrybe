@@ -2,9 +2,7 @@ import * as ImagePicker from 'expo-image-picker';
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import BackButton from '../components/BackButton';
 import CustomTextInput from '../components/CustomTextInput';
 import CustomHeader from '../components/CustomHeader';
 import UserProfile from '../components/UserProfile';
@@ -61,7 +59,7 @@ export default function KycScreen() {
         title="Complete KYC Registration"
         extraComponent={<UserProfile />}
       />
-      <ScrollView className="flex-1 p-3">
+      <ScrollView className="mt-5 flex-1 p-3">
         <View className="mt-2 p-2">
           {/* Use CustomTextInput for Full Name */}
           <CustomTextInput placeholder="Full Name" value={fullName} onChangeText={setFullName} />
