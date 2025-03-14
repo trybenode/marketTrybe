@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, TextInput, View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '../components/BackButton';
@@ -8,7 +8,7 @@ import { Checkbox } from 'react-native-paper';
 // import TestHeader from '../components/TestHeader';
 import CustomHeader from '../components/CustomHeader';
 
-export default function SellScreen() {
+export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [open, setOpen] = useState(false);
@@ -32,6 +32,33 @@ export default function SellScreen() {
   const [color, setColor] = useState('');
   const [price, setPrice] = useState('');
   const [year, setYear] = useState('');
+
+  const isEditMode = route.params?.product !== undefined;
+  const product = route.params?.product;
+
+  //prefill form if product exist 
+  useEffect(() => {
+    if (isEditMode) {
+      setProductName(product.name);
+      setSubCategory(product.subcategory);
+      setSelectedValue(product.price);
+      setItems(product.item);
+      setIsNegotiable(product.negotiable);
+      // setIsAgreed(product.agreed);
+      setProductDescription(product.description);
+      setBrand(product.brand);
+      setCondition(product.condition);
+      setColor(product.color);
+      setPrice(product.price);
+      setYear(product.year);
+    }
+  }, [isEditMode, product]);
+
+  const handleSubmit = () => {
+    if (!productName || !productPrice) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
 
   return (
     <SafeAreaView className="mb-10 flex-1 bg-white">
