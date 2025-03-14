@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { TextInput, View, Text, ScrollView, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Checkbox, Button } from 'react-native-paper';
+import { Checkbox,  Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import TestHeader from '../components/TestHeader';
@@ -102,6 +102,7 @@ export default function SellScreen({ route }) {
     } else {
       Alert.alert('Success', 'Product uploaded successfully');
     }
+
 
     clearForm();
 

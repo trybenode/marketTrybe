@@ -3,13 +3,13 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { ScrollView } from 'react-native-web';
 import BackButton from '../components/BackButton';
 import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import UserProfile from '../components/UserProfile';
 import { categories, listings } from '../data/dummyData';
 import TestHeader from '../components/TestHeader';
-import { ScrollView } from 'react-native-web';
 
 function CategoryProductList() {
   const route = useRoute();

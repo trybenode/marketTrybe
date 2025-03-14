@@ -118,31 +118,3 @@ export default function KycScreen() {
   );
 }
 
-// import React, { useState } from 'react';
-// import { View, Text } from 'react-native';
-// import { SafeAreaView } from 'react-native-safe-area-context';
-// import CustomHeader from '../components/CustomHeader';
-// import CustomTextInput from '../components/CustomTextInput';
-// import BackButton from '../components/BackButton';
-// import ProfileImagePicker from '../components/ProfileImagePicker';
-// import RadioButton from '../components/RadioButton';
-// import SaveButton from '../components/SaveButton';
-
-// export default function KycScreen() {
-//   const [name, setName] = useState('');
-//   const [matricNum, setMatricNum] = useState('');
-//   const [image, setImage] = useState(null);
-//   const [moreInfo, setMoreInfo] = useState('');
-//   const [selected, setSelected] = useState(null);
-
-//   return (
-//     <SafeAreaView className="flex-1 p-3">
-//       {/* <BackButton screenName="Profile" /> */}
-//       <CustomHeader
-//         screenName="Profile"
-//         title="Complete KYC Registration"
-//         extraComponent={<UserProfile />}
-//       />
-//     </SafeAreaView>
-//   );
-// }
