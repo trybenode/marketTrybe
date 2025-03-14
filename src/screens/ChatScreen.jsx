@@ -57,7 +57,7 @@ export default function ChatScreen() {
             </View>
           )}
           contentContainerStyle={{ padding: 10 }}
-          
+          showsVerticalScrollIndicator={false} // idk why i added this, i'd probably remove it.
         />
 
         {/* Message Input & Send Button */}
