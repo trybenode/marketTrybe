@@ -1,10 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
+
 import { UserProvider } from './src/context/UserContext';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import CategoryProductList from './src/screens/CategoryProductList';
 import CategoryScreen from './src/screens/CategoryScreen';
+import ChatScreen from './src/screens/ChatScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import FavouritesScreen from './src/screens/FavouritesScreen';
 import HomeScreen from './src/screens/HomeScreen';
@@ -12,13 +14,12 @@ import KycScreen from './src/screens/KycScreen';
 import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import MessagesScreen from './src/screens/MessagesScreen';
+import MyShopScreen from './src/screens/MyShopScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import ShopScreen from './src/screens/ShopScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SuccessKycScreen from './src/screens/SuccessKycScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
-import ChatScreen from './src/screens/ChatScreen';
-import MyShopScreen from './src/screens/MyShopScreen';
 
 import './global.css';
 import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
