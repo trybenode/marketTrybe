@@ -57,7 +57,7 @@ export default function ChatScreen() {
             </View>
           )}
           contentContainerStyle={{ padding: 10 }}
-          inverted
+          
         />
 
         {/* Message Input & Send Button */}
@@ -72,7 +72,7 @@ export default function ChatScreen() {
             <Ionicons name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView>``
     </SafeAreaView>
   );
 }
