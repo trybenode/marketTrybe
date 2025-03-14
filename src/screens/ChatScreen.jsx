@@ -57,7 +57,7 @@ export default function ChatScreen() {
             </View>
           )}
           contentContainerStyle={{ padding: 10 }}
-          inverted
+          showsVerticalScrollIndicator={false} // idk why i added this, i'd probably remove it.
         />
 
         {/* Message Input & Send Button */}
@@ -72,7 +72,7 @@ export default function ChatScreen() {
             <Ionicons name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAvoidingView>``
     </SafeAreaView>
   );
 }

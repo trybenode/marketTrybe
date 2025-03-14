@@ -1,14 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CustomHeader from '../components/CustomHeader';
-import SellerProfileCard from '../components/SellerProfileCard';
 import ListingCard from '../components/ListingCard';
-
-import { useNavigation } from '@react-navigation/native';
-import { listings } from '../data/dummyData'; // Import your product data
+import SellerProfileCard from '../components/SellerProfileCard';
 import UserProfile from '../components/UserProfile';
+import { listings } from '../data/dummyData'; // Import your product data
 
 export default function MyShopScreen() {
   const navigation = useNavigation();
@@ -30,7 +29,7 @@ export default function MyShopScreen() {
             <View className=" mt-4  flex-row flex-wrap justify-between px-2">
               {listings.map((product) => (
                 <View key={product.id} className="mb-4 w-[48%]">
-                  <TouchableOpacity onPress={() => navigation.navigate('Sell')}>
+                  <TouchableOpacity onPress={() => navigation.navigate('Sell', { product })}>
                     <ListingCard {...product} btnName="Edit" />
                   </TouchableOpacity>
                 </View>

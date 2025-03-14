@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { TouchableOpacity, TextInput, View, Text, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import BackButton from '../components/BackButton';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
+import { TouchableOpacity, TextInput, View, Text, ScrollView, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import UploadImages from '../components/UploadImages';
-import { Checkbox } from 'react-native-paper';
-// import TestHeader from '../components/TestHeader';
-import CustomHeader from '../components/CustomHeader';
+import { Checkbox, Button } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function SellScreen() {
+import CustomHeader from '../components/CustomHeader';
+import UploadImages from '../components/UploadImages';
+
+export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
-  const [items, setItems] = useState([
+  const [category, setCategory] = useState([
     { value: 'electronics', label: 'Electronics' },
     { value: 'clothing', label: 'Clothing' },
     { value: 'home_appliances', label: 'Home Appliances' },
@@ -33,17 +33,99 @@ export default function SellScreen() {
   const [price, setPrice] = useState('');
   const [year, setYear] = useState('');
 
+  const isEditMode = route.params?.product !== undefined;
+  const product = route.params?.product;
+  const navigation = useNavigation();
+
+  // Prefill form if product exists
+  useEffect(() => {
+    if (isEditMode && product) {
+      setProductName(product.name);
+      setSubCategory(product.subcategory);
+      setSelectedValue(product.selectedValue);
+      // Ensure category is always an array
+      if (Array.isArray(product.category)) {
+        setCategory(product.category);
+      }
+      setIsNegotiable(product.negotiable);
+      setProductDescription(product.description);
+      setBrand(product.brand);
+      setCondition(product.condition);
+      setColor(product.color);
+      setPrice(product.price);
+      setYear(product.year);
+    }
+  }, [isEditMode, product]);
+
+  // Clear form after product edit or upload
+  const clearForm = () => {
+    setProductName('');
+    setSubCategory('');
+    setSelectedValue(null);
+    setIsNegotiable(false);
+    setProductDescription('');
+    setBrand('');
+    setCondition('');
+    setColor('');
+    setPrice('');
+    setYear('');
+  };
+
+  const handleSubmit = () => {
+    if (
+      !productName ||
+      !price ||
+      !selectedValue ||
+      !productDescription ||
+      !brand ||
+      !condition ||
+      !color ||
+      !year
+    ) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    const productData = {
+      name: productName,
+      subcategory: subCategory,
+      selectedValue,
+      category,
+      negotiable: isNegotiable,
+      description: productDescription,
+      brand,
+      condition,
+      color,
+      price,
+      year,
+    };
+
+    if (isEditMode) {
+      Alert.alert('Success', 'Product updated successfully');
+    } else {
+      Alert.alert('Success', 'Product uploaded successfully');
+    }
+
+    clearForm();
+    navigation.navigate('MyShop');
+  };
+
+  const handleDelete = () => {
+    if (isEditMode) {
+      Alert.alert('Success', 'Product deleted successfully');
+      navigation.goBack();
+    }
+  };
+
   return (
-    <SafeAreaView className="mb-10 flex-1 bg-white">
-      {/* <BackButton screenName="MainTabs" /> */}
-      <CustomHeader screenName="Market" />
+    <SafeAreaView className="mb-20 flex-1 bg-white">
+      <CustomHeader screenName="Market" title="Product Information" />
 
       <View className="mt-1 flex-1 px-4">
         <ScrollView
           contentContainerStyle={{ flexGrow: 1 }}
           showsVerticalScrollIndicator={false}
           className="px-2">
-          <Text className="mb-6 text-center text-lg font-bold">Product Information</Text>
           <TextInput
             className="mb-4 rounded border bg-white p-4"
             placeholder="Product Name"
@@ -53,10 +135,10 @@ export default function SellScreen() {
           <DropDownPicker
             open={open}
             value={selectedValue}
-            items={items}
+            items={category}
             setOpen={setOpen}
             setValue={setSelectedValue}
-            setItems={setItems}
+            setItems={setCategory}
             placeholder="Select Category"
             style={{ marginBottom: 10 }}
           />
@@ -72,7 +154,6 @@ export default function SellScreen() {
               <Checkbox
                 status={isNegotiable ? 'checked' : 'unchecked'}
                 onPress={() => setIsNegotiable(!isNegotiable)}
-                className="border "
                 color="#6200EE"
               />
               <Text className="ml-2 text-lg">Negotiable</Text>
@@ -133,17 +214,24 @@ export default function SellScreen() {
             <Checkbox
               status={isAgreed ? 'checked' : 'unchecked'}
               onPress={() => setIsAgreed(!isAgreed)}
-              className="border"
               color="#6200EE"
             />
             <Text className="ml-2 text-lg">I accept the Terms & Conditions</Text>
           </View>
 
-          <TouchableOpacity
+          <Button
+            mode="contained"
             disabled={!isAgreed}
-            className={`mx-auto mb-24 w-[60%] rounded-lg p-3 ${isAgreed ? 'bg-blue-500' : 'bg-gray-400'}`}>
-            <Text className="text-center font-bold text-white">Submit</Text>
-          </TouchableOpacity>
+            onPress={handleSubmit}
+            style={{ marginBottom: 16 }}>
+            {isEditMode ? 'Update Product' : 'Upload Product'}
+          </Button>
+
+          {isEditMode && (
+            <Button mode="contained" buttonColor="red" onPress={handleDelete}>
+              Delete Product
+            </Button>
+          )}
         </ScrollView>
       </View>
     </SafeAreaView>
