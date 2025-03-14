@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, TextInput, View, Text, ScrollView, Alert, Button } from 'react-native';
+import { TouchableOpacity, TextInput, View, Text, ScrollView, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Checkbox } from 'react-native-paper';
+import { Checkbox,Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CustomHeader from '../components/CustomHeader';
@@ -57,6 +57,20 @@ export default function SellScreen({ route }) {
     }
   }, [isEditMode, product]);
 
+  //logic to clear form after product edit or upload
+  const clearForm = () => {
+    setProductName('');
+    setSubCategory('');
+    setSelectedValue(null);
+    setIsNegotiable(false);
+    setProductDescription('');
+    setBrand('');
+    setCondition('');
+    setColor('');
+    setPrice('');
+    setYear('');
+  };
+
   const handleSubmit = () => {
     if (
       !productName ||
@@ -85,19 +99,23 @@ export default function SellScreen({ route }) {
       price,
       year,
     };
-
+    // Handle product upload logic
     if (isEditMode) {
-      // Handle product update logic
-      console.log('Updating Product:', productData);
       Alert.alert('Success', 'Product updated successfully');
     } else {
-      // Handle product upload logic
-      console.log('Uploading Product:', productData);
       Alert.alert('Success', 'Product uploaded successfully');
     }
-
+    clearForm();
     // Navigate back after submission
-    navigation.goBack();
+    navigation.navigate('MyShop');
+  };
+
+  // Handle product deletion logic
+  const handleDelete = () => {
+    if (isEditMode) {
+      Alert.alert('Success', 'Product deleted successfully');
+      navigation.goBack();
+    }
   };
 
   return (
@@ -203,10 +221,18 @@ export default function SellScreen({ route }) {
           </View>
 
           <Button
+            mode="contained"
             disabled={!isAgreed}
-            title={isEditMode ? 'Update Product' : 'Upload Product'}
             onPress={handleSubmit}
-          />
+            style={{ marginBottom: 16 }}>
+            {isEditMode ? 'Update Product' : 'Upload Product'}
+          </Button>
+
+          {isEditMode && (
+            <Button mode="contained" buttonColor="red" onPress={handleDelete}>
+              Delete Product
+            </Button>
+          )}
         </ScrollView>
       </View>
     </SafeAreaView>
