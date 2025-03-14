@@ -19,7 +19,7 @@ export default function SuccessKycScreen() {
       </TouchableOpacity>
 
       {/* Main Content */}
-      <View className="gap-15 flex-1 items-center justify-center">
+      <View className="flex-1 items-center justify-center">
         <Animatable.View animation="bounceIn" duration={1000}>
           <Icon name="check-circle" size={200} color="green" />
         </Animatable.View>
