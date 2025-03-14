@@ -9,7 +9,7 @@ const SellerProfileCard = memo(({ name, yearCreated, location, imageUrl }) => {
       <View className="overflow-hidden rounded-lg">
         <Image
           source={{ uri: imageUrl }}
-          style={{ width: 150, height: 150, borderRadius: '20%' }}
+          style={{ width: 150, height: 150}}
           resizeMode={FastImage.resizeMode.contain}
         />
       </View>
