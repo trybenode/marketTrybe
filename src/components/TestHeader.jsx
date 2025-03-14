@@ -1,35 +1,60 @@
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, { memo } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const TestHeader = memo(({ screenName, title, extraComponent }) => {
+const TestHeader = memo(({ title, extraComponent }) => {
   const navigation = useNavigation();
 
   return (
-    <View className="relative h-20 flex-row items-center justify-between px-3">
+    <View className="relative h-20 flex-row items-center bg-white px-3">
       <StatusBar />
+
       {/* Left - Back Button */}
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={30} color="black" />
-      </TouchableOpacity>
+      <View className="flex-1">
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
 
       {/* Center - Title */}
-      <Text className="absolute left-1/2 -translate-x-1/2 text-xl font-extrabold">{title}</Text>
+      <View className="flex-shrink">
+        <Text className="text-xl font-extrabold text-center">{title}</Text>
+      </View>
 
       {/* Right - Extra component or placeholder */}
-      <View>
+      <View className="flex-1 items-end">
         {typeof extraComponent === 'string' ? (
-          <Text>{extraComponent}</Text> // wrap strings properly
+          <Text>{extraComponent}</Text>
         ) : extraComponent ? (
           extraComponent
         ) : (
           <View style={{ width: 30 }} /> // Placeholder to balance layout
         )}
       </View>
+
+      {/* Bottom Shadow */}
+      <View style={styles.bottomShadow} />
     </View>
   );
 });
 
 export default TestHeader;
+
+const styles = StyleSheet.create({
+  bottomShadow: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: '#0A0A0A',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 4,
+    zIndex: -1,
+  },
+});

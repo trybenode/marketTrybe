@@ -13,7 +13,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
 import CustomTextInput from '../components/CustomTextInput';
-import BackButton from '../components/BackButton';
 import Customheader from '../components/CustomHeader';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import RadioButton from '../components/RadioButton';
@@ -57,7 +56,7 @@ export default function EditProfileScreen() {
           className="flex-1 p-3">
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 30 }} // So Save button is not hidden
+            contentContainerStyle={{ paddingBottom: 30 }} 
             keyboardShouldPersistTaps="handled" // Dismiss keyboard when tapping outside input
           >
             {/* Profile Image */}

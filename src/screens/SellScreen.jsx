@@ -125,7 +125,7 @@ export default function SellScreen({ route }) {
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
-        className="px-4">
+        className="px-4 pb-8">
         <TextInput
           className="mb-4 rounded border bg-white p-4"
           placeholder="Product Name"
@@ -219,11 +219,11 @@ export default function SellScreen({ route }) {
           <Text className="ml-2 text-lg">I accept the Terms & Conditions</Text>
         </View>
 
-        <Button
+        {/* <Button
           mode="contained"
           disabled={!isAgreed}
           onPress={handleSubmit}
-          style={{ marginBottom: 16 }}>
+          style={{ marginBottom: 48}}>
           {isEditMode ? 'Update Product' : 'Upload Product'}
         </Button>
 
@@ -231,7 +231,17 @@ export default function SellScreen({ route }) {
           <Button mode="contained" buttonColor="red" onPress={handleDelete}>
             Delete Product
           </Button>
-        )}
+        )} */}
+        <Button
+          mode="contained"
+          disabled={!isAgreed && !isEditMode} // Only disable if it's not agreed AND not in edit mode
+          onPress={isEditMode ? handleSubmit : handleSubmit} // You can customize handlers if needed
+          buttonColor={isEditMode ? 'red' : undefined} // Red color for edit mode, default for create mode
+          style={{ marginBottom: 48 }} // Common margin for both cases
+        >
+          {isEditMode ? 'Update Product' : 'Upload Product'}
+        </Button>
+
       </ScrollView>
     </SafeAreaView>
   );
