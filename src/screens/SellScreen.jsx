@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, TextInput, View, Text, ScrollView, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Checkbox,Button } from 'react-native-paper';
+import { Checkbox, Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CustomHeader from '../components/CustomHeader';
@@ -57,7 +57,7 @@ export default function SellScreen({ route }) {
     }
   }, [isEditMode, product]);
 
-  //logic to clear form after product edit or upload
+  // Clear form after product edit or upload
   const clearForm = () => {
     setProductName('');
     setSubCategory('');
@@ -99,18 +99,17 @@ export default function SellScreen({ route }) {
       price,
       year,
     };
-    // Handle product upload logic
+
     if (isEditMode) {
       Alert.alert('Success', 'Product updated successfully');
     } else {
       Alert.alert('Success', 'Product uploaded successfully');
     }
+
     clearForm();
-    // Navigate back after submission
     navigation.navigate('MyShop');
   };
 
-  // Handle product deletion logic
   const handleDelete = () => {
     if (isEditMode) {
       Alert.alert('Success', 'Product deleted successfully');
@@ -120,7 +119,7 @@ export default function SellScreen({ route }) {
 
   return (
     <SafeAreaView className="mb-20 flex-1 bg-white">
-      <CustomHeader screenName="MainTabs" title="Product Information" />
+      <CustomHeader screenName="Market" title="Product Information" />
 
       <View className="mt-1 flex-1 px-4">
         <ScrollView
