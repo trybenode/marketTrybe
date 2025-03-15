@@ -26,7 +26,7 @@ export default function MyShopScreen() {
               location="Room 120 Independence, Boy's Hostel"
               imageUrl="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg"
             />
-            <View className=" mt-4  flex-row flex-wrap justify-between px-2">
+            <View className=" mt-4  flex-row flex-wrap justify-between mb-10 px-2">
               {listings.map((product) => (
                 <View key={product.id} className="mb-4 w-[48%]">
                   <TouchableOpacity onPress={() => navigation.navigate('Sell', { product })}>
@@ -37,7 +37,7 @@ export default function MyShopScreen() {
             </View>
           </>
         ) : (
-          <View className=" flex-1 items-center  justify-center  px-4 ">
+          <View className=" flex-1 items-center  justify-center px-4 ">
             <Text className="text-center text-lg text-red-600">
               You haven't uploaded any products yet.
             </Text>
