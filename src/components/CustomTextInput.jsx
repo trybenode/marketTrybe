@@ -40,7 +40,7 @@ const CustomTextInput = memo(({ placeholder, secureTextEntry, ...props }) => {
       <TextInput
         placeholder={placeholder}
         secureTextEntry={isPasswordVisible}
-        className="flex-1 py-4 text-sm"
+        className="flex-1 py-4 text-base"
         {...props}
       />
 
