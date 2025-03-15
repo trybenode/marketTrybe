@@ -113,7 +113,7 @@ export default function SellScreen({ route }) {
     if (isEditMode) {
       console.log('Deleting Product:', product);
       Alert.alert('Success', 'Product deleted successfully');
-      navigation.goBack();
+      navigation.navigate("MyShop");
     }
   };
 
