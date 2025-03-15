@@ -27,7 +27,9 @@ export default function ShopScreen() {
           name="Demilade Femi"
           yearCreated="2025"
           location="Hostelite, Block C, Enterprise"
-          imageUrl="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg"
+          // imageUrl="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg"
+          imageUrl="https://images.pexels.com/photos/31137621/pexels-photo-31137621.jpeg"
+
         />
 
         {/* Shop Title */}

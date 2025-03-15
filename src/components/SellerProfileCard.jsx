@@ -4,13 +4,13 @@ import FastImage from 'react-native-fast-image';
 
 const SellerProfileCard = memo(({ name, yearCreated, location, imageUrl }) => {
   return (
-    <View className="flex-row items-center justify-between rounded-lg bg-gray-100 p-4 px-1">
+    <View className="flex-row rounded-lg bg-gray-100 gap-2 p-4 px-4">
       {/* Seller Profile Image */}
-      <View className="overflow-hidden rounded-lg">
+      <View className="overflow-hidden rounded-lg w-[120px] h-[140px]">
         <Image
           source={{ uri: imageUrl }}
-          style={{ width: 150, height: 150}}
-          resizeMode={FastImage.resizeMode.contain}
+          style={{ width: '100%', height: '100%' }}
+          resizeMode={FastImage.resizeMode.cover} 
         />
       </View>
 
