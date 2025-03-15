@@ -29,7 +29,7 @@ export default function LoginScreen() {
   // };
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 bg-white">
       {/* Logo */}
       <View className="my-auto  p-8  shadow-md">
         <View className="items-center">
@@ -73,7 +73,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           onPress={() => console.log('Reset Password Clicked!')}
           accessibilityLabel="Forgot Password Link">
-          <Text className="mt-4 text-left text-blue-600">Forgot Password?</Text>
+          <Text className="mt-1 mb-3 text-left text-blue-600">Forgot Password? Reset</Text>
         </TouchableOpacity>
 
         {/* Reusable Login Button */}
@@ -95,7 +95,7 @@ export default function LoginScreen() {
 
         {/* Social Authentication Buttons */}
         <View
-          className="flex-row justify-center space-x-4"
+          className="flex-row justify-center gap-2 space-x-4"
           accessibilityLabel="Social Login Buttons">
           <SocialAuthButton
             name="google"

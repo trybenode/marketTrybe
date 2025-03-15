@@ -3,40 +3,41 @@ import { StatusBar } from 'expo-status-bar';
 import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const TestHeader = memo(({ title, extraComponent }) => {
   const navigation = useNavigation();
 
   return (
-    <View className="relative h-20 flex-row items-center bg-white px-3">
-      <StatusBar />
+    <SafeAreaView edges={['top']} style={{ backgroundColor: 'white' }}>
+      <StatusBar barStyle="dark-content" backgroundColor="white" translucent={false} />
+      <View className="relative h-16 flex-row items-center bg-white px-3">
+        {/* Left - Back Button */}
+        <View className="flex-1">
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
 
-      {/* Left - Back Button */}
-      <View className="flex-1">
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={30} color="black" />
-        </TouchableOpacity>
+        {/* Center - Title */}
+        <View className="flex-shrink">
+          <Text className="text-xl font-extrabold text-center">{title}</Text>
+        </View>
+
+        {/* Right - Extra component or placeholder */}
+        <View className="flex-1 items-end">
+          {typeof extraComponent === 'string' ? (
+            <Text>{extraComponent}</Text>
+          ) : extraComponent ? (
+            extraComponent
+          ) : (
+            <View style={{ width: 30 }} /> // Placeholder to balance layout
+          )}
+        </View>
       </View>
-
-      {/* Center - Title */}
-      <View className="flex-shrink">
-        <Text className="text-xl font-extrabold text-center">{title}</Text>
-      </View>
-
-      {/* Right - Extra component or placeholder */}
-      <View className="flex-1 items-end">
-        {typeof extraComponent === 'string' ? (
-          <Text>{extraComponent}</Text>
-        ) : extraComponent ? (
-          extraComponent
-        ) : (
-          <View style={{ width: 30 }} /> // Placeholder to balance layout
-        )}
-      </View>
-
       {/* Bottom Shadow */}
       <View style={styles.bottomShadow} />
-    </View>
+    </SafeAreaView>
   );
 });
 
