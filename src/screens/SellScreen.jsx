@@ -1,18 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
-import { TextInput, View, Text, ScrollView, Alert } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
-import { Checkbox,  Button } from 'react-native-paper';
+import { View, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from 'react-native-paper';
 
 import TestHeader from '../components/TestHeader';
 import UploadImages from '../components/UploadImages';
+import ProductFormInput from '../components/ProductFormInput';
+import CategoryDropdown from '../components/CategoryDropdown';
+import CheckboxWithLabel from '../components/CheckboxWithLabel';
+import ProductDescriptionInput from '../components/ProductDescriptionInput';
+import OtherInformationSection from '../components/OtherInformationSection';
+import SubmitButton from '../components/SubmitButton';
+import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckBox';
 
 export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [open, setOpen] = useState(false);
-  const [images, setImages] = useState([]); // State for images
+  const [images, setImages] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [category, setCategory] = useState([
     { value: 'electronics', label: 'Electronics' },
@@ -38,9 +44,8 @@ export default function SellScreen({ route }) {
   const product = route.params?.product;
   const navigation = useNavigation();
 
-
   const handleImagesSelected = (selectedImages) => {
-    setImages(selectedImages); 
+    setImages(selectedImages);
   };
 
   // Prefill form if product exists
@@ -95,21 +100,15 @@ export default function SellScreen({ route }) {
       return;
     }
 
-    // Handle product update logic
     if (isEditMode) {
-
       Alert.alert('Success', 'Product updated successfully');
     } else {
       Alert.alert('Success', 'Product uploaded successfully');
     }
 
-
     clearForm();
-
     navigation.navigate('MyShop');
   };
-
-  // Handle product deletion
   const handleDelete = () => {
     if (isEditMode) {
       console.log('Deleting Product:', product);
@@ -126,122 +125,52 @@ export default function SellScreen({ route }) {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
         className="px-4 pb-8">
-        <TextInput
-          className="mb-4 rounded border bg-white p-4"
+        <ProductFormInput
           placeholder="Product Name"
           value={productName}
           onChangeText={setProductName}
         />
-        <DropDownPicker
+        <CategoryDropdown
           open={open}
-          value={selectedValue}
-          items={category}
           setOpen={setOpen}
-          setValue={setSelectedValue}
-          setItems={setCategory}
-          placeholder="Select Category"
-          style={{ marginBottom: 10 }}
+          selectedValue={selectedValue}
+          setSelectedValue={setSelectedValue}
+          category={category}
+          setCategory={setCategory}
         />
-        <TextInput
-          className="mb-4 rounded border bg-white p-4"
+        <ProductFormInput
           placeholder="Sub-Category"
           value={subCategory}
           onChangeText={setSubCategory}
         />
-
         <View className="flex-row items-center justify-between">
-          <View className="flex-row items-center">
-            <Checkbox
-              status={isNegotiable ? 'checked' : 'unchecked'}
-              onPress={() => setIsNegotiable(!isNegotiable)}
-              color="#6200EE"
-            />
-            <Text className="ml-2 text-lg">Negotiable</Text>
-          </View>
+          <CheckboxWithLabel
+            label="Negotiable"
+            status={isNegotiable ? 'checked' : 'unchecked'}
+            onPress={() => setIsNegotiable(!isNegotiable)}
+          />
           <UploadImages onImagesSelected={handleImagesSelected} />
         </View>
-
-        <TextInput
-          className="mb-4 h-32 rounded border bg-white p-4"
-          placeholder="Product Description"
-          value={productDescription}
-          onChangeText={setProductDescription}
-          multiline
-          textAlignVertical="top"
+        <ProductDescriptionInput value={productDescription} onChangeText={setProductDescription} />
+        <OtherInformationSection
+          brand={brand}
+          setBrand={setBrand}
+          condition={condition}
+          setCondition={setCondition}
+          color={color}
+          setColor={setColor}
+          price={price}
+          setPrice={setPrice}
+          year={year}
+          setYear={setYear}
         />
-
-        <View className="mb-4">
-          <Text className="mb-4 text-center font-semibold">Other Information</Text>
-          <TextInput
-            className="mb-4 rounded border bg-white p-4"
-            placeholder="Brand/Type/Model"
-            value={brand}
-            onChangeText={setBrand}
-          />
-          <View className="flex-row justify-between">
-            <TextInput
-              className="mb-4 w-[48%] rounded border bg-white p-4"
-              placeholder="Condition (New/Used)"
-              value={condition}
-              onChangeText={setCondition}
-            />
-            <TextInput
-              className="mb-4 w-[48%] rounded border bg-white p-4"
-              placeholder="Color"
-              value={color}
-              onChangeText={setColor}
-            />
-          </View>
-          <View className="flex-row justify-between">
-            <TextInput
-              className="mb-4 w-[48%] rounded border bg-white p-4"
-              placeholder="Price (N)"
-              keyboardType="numeric"
-              value={price}
-              onChangeText={setPrice}
-            />
-            <TextInput
-              className="mb-4 w-[48%] rounded border bg-white p-4"
-              placeholder="Year"
-              keyboardType="numeric"
-              value={year}
-              onChangeText={setYear}
-            />
-          </View>
-        </View>
-
-        <View className="mb-4 flex-row items-center">
-          <Checkbox
-            status={isAgreed ? 'checked' : 'unchecked'}
-            onPress={() => setIsAgreed(!isAgreed)}
-            color="#6200EE"
-          />
-          <Text className="ml-2 text-lg">I accept the Terms & Conditions</Text>
-        </View>
-
-        {/* <Button
-          mode="contained"
-          disabled={!isAgreed}
-          onPress={handleSubmit}
-          style={{ marginBottom: 48}}>
-          {isEditMode ? 'Update Product' : 'Upload Product'}
-        </Button>
-
+        <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
         {isEditMode && (
           <Button mode="contained" buttonColor="red" onPress={handleDelete}>
             Delete Product
           </Button>
-        )} */}
-        <Button
-          mode="contained"
-          disabled={!isAgreed && !isEditMode} // Only disable if it's not agreed AND not in edit mode
-          onPress={isEditMode ? handleSubmit : handleSubmit} // You can customize handlers if needed
-          buttonColor={isEditMode ? 'red' : undefined} // Red color for edit mode, default for create mode
-          style={{ marginBottom: 48 }} // Common margin for both cases
-        >
-          {isEditMode ? 'Update Product' : 'Upload Product'}
-        </Button>
-
+        )}
+        <SubmitButton isEditMode={isEditMode} isAgreed={isAgreed} onPress={handleSubmit} />
       </ScrollView>
     </SafeAreaView>
   );
