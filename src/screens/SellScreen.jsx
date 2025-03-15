@@ -12,7 +12,9 @@ import CheckboxWithLabel from '../components/CheckboxWithLabel';
 import ProductDescriptionInput from '../components/ProductDescriptionInput';
 import OtherInformationSection from '../components/OtherInformationSection';
 import SubmitButton from '../components/SubmitButton';
-import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckBox';
+// import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckBox';
+import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckbox';
+
 
 export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
@@ -166,11 +168,11 @@ export default function SellScreen({ route }) {
         />
         <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
         {isEditMode && (
-          <Button mode="contained" buttonColor="red" onPress={handleDelete}>
+          <Button mode="contained" buttonColor="red" labelStyle={{ fontSize: 14, textAlign: 'center', width: "40%" }} onPress={handleDelete}>
             Delete Product
           </Button>
         )}
-        <SubmitButton isEditMode={isEditMode} isAgreed={isAgreed} onPress={handleSubmit} />
+        <SubmitButton isEditMode={isEditMode} isAgreed={isAgreed} onPress={handleSubmit} labelStyle={{ fontSize: 16, width: "60%" }} />
       </ScrollView>
     </SafeAreaView>
   );

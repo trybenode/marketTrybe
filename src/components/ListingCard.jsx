@@ -22,7 +22,7 @@ const ListingCard = ({ image, name, price, seller, btnName }) => {
       {/* Actions */}
       <View className="flex items-center justify-center">
         <Card.Actions>
-          <Button mode="contained" buttonColor="#2563eb" className=' px-5 py-2'>
+          <Button mode="contained" labelStyle={{ fontSize: 16, width: "40%" }} buttonColor="#2563eb" className='px-2'>
             {btnName}
           </Button>
         </Card.Actions>
