@@ -7,6 +7,7 @@ const SubmitButton = ({ isEditMode, isAgreed, onPress }) => {
       mode="contained"
       disabled={!isAgreed && !isEditMode}
       onPress={onPress}
+      labelStyle={{ fontSize: 16, width: '60%' }}
       buttonColor={isEditMode ? 'red' : undefined}
       style={{ marginBottom: 48, marginTop: 20 }}>
       {isEditMode ? 'Update Product' : 'Upload Product'}

@@ -168,11 +168,11 @@ export default function SellScreen({ route }) {
         />
         <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
         {isEditMode && (
-          <Button mode="contained" buttonColor="red" labelStyle={{ fontSize: 14, textAlign: 'center', width: "40%" }} onPress={handleDelete}>
+          <Button mode="contained" buttonColor="red" labelStyle={{ fontSize: 16, textAlign: 'center', width: "40%" }} onPress={handleDelete}>
             Delete Product
           </Button>
         )}
-        <SubmitButton isEditMode={isEditMode} isAgreed={isAgreed} onPress={handleSubmit} labelStyle={{ fontSize: 16, width: "60%" }} />
+        <SubmitButton isEditMode={isEditMode} isAgreed={isAgreed} onPress={handleSubmit} />
       </ScrollView>
     </SafeAreaView>
   );

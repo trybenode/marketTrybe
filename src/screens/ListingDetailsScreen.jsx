@@ -53,6 +53,7 @@ export default function ListingDetailsScreen({ route }) {
     <SafeAreaView className="flex-1 bg-white">
       <CustomHeader
         screenName="MainTabs"
+        title="Product Details"
         extraComponent={
           <TouchableOpacity
             className="flex items-center space-y-1"
@@ -117,7 +118,7 @@ export default function ListingDetailsScreen({ route }) {
                 {/* Negotiable Badge */}
                 {isNegotiable && (
                   <View className="mt-2 self-start rounded-full bg-green-600 px-3 py-1">
-                    <Text className="text-xs font-semibold text-white">Negotiable</Text>
+                    <Text className="text-xs text-white">Negotiable</Text>
                   </View>
                 )}
               </View>
