@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { View, Image } from 'react-native';
 import { Card, Text, Button } from 'react-native-paper';
 
-const ListingCard = ({ image, name, price, seller, btnName}) => {
+const ListingCard = ({ image, name, price, seller, btnName }) => {
   return (
     <Card className="m-2 overflow-hidden rounded-xl shadow-md">
       {/* Product Image */}
@@ -20,10 +20,10 @@ const ListingCard = ({ image, name, price, seller, btnName}) => {
       </Card.Content>
 
       {/* Actions */}
-      <View className="flex items-center justify-center py-2">
+      <View className="flex items-center justify-center">
         <Card.Actions>
-          <Button mode="contained" buttonColor="#2563eb">
-           {btnName}
+          <Button mode="contained" buttonColor="#2563eb" className=' px-5 py-2'>
+            {btnName}
           </Button>
         </Card.Actions>
       </View>
