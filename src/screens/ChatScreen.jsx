@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomHeader from '../components/CustomHeader';
 import Options from '../components/Options';
@@ -21,18 +21,22 @@ export default function ChatScreen() {
     { id: '3', text: 'How are you?', sender: 'me' },
   ]);
 
+  // useEffect(() => {
+   
+  // }, [newMessage]);
+
   const [newMessage, setNewMessage] = useState('');
 
   const sendMessage = () => {
     if (newMessage.trim().length === 0) return;
 
     const message = { id: Date.now().toString(), text: newMessage, sender: 'me' };
-    setMessages([...messages, message]);
+    setMessages([message, ...messages]);
     setNewMessage('');
   };
   return (
     <SafeAreaView className="flex-1 bg-white p-2">
-     <TestHeader title="Chat" extraComponent={<Options/>}/>
+      <TestHeader title="Chat" extraComponent={<Options />} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1 bg-gray-100">
@@ -56,6 +60,7 @@ export default function ChatScreen() {
               <Text className="mt-1 text-xs text-gray-400">{item.timestamp}</Text>
             </View>
           )}
+          inverted
           contentContainerStyle={{ padding: 10 }}
           showsVerticalScrollIndicator={false} // idk why i added this, i'd probably remove it.
         />
@@ -72,7 +77,7 @@ export default function ChatScreen() {
             <Ionicons name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>``
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

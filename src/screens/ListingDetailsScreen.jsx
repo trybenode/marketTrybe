@@ -198,7 +198,7 @@ export default function ListingDetailsScreen({ route }) {
                   <Pressable
                     onPress={() => setModalVisible(false)}
                     className="mt-5 rounded bg-white px-4 py-2">
-                    <Text className="text-lg font-bold">Close</Text>
+                    <Text className="text-lg font-bold py-2">Close</Text>
                   </Pressable>
                 </View>
               </Modal>
