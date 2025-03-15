@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import TestHeader from '../components/TestHeader';
 import CustomHeader from '../components/CustomHeader';
 import UserProfile from '../components/UserProfile';
 import { messages } from '../data/dummyData';
@@ -12,7 +12,8 @@ export default function MessagesScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <CustomHeader title="Messages" screenName="Market" extraComponent={<UserProfile />} />
+      {/* <CustomHeader title="Messages" screenName="Market" extraComponent={<UserProfile />} /> */}
+      <TestHeader title="Messages" extraComponent={<UserProfile />}/> 
       <FlatList
         data={chats}
         keyExtractor={(item) => item.id}

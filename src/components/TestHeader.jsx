@@ -9,9 +9,10 @@ const TestHeader = memo(({ title, extraComponent }) => {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView edges={['top']} style={{ backgroundColor: 'white' }}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" translucent={false} />
-      <View className="relative h-16 flex-row items-center bg-white px-3">
+      
+      <View className='pt-2'>
+        <StatusBar barStyle="dark-content" backgroundColor="white" translucent={false} />
+        <View className="relative h-16 flex-row items-center bg-white px-3">
         {/* Left - Back Button */}
         <View className="flex-1">
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -37,7 +38,7 @@ const TestHeader = memo(({ title, extraComponent }) => {
       </View>
       {/* Bottom Shadow */}
       <View style={styles.bottomShadow} />
-    </SafeAreaView>
+      </View>
   );
 });
 
