@@ -1,3 +1,4 @@
+//product description used on sell page
 import React from 'react';
 import { TextInput } from 'react-native';
 

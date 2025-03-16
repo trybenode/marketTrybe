@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+//content of listing card
+import React from 'react';
 import { View, Image } from 'react-native';
 import { Card, Text, Button } from 'react-native-paper';
 
@@ -22,7 +23,11 @@ const ListingCard = ({ image, name, price, seller, btnName }) => {
       {/* Actions */}
       <View className="flex items-center justify-center">
         <Card.Actions>
-          <Button mode="contained" labelStyle={{ fontSize: 16, width: "40%" }} buttonColor="#2563eb" className='px-2'>
+          <Button
+            mode="contained"
+            labelStyle={{ fontSize: 16, width: '40%' }}
+            buttonColor="#2563eb"
+            className="px-2">
             {btnName}
           </Button>
         </Card.Actions>

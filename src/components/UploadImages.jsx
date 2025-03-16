@@ -1,6 +1,7 @@
+//upload image used on sell screen
+import * as ImagePicker from 'expo-image-picker';
 import React, { useState, memo } from 'react';
 import { View, Text, TouchableOpacity, Image, FlatList, Alert } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
 
 const UploadImages = memo(({ onImagesSelected }) => {
   const [images, setImages] = useState([]);

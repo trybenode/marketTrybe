@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
+//user profile icon
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import Fontisto from '@expo/vector-icons/Fontisto';
+import React, { memo } from 'react';
+import { TouchableOpacity, Text, View } from 'react-native';
 
 const CustomProfileOption = memo(({ title, onPress, iconName, iconType = 'MaterialIcons' }) => {
   // Function to select the correct icon component

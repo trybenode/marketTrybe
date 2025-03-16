@@ -1,3 +1,4 @@
+// t&c used on sell screen
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Checkbox } from 'react-native-paper';

@@ -1,7 +1,8 @@
+// user profile used in profile page
+import { FontAwesome } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { FontAwesome } from '@expo/vector-icons';
 
 const ProfileImagePicker = memo(({ image, setImage }) => {
   const pickImage = async () => {

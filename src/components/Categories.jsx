@@ -1,3 +1,4 @@
+//rendered categories 
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState, memo } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';

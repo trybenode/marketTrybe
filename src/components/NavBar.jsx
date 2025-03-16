@@ -1,3 +1,4 @@
+//bottom navigation bar
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import React from 'react';
@@ -79,11 +80,6 @@ const styles = StyleSheet.create({
     borderWidth: 3, // Correct way to set border width
     borderColor: '#292D34', // Correct way to set border color
     borderStyle: 'solid', // Optional, default is solid
-    // elevation: 4, // Shadow effect on Android
-    // shadowColor: '#000',
-    // shadowOpacity: 0.2,
-    // shadowRadius: 4,
-    // shadowOffset: { width: 0, height: 2 },
   },
   floatingButtonText: {
     fontSize: 45,

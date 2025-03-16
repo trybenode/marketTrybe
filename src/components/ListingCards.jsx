@@ -1,3 +1,4 @@
+//rendered product listing item
 import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';
 import { View, FlatList, TouchableOpacity } from 'react-native';
@@ -9,7 +10,7 @@ const ListingCards = memo(({ data, buttomPad = 100 }) => {
 
   return (
     // Listings - 2 Columns
-    <View style={{ flex: 1, paddingBottom: buttomPad, paddingHorizontal:'3px' }}>
+    <View style={{ flex: 1, paddingBottom: buttomPad, paddingHorizontal: '3px' }}>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
@@ -22,7 +23,7 @@ const ListingCards = memo(({ data, buttomPad = 100 }) => {
           <TouchableOpacity
             onPress={() => navigation.navigate('ListingDetails', { itemId: item.id })}
             className="mb-4 w-[48%]">
-            <ListingCard {...item} btnName='view'/>
+            <ListingCard {...item} btnName="view" />
           </TouchableOpacity>
         )}
         showsVerticalScrollIndicator={false}

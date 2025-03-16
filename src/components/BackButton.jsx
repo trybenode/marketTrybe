@@ -1,3 +1,4 @@
+//back button used in header component
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';

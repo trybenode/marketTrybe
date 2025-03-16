@@ -1,5 +1,6 @@
+//product form input used on sell page
 import React from 'react';
-import { TextInput, View, Text } from 'react-native';
+import { TextInput } from 'react-native';
 
 const ProductFormInput = ({ placeholder, value, onChangeText, multiline, numberOfLines }) => {
   return (

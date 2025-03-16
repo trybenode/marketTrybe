@@ -1,3 +1,4 @@
+//save button used on edit profile, kyc screen
 import React, { memo } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 

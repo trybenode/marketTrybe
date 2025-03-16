@@ -1,18 +1,17 @@
+//page header used in place of customcomponent on some pages.
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const TestHeader = memo(({ title, extraComponent }) => {
   const navigation = useNavigation();
 
   return (
-      
-      <View className='pt-2'>
-        <StatusBar barStyle="dark-content" backgroundColor="white" translucent={false} />
-        <View className="relative h-16 flex-row items-center bg-white px-3">
+    <View className="pt-2">
+      <StatusBar barStyle="dark-content" backgroundColor="white" translucent={false} />
+      <View className="relative h-16 flex-row items-center bg-white px-3">
         {/* Left - Back Button */}
         <View className="flex-1">
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -22,7 +21,7 @@ const TestHeader = memo(({ title, extraComponent }) => {
 
         {/* Center - Title */}
         <View className="flex-shrink">
-          <Text className="text-xl font-extrabold text-center">{title}</Text>
+          <Text className="text-center text-xl font-extrabold">{title}</Text>
         </View>
 
         {/* Right - Extra component or placeholder */}
@@ -38,7 +37,7 @@ const TestHeader = memo(({ title, extraComponent }) => {
       </View>
       {/* Bottom Shadow */}
       <View style={styles.bottomShadow} />
-      </View>
+    </View>
   );
 });
 

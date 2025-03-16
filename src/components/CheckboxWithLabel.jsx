@@ -1,3 +1,4 @@
+//checkbox used on sell/upload screen
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Checkbox } from 'react-native-paper';

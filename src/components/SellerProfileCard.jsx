@@ -1,3 +1,4 @@
+//seller profile card used in myshop and shop screen
 import React, { memo } from 'react';
 import { View, Text, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';

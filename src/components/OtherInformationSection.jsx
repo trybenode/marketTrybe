@@ -1,3 +1,4 @@
+// other information section for sell page
 import React from 'react';
 import { View, Text, TextInput } from 'react-native';
 

@@ -1,3 +1,4 @@
+//submit button used on sell screen
 import React from 'react';
 import { Button } from 'react-native-paper';
 
