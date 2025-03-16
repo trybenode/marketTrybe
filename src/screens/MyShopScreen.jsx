@@ -12,7 +12,6 @@ import { listings } from '../data/dummyData'; // Import your product data
 export default function MyShopScreen() {
   const navigation = useNavigation();
 
-  //   const [isSeller, setIsSeller] = useState(false);
   const hasProducts = listings.length > 0;
   return (
     <SafeAreaView className="flex-1 bg-white">

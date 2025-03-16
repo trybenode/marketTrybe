@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Categories from '../components/Categories';
-import ListingCards from '../components/ListingCards'; //import listing card component
+import ListingCards from '../components/ListingCards'; 
 import SearchBar from '../components/SearchBar';
 import UserProfile from '../components/UserProfile';
 import { listings } from '../data/dummyData';

@@ -1,12 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import BackButton from '../components/BackButton';
 import CategoriesListing from '../components/CategoriesListing';
-import { categories } from '../data/dummyData';
 import CustomHeader from '../components/CustomHeader';
+import { categories } from '../data/dummyData';
 
 export default function CategoryScreen() {
   const navigation = useNavigation();

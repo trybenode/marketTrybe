@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomTextInput from '../components/CustomTextInput';
+
 import CustomButton from '../components/CustomButton';
+import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
 
 export default function LoginScreen() {
@@ -73,7 +74,7 @@ export default function LoginScreen() {
         <TouchableOpacity
           onPress={() => console.log('Reset Password Clicked!')}
           accessibilityLabel="Forgot Password Link">
-          <Text className="mt-1 mb-3 text-left text-blue-600">Forgot Password? Reset</Text>
+          <Text className="mb-3 mt-1 text-left text-blue-600">Forgot Password? Reset</Text>
         </TouchableOpacity>
 
         {/* Reusable Login Button */}

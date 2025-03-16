@@ -1,18 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { View, TouchableOpacity, ScrollView, Text, Image } from 'react-native';
-import ListingCard from '../components/ListingCard';
-import UserProfile from '../components/UserProfile';
+import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useNavigation } from '@react-navigation/native';
-import { listings } from '../data/dummyData'; // Import your product data
-
 import CustomHeader from '../components/CustomHeader';
+import ListingCard from '../components/ListingCard';
 import SellerProfileCard from '../components/SellerProfileCard';
+import UserProfile from '../components/UserProfile';
+import { listings } from '../data/dummyData'; // Import your product data
 
 export default function ShopScreen() {
   const navigation = useNavigation();
-  // const screenHeight = Dimensions.get('window');
+
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -27,9 +26,7 @@ export default function ShopScreen() {
           name="Demilade Femi"
           yearCreated="2025"
           location="Hostelite, Block C, Enterprise"
-          // imageUrl="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg"
           imageUrl="https://images.pexels.com/photos/31137621/pexels-photo-31137621.jpeg"
-
         />
 
         {/* Shop Title */}
@@ -37,7 +34,6 @@ export default function ShopScreen() {
 
         {/* Product List */}
         <View className=" mt-4  flex-row flex-wrap justify-between px-2">
-          {/* // Add mb-20 to the class name here */}
           {listings.map((product) => (
             <View key={product.id} className="mb-4 w-[48%]">
               <TouchableOpacity onPress={() => navigation.navigate('ListingDetails')}>

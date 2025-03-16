@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import TestHeader from '../components/TestHeader';
-import { dummyTradeHistory } from '../data/dummyData';
 import CustomHeader from '../components/CustomHeader';
+import { dummyTradeHistory } from '../data/dummyData';
 
 const HistoryScreen = () => {
   const navigation = useNavigation();

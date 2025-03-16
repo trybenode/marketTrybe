@@ -3,8 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useUser } from '../context/UserContext';
+
 import CustomProfileOption from '../components/CustomProfileOption';
+import { useUser } from '../context/UserContext';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();

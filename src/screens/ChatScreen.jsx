@@ -1,3 +1,5 @@
+import { Ionicons } from '@expo/vector-icons';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -7,11 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomHeader from '../components/CustomHeader';
+
 import Options from '../components/Options';
-import { Ionicons } from '@expo/vector-icons';
 import TestHeader from '../components/TestHeader';
 
 export default function ChatScreen() {
@@ -22,7 +22,7 @@ export default function ChatScreen() {
   ]);
 
   // useEffect(() => {
-   
+
   // }, [newMessage]);
 
   const [newMessage, setNewMessage] = useState('');

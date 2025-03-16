@@ -1,26 +1,21 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  Dimensions,
   FlatList,
   Image,
   Modal,
   Pressable,
-  ScrollView,
   TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-// import Carousel from 'react-native-reanimated-carousel';
-import BackButton from '../components/BackButton';
-import Fontisto from '@expo/vector-icons/Fontisto';
-import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { images, listings } from '../data/dummyData';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import ListingCards from '../components/ListingCards';
+
 import CustomHeader from '../components/CustomHeader';
-// import { listings } from '../data/dummyData';
+import ListingCards from '../components/ListingCards';
+import { images, listings } from '../data/dummyData';
 
 export default function ListingDetailsScreen({ route }) {
   const ID = route.params;
@@ -43,12 +38,6 @@ export default function ListingDetailsScreen({ route }) {
     { label: 'Battery', value: '4000mAh' },
   ];
 
-  // const images = [
-  //   'https://via.placeholder.com/300',
-  //   'https://via.placeholder.com/300/111',
-  //   'https://via.placeholder.com/300/222',
-  // ];
-
   return (
     <SafeAreaView className="flex-1 bg-white">
       <CustomHeader
@@ -70,19 +59,6 @@ export default function ListingDetailsScreen({ route }) {
         ListFooterComponent={null}
         ListHeaderComponent={
           <View>
-            {/* <View className="flex-row items-center justify-between">
-              <BackButton screenName="MainTabs" />
-              <TouchableOpacity
-                className="flex items-center space-y-1"
-                onPress={() => setLiked(!liked)}>
-                <MaterialIcons
-                  name={liked ? 'favorite' : 'favorite-border'}
-                  size={30}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </View> */}
-
             {/* Carousel with pop-up (modal) on click */}
             <View className=" mt-5">
               <FlatList
@@ -198,7 +174,7 @@ export default function ListingDetailsScreen({ route }) {
                   <Pressable
                     onPress={() => setModalVisible(false)}
                     className="mt-5 rounded bg-white px-4 py-2">
-                    <Text className="text-lg px-2">Close</Text>
+                    <Text className="px-2 text-lg">Close</Text>
                   </Pressable>
                 </View>
               </Modal>
@@ -211,23 +187,3 @@ export default function ListingDetailsScreen({ route }) {
     </SafeAreaView>
   );
 }
-
-// {
-//   /* <Carousel
-
-//         loop
-//         width={width}
-//         height={250}
-//         autoPlay={true}
-//         data={images}
-//         scrollAnimationDuration={500}
-//         renderItem={({ item }) => (
-//           <Image
-//             source={{ uri: item }}
-//             style={{ width: "100%", height: "100%", borderRadius: 10 }}
-//             resizeMode="cover"
-//           />
-//         )}
-
-//       /> */
-// }

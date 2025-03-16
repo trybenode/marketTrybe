@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomTextInput from '../components/CustomTextInput';
+
 import CustomButton from '../components/CustomButton';
+import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
 
 export default function SignUpScreen() {
@@ -80,7 +81,7 @@ export default function SignUpScreen() {
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
           accessibilityLabel="Login Link">
-          <Text className="mt-1 mb-3 text-left text-blue-600">Already have an account? Login.</Text>
+          <Text className="mb-3 mt-1 text-left text-blue-600">Already have an account? Login.</Text>
         </TouchableOpacity>
 
         {/* Sign Up Button */}

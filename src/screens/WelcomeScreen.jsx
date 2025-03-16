@@ -1,5 +1,5 @@
-import { View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();

@@ -1,20 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import TestHeader from '../components/TestHeader';
-import UploadImages from '../components/UploadImages';
-import ProductFormInput from '../components/ProductFormInput';
 import CategoryDropdown from '../components/CategoryDropdown';
 import CheckboxWithLabel from '../components/CheckboxWithLabel';
-import ProductDescriptionInput from '../components/ProductDescriptionInput';
 import OtherInformationSection from '../components/OtherInformationSection';
+import ProductDescriptionInput from '../components/ProductDescriptionInput';
+import ProductFormInput from '../components/ProductFormInput';
 import SubmitButton from '../components/SubmitButton';
-// import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckBox';
 import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckbox';
-
+import TestHeader from '../components/TestHeader';
+import UploadImages from '../components/UploadImages';
 
 export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
@@ -115,7 +113,7 @@ export default function SellScreen({ route }) {
     if (isEditMode) {
       console.log('Deleting Product:', product);
       Alert.alert('Success', 'Product deleted successfully');
-      navigation.navigate("MyShop");
+      navigation.navigate('MyShop');
     }
   };
 
@@ -168,7 +166,11 @@ export default function SellScreen({ route }) {
         />
         <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
         {isEditMode && (
-          <Button mode="contained" buttonColor="red" labelStyle={{ fontSize: 16, textAlign: 'center', width: "40%" }} onPress={handleDelete}>
+          <Button
+            mode="contained"
+            buttonColor="red"
+            labelStyle={{ fontSize: 16, textAlign: 'center', width: '40%' }}
+            onPress={handleDelete}>
             Delete Product
           </Button>
         )}

@@ -1,10 +1,11 @@
+import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import CustomTextInput from '../components/CustomTextInput';
+
 import CustomHeader from '../components/CustomHeader';
+import CustomTextInput from '../components/CustomTextInput';
 import UserProfile from '../components/UserProfile';
 
 export default function KycScreen() {
@@ -115,4 +116,3 @@ export default function KycScreen() {
     </SafeAreaView>
   );
 }
-

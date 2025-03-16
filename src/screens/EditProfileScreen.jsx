@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   View,
@@ -10,14 +11,12 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 
-import CustomTextInput from '../components/CustomTextInput';
 import Customheader from '../components/CustomHeader';
+import CustomTextInput from '../components/CustomTextInput';
 import ProfileImagePicker from '../components/ProfileImagePicker';
 import RadioButton from '../components/RadioButton';
 import SaveButton from '../components/SaveButton';
-
 import { useUser } from '../context/UserContext';
 
 export default function EditProfileScreen() {
@@ -56,7 +55,7 @@ export default function EditProfileScreen() {
           className="flex-1 p-3">
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 30 }} 
+            contentContainerStyle={{ paddingBottom: 30 }}
             keyboardShouldPersistTaps="handled" // Dismiss keyboard when tapping outside input
           >
             {/* Profile Image */}
