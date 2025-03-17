@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
-import { getAuth } from 'firebase/auth';
+// import { getAuth } from 'firebase/auth';
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore } from 'firebase/firestore';
 
 import {
@@ -10,7 +12,7 @@ import {
   FIREBASE_STORAGE_BUCKET,
   FIREBASE_MESSAGING_SENDER_ID,
   FIREBASE_APP_ID,
-  FIREBASE_MEASUREMENT_ID,
+  // FIREBASE_MEASUREMENT_ID,
 } from '@env'; // works with `react-native-dotenv` been installed
 
 const firebaseConfig = {
@@ -20,13 +22,18 @@ const firebaseConfig = {
   storageBucket: FIREBASE_STORAGE_BUCKET,
   messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
   appId: FIREBASE_APP_ID,
-  measurementId: FIREBASE_MEASUREMENT_ID,
+  // measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialized Firebase
+// console.log('FIREBASE_API_KEY:', FIREBASE_API_KEY);
+
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
-const auth = getAuth(app);
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage),
+});
+// const auth = getAuth(app);
 const db = getFirestore(app);
 
 export { app, db, storage, auth };
