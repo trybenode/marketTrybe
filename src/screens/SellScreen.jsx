@@ -1,9 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
+import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { auth, db } from '../../firebaseConfig'; // imported firebse services
 import CategoryDropdown from '../components/CategoryDropdown';
 import CheckboxWithLabel from '../components/CheckboxWithLabel';
 import OtherInformationSection from '../components/OtherInformationSection';
@@ -13,6 +16,7 @@ import SubmitButton from '../components/SubmitButton';
 import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckbox';
 import TestHeader from '../components/TestHeader';
 import UploadImages from '../components/UploadImages';
+import { create } from 'twrnc';
 
 export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
@@ -48,7 +52,8 @@ export default function SellScreen({ route }) {
     setImages(selectedImages);
   };
 
-  // Prefill form if product exists
+  // Prefill form if product exists 
+ // remodify to get daata from firestore
   useEffect(() => {
     if (isEditMode && product) {
       setProductName(product.name);
@@ -84,7 +89,28 @@ export default function SellScreen({ route }) {
   };
 
   // Handle form submission
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // const uploadImages = async () => {
+    //   try {
+    //     const imageUrls = await Promise.all(
+    //       images.map(async (image, index) => {
+    //         const response = await fetch(image); // Fetch local image
+    //         const blob = await response.blob(); // Convert to blob
+
+    //         const storageRef = ref(storage, `products/${Date.now()}_${index}.jpg`);
+    //         await uploadBytes(storageRef, blob);
+
+    //         return await getDownloadURL(storageRef); // Get public URL
+    //       })
+    //     );
+
+    //     return imageUrls;
+    //   } catch (error) {
+    //     console.error('Error uploading images:', error);
+    //     throw error;
+    //   }
+    // };
+
     if (
       !productName ||
       !price ||
@@ -93,27 +119,69 @@ export default function SellScreen({ route }) {
       !brand ||
       !condition ||
       !color ||
-      !year ||
-      images.length === 0
+      !year 
+      // ||
+
+      // images.length === 0
     ) {
       Alert.alert('Error', 'Please fill in all fields and upload at least one image');
       return;
     }
+    try {
+      const user = auth.currentUser;
+      if (!user) {
+        Alert.alert('Error', 'You must be logged in to upload a product');
+        return;
+      }
 
-    if (isEditMode) {
-      Alert.alert('Success', 'Product updated successfully');
-    } else {
-      Alert.alert('Success', 'Product uploaded successfully');
-    }
+      // const imageUrls = await uploadImages();
 
-    clearForm();
-    navigation.navigate('MyShop');
-  };
-  const handleDelete = () => {
-    if (isEditMode) {
-      console.log('Deleting Product:', product);
-      Alert.alert('Success', 'Product deleted successfully');
+      const productData = {
+        name: productName,
+        subcategory: subCategory,
+        category: selectedValue,
+        negotiable: isNegotiable,
+        description: productDescription,
+        brand,
+        condition,
+        color,
+        price,
+        year,
+        // images: imageUrls,
+        userId: auth.currentUser.uid,
+        createdAt: new Date(),
+      };
+
+      if (isEditMode) {
+        // update/edit existing product
+        const productRef = doc(db, 'products', product.id);
+        await updateDoc(productRef, productData);
+        Alert.alert('Success', 'Product updated successfully');
+      } else {
+        // add new product
+        await addDoc(collection(db, 'products'), productData);
+        Alert.alert('Success', 'Product uploaded successfully');
+      }
+
+      clearForm();
       navigation.navigate('MyShop');
+    } catch (error) {
+      console.error('Upload Error:', error.message);
+      Alert.alert('Error', 'Failed to upload product. Please try again.');
+    }
+  };
+  const handleDelete = async () => {
+    if (isEditMode && product) {
+      try {
+        const productRef = doc(db, 'products', product.id);
+        await deleteDoc(productRef);
+
+        Alert.alert('Success', 'Product deleted successfully');
+        navigation.navigate('MyShop');
+      } catch (error) {
+        console.error('Delete Error:', error.message);
+        Alert.alert('Error', 'Failed to delete product. Please try again.');
+      }
     }
   };
 
