@@ -1,8 +1,3 @@
-import { initializeApp } from 'firebase/app';
-import { getStorage } from 'firebase/storage';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-
 import {
   FIREBASE_API_KEY,
   FIREBASE_AUTH_DOMAIN,
@@ -16,6 +11,12 @@ import {
   IOS_CLIENT_ID,
 
 } from '@env'; // works with `react-native-dotenv` been installed
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { initializeApp } from 'firebase/app';
+// import { getAuth } from 'firebase/auth';
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
@@ -27,7 +28,7 @@ const firebaseConfig = {
 
 };
 
-
+// console.log('FIREBASE_API_KEY:', FIREBASE_API_KEY);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
