@@ -4,13 +4,16 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebaseConfig'; // Adjust path accordingly
+import { auth } from '../../firebaseConfig'; 
+// import useAppleSignIn from '../services/auth/appleSignIn';
+// import useGoogleSignIn from '../services/auth/googleSignIn';
+// import useFacebookSignIn from '../services/auth/facebookSignIn';
 
-import Toast from 'react-native-toast-message'; // ✅ Import Toast
-
+import Toast from 'react-native-toast-message'; 
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
+import useGoogleSignIn from '../services/auth/googleSignIn';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -75,8 +78,8 @@ export default function LoginScreen() {
       } else if (errorCode === 'auth/invalid-credential') {
         Toast.show({
           type: 'error',
-          text1: 'Invalid Credentials',
-          text2: 'The email or password provided is incorrect.',
+          text1: 'Login failed.',
+          text2: 'Please check your email and password.',
         });
       } else if (errorCode === 'auth/too-many-requests') {
         Toast.show({
@@ -174,21 +177,21 @@ export default function LoginScreen() {
             name="google"
             type="FontAwesome"
             iconColor="#DB4437"
-            onPress={() => console.log('Google Login')}
+            onPress={() => console.log("Google signup")}
             accessibilityLabel="Google Login Button"
           />
           <SocialAuthButton
             name="facebook"
             type="FontAwesome"
             iconColor="#1877F2"
-            onPress={() => console.log('Facebook Login')}
+            onPress={() => console.log("yo")}
             accessibilityLabel="Facebook Login Button"
           />
           <SocialAuthButton
             name="logo-apple"
             type="Ionicons"
             iconColor="black"
-            onPress={() => console.log('Apple Login')}
+            onPress={() => console.log("yo")}
             accessibilityLabel="Apple Login Button"
           />
         </View>
