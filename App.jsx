@@ -20,9 +20,11 @@ import ShopScreen from './src/screens/ShopScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SuccessKycScreen from './src/screens/SuccessKycScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
+import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
+
+import Toast from 'react-native-toast-message';
 
 import './global.css';
-import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -78,10 +80,12 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-
           <Stack.Screen name="MyShop" component={MyShopScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
+
+      
+      <Toast />
     </UserProvider>
   );
 }

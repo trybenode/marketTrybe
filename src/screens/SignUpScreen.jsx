@@ -3,30 +3,87 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebaseConfig'; 
+
+import Toast from 'react-native-toast-message'; // for displaying Flash Messages 
+
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
 
 export default function SignUpScreen() {
   const navigation = useNavigation();
+
+  // Form states
   const [email, setEmail] = useState('');
   const [number, setNumber] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // For loading indicator
 
-  // const handleSignUp = () => {
-  //   // Basic validation
-  //   if (!email || !number || !password) {
-  //     setError('Please fill in all fields');
-  //     return;
-  //   }
+  const handleSignUp = async () => {
+    setLoading(true);
 
-  //   // Proceed with sign-up logic or API call here
+    // Basic validation
+    if (!email || !number || !password) {
+      Toast.show({
+        type: 'error',
+        text1: 'Incomplete Fields',
+        text2: 'Please fill in all fields to continue.',
+      });
+      setLoading(false);
+      return;
+    }
 
-  //   // On success:
-  //   setError('');
-  //   navigation.navigate('MainTabs');
-  // };
+    try {
+      // Firebase Sign Up
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log('User registered:', userCredential.user);
+
+      // Show success flash message
+      Toast.show({
+        type: 'success',
+        text1: 'Account Created',
+        text2: 'Sign up successful! Please login to continue.',
+      });
+
+      // Redirect to Login Screen after short delay for user to read message
+      setTimeout(() => {
+        navigation.navigate('Login');
+      }, 2000); // 2 seconds delay before navigating
+    } catch (err) {
+      console.error('Sign up error:', err.message);
+
+      // Handle Firebase error messages gracefully using toast
+      if (err.code === 'auth/email-already-in-use') {
+        Toast.show({
+          type: 'error',
+          text1: 'Email Already Used',
+          text2: 'This email is already registered. Please login or use another email.',
+        });
+      } else if (err.code === 'auth/invalid-email') {
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid Email',
+          text2: 'Please enter a valid email address.',
+        });
+      } else if (err.code === 'auth/weak-password') {
+        Toast.show({
+          type: 'error',
+          text1: 'Weak Password',
+          text2: 'Password should be at least 6 characters.',
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Sign Up Failed',
+          text2: 'Something went wrong. Please try again.',
+        });
+      }
+    } finally {
+      setLoading(false); // Stop loading when done
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -42,13 +99,6 @@ export default function SignUpScreen() {
           <Text className="mt-4 text-2xl font-bold text-gray-800">Create an Account</Text>
           <Text className="my-4 text-gray-500">Sign up to get started</Text>
         </View>
-
-        {/* Error Message */}
-        {error && (
-          <Text className="mt-4 text-center text-red-500" accessibilityLabel="Error Message">
-            {error}
-          </Text>
-        )}
 
         {/* Input Fields */}
         <CustomTextInput
@@ -84,13 +134,13 @@ export default function SignUpScreen() {
           <Text className="mb-3 mt-1 text-left text-blue-600">Already have an account? Login.</Text>
         </TouchableOpacity>
 
-        {/* Sign Up Button */}
+        {/* Sign Up Button with Loading Indicator */}
         <CustomButton
-          title="Sign Up"
-          onPress={() => navigation.navigate('MainTabs')}
-          // onPress={handleSignUp}
+          title={loading ? 'Signing up...' : 'Sign Up'}
+          onPress={handleSignUp}
+          disabled={loading}
           containerStyle="mt-6"
-          buttonStyle="bg-blue-600"
+          buttonStyle={`bg-blue-600 ${loading ? 'opacity-50' : ''}`}
           textStyle="text-white"
           accessibilityLabel="Sign Up Button"
         />
