@@ -1,7 +1,7 @@
 //seller profile card used in myshop and shop screen
 import React, { memo } from 'react';
 import { View, Text, Image } from 'react-native';
-import FastImage from 'react-native-fast-image';
+// import FastImage from 'react-native-fast-image';
 
 const SellerProfileCard = memo(({ name, yearCreated, location, imageUrl }) => {
   return (
@@ -11,7 +11,7 @@ const SellerProfileCard = memo(({ name, yearCreated, location, imageUrl }) => {
         <Image
           source={{ uri: imageUrl }}
           style={{ width: '100%', height: '100%' }}
-          resizeMode={FastImage.resizeMode.cover} 
+          // resizeMode={FastImage.resizeMode.cover} 
         />
       </View>
 
