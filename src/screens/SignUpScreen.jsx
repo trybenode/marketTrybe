@@ -11,6 +11,9 @@ import Toast from 'react-native-toast-message'; // for displaying Flash Messages
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
+// import useAppleSignIn from '../services/auth/appleSignIn';
+// import useFacebookSignIn from '../services/auth/facebookSignIn';
+import useGoogleSignIn from '../services/auth/googleSignIn';
 
 export default function SignUpScreen() {
   const navigation = useNavigation();
@@ -160,21 +163,21 @@ export default function SignUpScreen() {
             name="google"
             type="FontAwesome"
             iconColor="#DB4437"
-            onPress={() => console.log('Google Sign-up')}
+            onPress={() => console.log("Google signup")}
             accessibilityLabel="Google Sign Up Button"
           />
           <SocialAuthButton
             name="facebook"
             type="FontAwesome"
             iconColor="#1877F2"
-            onPress={() => console.log('Facebook Sign-up')}
+            onPress={() => console.log("yo")}
             accessibilityLabel="Facebook Sign Up Button"
           />
           <SocialAuthButton
             name="logo-apple"
             type="Ionicons"
             iconColor="black"
-            onPress={() => console.log('Apple Sign-up')}
+            onPress={() => console.log("yo")}
             accessibilityLabel="Apple Sign Up Button"
           />
         </View>
