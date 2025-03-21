@@ -121,8 +121,8 @@ export default function SellScreen({ route }) {
       !color ||
       !year 
       // ||
-
-      // images.length === 0
+      //(!isEditMode && images.length === 0) //  check only for new listings
+      // images.length === 0 remove this after testing 
     ) {
       Alert.alert('Error', 'Please fill in all fields and upload at least one image');
       return;
@@ -134,7 +134,9 @@ export default function SellScreen({ route }) {
         return;
       }
 
-      // const imageUrls = await uploadImages();
+      //let imageUrls = [];
+      //if (images.length > 0) { //uploads image if new one's are added
+      // imageUrls = await uploadImages(); }
 
       const productData = {
         name: productName,
@@ -149,8 +151,13 @@ export default function SellScreen({ route }) {
         year,
         // images: imageUrls,
         userId: auth.currentUser.uid,
-        createdAt: new Date(),
+        //userId: user.uid, test which uid works better 
+        ...(!isEditMode && { createdAt: new Date() }), //adds created date only for new listings
       };
+
+        // add images if we have new ones
+        // if (imageUrls.length > 0) {
+      // productData.images = imageUrls; }
 
       if (isEditMode) {
         // update/edit existing product
