@@ -4,13 +4,14 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebaseConfig'; 
+import { auth, db } from '../../firebaseConfig'; 
 
 import Toast from 'react-native-toast-message'; // for displaying Flash Messages 
 
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
+import { setDoc, collection, doc } from 'firebase/firestore';
 
 export default function SignUpScreen() {
   const navigation = useNavigation();
@@ -46,6 +47,17 @@ export default function SignUpScreen() {
         text1: 'Account Created',
         text2: 'Sign up successful! Please login to continue.',
       });
+
+        if (userCredential.user) {
+          const userRef = doc(db, 'users', userCredential.user.uid);
+          
+          await setDoc(userRef, {
+            uid: userCredential.user.uid,
+            email: userCredential.user.email,
+            number: number,
+          });
+        console.log('Document written with ID: ', docRef.id);
+      }
 
       // Redirect to Login Screen after short delay for user to read message
       setTimeout(() => {
