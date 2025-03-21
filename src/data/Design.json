@@ -1,0 +1,98 @@
+{
+  "users": {
+    "userId": {
+      "fullName": "string",
+      "email": "string",
+      "phoneNumber": "string",
+      "profilePicture": "string (URL)",
+      "address": "string",
+      "createdAt": "timestamp",
+      "updatedAt": "timestamp (optional)",
+      "isVerified": "boolean",
+      "isBanned": "boolean",
+      "role": "string (user, admin)",
+      "favourites": ["listingId"],
+      "purchaseHistory": {
+        "transactionId": {
+          "listingId": "string",
+          "sellerId": "string",
+          "amount": "number",
+          "status": "string (pending, completed, canceled)",
+          "createdAt": "timestamp"
+        }
+      }
+    }
+  },
+  "listings": {
+    "listingId": {
+      "sellerId": "string (users/userId)",
+      "listingName": "string",
+      "listingDescription": "string",
+      "price": "number",
+      "categoryId": "string (categories/categoryId)",
+      "images": ["string (URLs)"],
+      "location": "string",
+      "isAvailable": "boolean",
+      "createdAt": "timestamp",
+      "updatedAt": "timestamp",
+      "model": "number",
+      "type": "number (optional)",
+      "color": "string (optional)",
+      "condition": "string (optional)",
+      "comments": {
+        "commentId": {
+          "userId": "string",
+          "content": "string",
+          "createdAt": "timestamp",
+          "replies": {
+            "replyId": {
+              "userId": "string",
+              "content": "string",
+              "createdAt": "timestamp"
+            }
+          }
+        }
+      }
+    }
+  },
+  "categories": {
+    "categoryId": {
+      "name": "string",
+      "description": "string",
+      "icon": "string (URL)",
+      "createdAt": "timestamp",
+      "subcategories": ["string"]
+    }
+  },
+  "conversations": {
+    "conversationId": {
+      "participants": ["string (senderId)", "string (receiverId)"],
+      "lastMessage": {
+        "senderId": "string",
+        "text": "string",
+        "timestamp": "timestamp"
+      },
+      "listingId": "string (listings/listingId)",
+      "messages": {
+        "messageId": {
+          "senderId": "string",
+          "receiverId": "string",
+          "text": "string",
+          "timestamp": "timestamp"
+        }
+      }
+    }
+  },
+  "reports": {
+    "reportId": {
+      "reporterId": "string (users/userId)",
+      "reportedUserId": "string (users/userId, optional)",
+      "reportedListingId": "string (listings/listingId, optional)",
+      "reason": "string",
+      "description": "string",
+      "status": "string (pending, reviewed, resolved)",
+      "createdAt": "timestamp",
+      "updatedAt": "timestamp"
+    }
+  }
+}
