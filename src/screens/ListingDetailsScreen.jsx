@@ -12,7 +12,7 @@ import {
   TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useFavoritesStore from "../store/useFavoritesStore";
+import useFavoritesStore from "../store/FavouriteStore";
 import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import { images, listings } from '../data/dummyData';
@@ -31,7 +31,7 @@ export default function ListingDetailsScreen({ route }) {
 
   const { favoriteIds, toggleFavorite } = useFavoritesStore();
 
-  const isFavorite = favoriteIds.includes(item.id);
+  const isFavorite = favoriteIds.includes(ID);
 
   const details = [
     { label: 'Condition', value: 'New' },
