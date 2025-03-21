@@ -8,7 +8,7 @@ const useFavoritesStore = create((set, get) => ({
   // Load favorites from AsyncStorage when the app starts
   loadFavorites: async () => {
     try {
-      const storedFavorites = await AsyncStorage.getItem("favoriteIds");
+      const storedFavorites = await AsyncStorage.getItem("favorites");
       if (storedFavorites) {
         set({ favoriteIds: JSON.parse(storedFavorites) });
       }
@@ -18,22 +18,31 @@ const useFavoritesStore = create((set, get) => ({
   },
 
   // Toggle favorite status (add/remove item ID)
-  toggleFavorite: async (itemId) => {
-    const state = get();
-    const isFavorite = state.favoriteIds.includes(itemId);
-    const updatedFavorites = isFavorite
-      ? state.favoriteIds.filter((id) => id !== itemId) // Remove item
-      : [...state.favoriteIds, itemId]; // Add item
+  toggleFavorite: async (id) => {
+    const { favoriteIds } = get();
+    let updatedFavorites;
 
-    await AsyncStorage.setItem("favoriteIds", JSON.stringify(updatedFavorites));
+    if (favoriteIds.includes(id)) {
+      // Remove from favorites
+      updatedFavorites = favoriteIds.filter((favId) => favId !== id);
+    } else {
+      // Add to favorites
+      updatedFavorites = [...favoriteIds, id];
+    }
+
+    // Update Zustand
     set({ favoriteIds: updatedFavorites });
+
+    // Store in AsyncStorage
+    await AsyncStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   },
 
   // Clear all favorite IDs
   clearFavorites: async () => {
-    await AsyncStorage.removeItem("favoriteIds");
+    await AsyncStorage.removeItem("favorites");
     set({ favoriteIds: [] });
   },
 }));
+
 
 export default useFavoritesStore;

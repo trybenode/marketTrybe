@@ -18,7 +18,7 @@ import ListingCards from '../components/ListingCards';
 import { images, listings } from '../data/dummyData';
 
 export default function ListingDetailsScreen({ route }) {
-  const ID = route.params;
+  const { itemId: ID } = route.params; 
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,13 +29,27 @@ export default function ListingDetailsScreen({ route }) {
     setModalVisible(true);
   };
 
-  const { favoriteIds, toggleFavorite, clearFavorites } = useFavoritesStore();
-  useEffect(() => { console.log(favoriteIds);}, []);
-
-  const isFavorite = favoriteIds.includes(ID);
+  const { favoriteIds, toggleFavorite, loadFavorites } = useFavoritesStore();
+  
+  // Load favorites on first render
+  // useEffect(() => {
+  //   loadFavorites();
+  //   console.log(ID)
+  // }, []); 
+  
+  // Sync liked state with Zustand store
+  useEffect(() => {
+    setLiked(favoriteIds.includes(ID));
+    console.log(ID)
+  }, [favoriteIds]); 
+  
+  // Handle favorite toggle
+  const handleLiked = async () => {
+    await toggleFavorite(ID); 
+  };
 
   const details = [
-    { label: 'Condition', value: 'New' },
+    { label: 'Condition', value: 'New' }, 
     { label: 'Brand', value: 'Samsung' },
     { label: 'Model', value: 'Galaxy S21' },
     { label: 'Color', value: 'Black' },
@@ -51,8 +65,8 @@ export default function ListingDetailsScreen({ route }) {
         extraComponent={
           <TouchableOpacity
             className="flex items-center space-y-1"
-            onPress={() => {setLiked(!liked); toggleFavorite(ID); console.log("liked button pressed", ID)}}>
-            <MaterialIcons name={isFavorite || liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
+            onPress={() => handleLiked()}>
+            <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
           </TouchableOpacity>
         }
       />
