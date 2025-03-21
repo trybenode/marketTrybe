@@ -5,8 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebaseConfig'; // Adjust path accordingly
-
-import Toast from 'react-native-toast-message'; // ✅ Import Toast
+import { useGoogleAuth } from '../Services/auth/auth';
+import Toast from 'react-native-toast-message'; 
 
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
@@ -17,6 +17,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); // for loading indicator
+  const { promptAsync } = useGoogleAuth();
 
   const handleLogin = async () => {
     // Start loading
@@ -140,12 +141,12 @@ export default function LoginScreen() {
         />
 
         {/* Forgot Password */}
-        <TouchableOpacity
-          onPress={() => console.log('Reset Password Clicked!')}
-          accessibilityLabel="Forgot Password Link"
-        >
-          <Text className="mb-3 mt-1 text-left text-blue-600">Forgot Password? Reset</Text>
+        <TouchableOpacity onPress={() => console.log('Reset Password Clicked!')}>
+          <Text className="mb-3 mt-1 text-left text-blue-600">
+              Forgot Password? <Text className="font-bold">Reset</Text>
+          </Text>
         </TouchableOpacity>
+
 
         {/* Login Button with Loading */}
         <CustomButton
@@ -165,33 +166,20 @@ export default function LoginScreen() {
           <View className="flex-1 border-b border-gray-300" />
         </View>
 
-        {/* Social Auth Buttons */}
-        <View
-          className="flex-row justify-center gap-2 space-x-4"
-          accessibilityLabel="Social Login Buttons"
+        {/* Social Auth Button */}
+        <TouchableOpacity
+          className="flex-row border items-center self-center border-gray-300 justify-center p-2 rounded-lg gap-2 w-2/3"
+          accessibilityLabel="Social Login Buttons" onPress={() => console.log("Hey Google")}
         >
           <SocialAuthButton
             name="google"
             type="FontAwesome"
             iconColor="#DB4437"
-            onPress={() => console.log('Google Login')}
             accessibilityLabel="Google Login Button"
           />
-          <SocialAuthButton
-            name="facebook"
-            type="FontAwesome"
-            iconColor="#1877F2"
-            onPress={() => console.log('Facebook Login')}
-            accessibilityLabel="Facebook Login Button"
-          />
-          <SocialAuthButton
-            name="logo-apple"
-            type="Ionicons"
-            iconColor="black"
-            onPress={() => console.log('Apple Login')}
-            accessibilityLabel="Apple Login Button"
-          />
-        </View>
+          <Text className="text-grey-700">Sign in with Google</Text>
+          
+        </TouchableOpacity>
 
         {/* Sign Up Link */}
         <View className="mt-8 items-center" accessibilityLabel="Sign Up Section">
@@ -200,9 +188,10 @@ export default function LoginScreen() {
             onPress={() => navigation.navigate('SignUp')}
             accessibilityLabel="Sign Up Link"
           >
-            <Text className="text-blue-600">Sign Up</Text>
+            <Text className="text-blue-600 font-bold">Sign Up</Text>
           </TouchableOpacity>
         </View>
+
       </View>
     </SafeAreaView>
   );
