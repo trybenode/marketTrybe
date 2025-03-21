@@ -1,6 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -29,7 +29,8 @@ export default function ListingDetailsScreen({ route }) {
     setModalVisible(true);
   };
 
-  const { favoriteIds, toggleFavorite } = useFavoritesStore();
+  const { favoriteIds, toggleFavorite, clearFavorites } = useFavoritesStore();
+  useEffect(() => { console.log(favoriteIds);}, []);
 
   const isFavorite = favoriteIds.includes(ID);
 
@@ -50,7 +51,7 @@ export default function ListingDetailsScreen({ route }) {
         extraComponent={
           <TouchableOpacity
             className="flex items-center space-y-1"
-            onPress={() => {setLiked(!liked); toggleFavorite(ID);}}>
+            onPress={() => {setLiked(!liked); toggleFavorite(ID); console.log("liked button pressed", ID)}}>
             <MaterialIcons name={isFavorite || liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
           </TouchableOpacity>
         }

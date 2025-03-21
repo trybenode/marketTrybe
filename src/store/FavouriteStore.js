@@ -19,15 +19,20 @@ const useFavoritesStore = create((set, get) => ({
 
   // Toggle favorite status (add/remove item ID)
   toggleFavorite: async (itemId) => {
-    set((state) => {
-      const isFavorite = state.favoriteIds.includes(itemId);
-      const updatedFavorites = isFavorite
-        ? state.favoriteIds.filter((id) => id !== itemId) // Remove item
-        : [...state.favoriteIds, itemId]; // Add item
+    const state = get();
+    const isFavorite = state.favoriteIds.includes(itemId);
+    const updatedFavorites = isFavorite
+      ? state.favoriteIds.filter((id) => id !== itemId) // Remove item
+      : [...state.favoriteIds, itemId]; // Add item
 
-      AsyncStorage.setItem("favoriteIds", JSON.stringify(updatedFavorites));
-      return { favoriteIds: updatedFavorites };
-    });
+    await AsyncStorage.setItem("favoriteIds", JSON.stringify(updatedFavorites));
+    set({ favoriteIds: updatedFavorites });
+  },
+
+  // Clear all favorite IDs
+  clearFavorites: async () => {
+    await AsyncStorage.removeItem("favoriteIds");
+    set({ favoriteIds: [] });
   },
 }));
 
