@@ -29,11 +29,7 @@ export default function HomeScreen() {
         <SearchBar />
 
         {/*Product Listings */}
-        <ListingCards data={listingFethched}
-         images={item.images?.[0]}
-         name={item.name}
-         price={item.price}
-         btnName="view" />
+        <ListingCards showAll={true} />
       </View>
     </SafeAreaView>
   );
