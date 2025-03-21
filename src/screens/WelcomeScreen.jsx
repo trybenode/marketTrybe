@@ -1,9 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import { auth } from '../../firebaseConfig';
 import { View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 
 export default function WelcomeScreen() {
   const navigation = useNavigation();
-
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate('MainTabs');
+      }
+    });
+    return unsubscribe;
+  }, []);
+  
   return (
     <SafeAreaView className="flex-1 bg-white p-2">
       {/* Logo Section */}

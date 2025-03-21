@@ -1,7 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-
 import { UserProvider } from './src/context/UserContext';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import CategoryProductList from './src/screens/CategoryProductList';
@@ -21,14 +20,21 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import SuccessKycScreen from './src/screens/SuccessKycScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
+import useFavoritesStore from "./src/store/FavouriteStore";
 
 import Toast from 'react-native-toast-message';
 
 import './global.css';
+import { useEffect } from 'react';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const loadFavorites = useFavoritesStore((state) => state.loadFavorites);
+  useEffect(() => {
+    loadFavorites();
+  }, []);
+
   return (
     <UserProvider>
       <NavigationContainer>
