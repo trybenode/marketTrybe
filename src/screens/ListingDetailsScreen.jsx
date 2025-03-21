@@ -12,7 +12,7 @@ import {
   TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import useFavoritesStore from "../store/useFavoritesStore";
 import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import { images, listings } from '../data/dummyData';
@@ -28,6 +28,10 @@ export default function ListingDetailsScreen({ route }) {
     setSelectedImage(image);
     setModalVisible(true);
   };
+
+  const { favoriteIds, toggleFavorite } = useFavoritesStore();
+
+  const isFavorite = favoriteIds.includes(item.id);
 
   const details = [
     { label: 'Condition', value: 'New' },
@@ -46,8 +50,8 @@ export default function ListingDetailsScreen({ route }) {
         extraComponent={
           <TouchableOpacity
             className="flex items-center space-y-1"
-            onPress={() => setLiked(!liked)}>
-            <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
+            onPress={() => {setLiked(!liked); toggleFavorite(ID);}}>
+            <MaterialIcons name={isFavorite || liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
           </TouchableOpacity>
         }
       />
