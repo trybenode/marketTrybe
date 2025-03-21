@@ -48,7 +48,7 @@ export default function LoginScreen() {
       // Navigate to main screen
       navigation.navigate('MainTabs');
     } catch (err) {
-      // console.error('Login error:', err); // Log error for debugging
+      
   
       // Extract error code
       const errorCode = err.code;
