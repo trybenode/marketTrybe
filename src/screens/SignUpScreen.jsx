@@ -56,7 +56,7 @@ export default function SignUpScreen() {
             email: userCredential.user.email,
             number: number,
           });
-        console.log('Document written with ID: ', docRef.id);
+        console.log('Document written with ID: ', userRef.id);
       }
 
       // Redirect to Login Screen after short delay for user to read message
