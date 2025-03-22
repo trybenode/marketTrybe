@@ -213,7 +213,7 @@ export default function LoginScreen() {
             onPress={() => navigation.navigate('SignUp')}
             accessibilityLabel="Sign Up Link"
           >
-            <Text className="text-blue-600 font-bold">Sign Up</Text>
+            <Text className="text-blue-600">Sign Up</Text>
           </TouchableOpacity>
         </View>
 

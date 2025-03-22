@@ -11,14 +11,14 @@ import Toast from 'react-native-toast-message'; // for displaying Flash Messages
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
-import { setDoc, collection, doc } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 
 export default function SignUpScreen() {
   const navigation = useNavigation();
 
   // Form states
   const [email, setEmail] = useState('');
-  const [number, setNumber] = useState('');
+  const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); // For loading indicator
 
@@ -26,7 +26,7 @@ export default function SignUpScreen() {
     setLoading(true);
 
     // Basic validation
-    if (!email || !number || !password) {
+    if (!email || !fullName || !password) {
       Toast.show({
         type: 'error',
         text1: 'Incomplete Fields',
@@ -36,32 +36,44 @@ export default function SignUpScreen() {
       return;
     }
 
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid Email',
+        text2: 'Please enter a valid email address.',
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
       // Firebase Sign Up
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      console.log('User registered:', userCredential.user);
+      const user = userCredential.user;
+
+      console.log('User registered:', user);
+
+      // Store user data in Firestore
+      const userRef = doc(db, 'users', user.uid);
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        fullName: fullName, // Corrected: Store fullName from state
+        createdAt: new Date().toISOString(), // Optional: Store timestamp
+      });
+
+      console.log('User document created with ID:', user.uid);
 
       // Show success flash message
       Toast.show({
         type: 'success',
         text1: 'Account Created',
-        text2: 'Sign up successful! Please login to continue.',
+        text2: 'You have been logged in successfully.',
       });
 
-        if (userCredential.user) {
-          const userRef = doc(db, 'users', userCredential.user.uid);
-          
-          await setDoc(userRef, {
-            uid: userCredential.user.uid,
-            email: userCredential.user.email,
-            number: number,
-          });
-        console.log('Document written with ID: ', userRef.id);
-      }
-
-      // Redirect to Login Screen after short delay for user to read message
+      // Redirect to MainTabs after short delay
       setTimeout(() => {
-        navigation.navigate('Login');
+        navigation.navigate('MainTabs');
       }, 2000); // 2 seconds delay before navigating
     } catch (err) {
       console.error('Sign up error:', err.message);
@@ -114,6 +126,14 @@ export default function SignUpScreen() {
 
         {/* Input Fields */}
         <CustomTextInput
+          placeholder="Full Name"
+          containerStyle="mt-4"
+          value={fullName}
+          onChangeText={setFullName}
+          keyboardType="default"
+          accessibilityLabel="Full Name Input"
+        />
+        <CustomTextInput
           placeholder="Email"
           containerStyle="mt-6"
           value={email}
@@ -122,17 +142,8 @@ export default function SignUpScreen() {
           accessibilityLabel="Email Input"
         />
         <CustomTextInput
-          placeholder="Number"
-          containerStyle="mt-4"
-          value={number}
-          onChangeText={setNumber}
-          keyboardType="numeric"
-          accessibilityLabel="Number Input"
-        />
-        <CustomTextInput
           placeholder="Password"
           secureTextEntry
-          icon="lock"
           containerStyle="mt-4"
           value={password}
           onChangeText={setPassword}
@@ -165,31 +176,19 @@ export default function SignUpScreen() {
         </View>
 
         {/* Social Authentication Buttons */}
-        <View
-          className="flex-row justify-center gap-2 space-x-4"
-          accessibilityLabel="Social Sign Up Buttons">
+        <TouchableOpacity
+          className="flex-row border items-center self-center border-gray-300 justify-center p-2 rounded-lg gap-2 w-4/5"
+          accessibilityLabel="Social Login Buttons"
+          onPress={() => console.log("Hey Google")}
+        >
           <SocialAuthButton
             name="google"
             type="FontAwesome"
             iconColor="#DB4437"
-            onPress={() => console.log('Google Sign-up')}
-            accessibilityLabel="Google Sign Up Button"
+            accessibilityLabel="Google Login Button"
           />
-          <SocialAuthButton
-            name="facebook"
-            type="FontAwesome"
-            iconColor="#1877F2"
-            onPress={() => console.log('Facebook Sign-up')}
-            accessibilityLabel="Facebook Sign Up Button"
-          />
-          <SocialAuthButton
-            name="logo-apple"
-            type="Ionicons"
-            iconColor="black"
-            onPress={() => console.log('Apple Sign-up')}
-            accessibilityLabel="Apple Sign Up Button"
-          />
-        </View>
+          <Text className="text-grey-700">Sign in with Google</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

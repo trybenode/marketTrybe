@@ -22,7 +22,7 @@ export default function HomeScreen() {
       </View>
 
       {/* Main Content */}
-      <View className=" flex-1 px-2">
+      <View className=" flex-1 px-3">
         {/* Categories */}
         <Categories />
 
