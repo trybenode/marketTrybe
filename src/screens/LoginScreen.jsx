@@ -5,7 +5,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebaseConfig'; // Adjust path accordingly
-import { useGoogleAuth } from '../Services/auth/auth';
 import Toast from 'react-native-toast-message'; 
 
 import CustomButton from '../components/CustomButton';
@@ -17,7 +16,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); // for loading indicator
-  const { promptAsync } = useGoogleAuth();
+  // const { promptAsync } = useGoogleAuth();
 
   const handleLogin = async () => {
     // Start loading
@@ -168,7 +167,7 @@ export default function LoginScreen() {
 
         {/* Social Auth Button */}
         <TouchableOpacity
-          className="flex-row border items-center self-center border-gray-300 justify-center p-2 rounded-lg gap-2 w-2/3"
+          className="flex-row border items-center self-center border-gray-300 justify-center p-2 rounded-lg gap-2 w-4/5"
           accessibilityLabel="Social Login Buttons" onPress={() => console.log("Hey Google")}
         >
           <SocialAuthButton
