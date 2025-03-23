@@ -16,7 +16,7 @@ import useFavoritesStore from "../store/FavouriteStore";
 import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import { images, listings } from '../data/dummyData';
-
+// import {fetchProduct} from '../../util/useFavoriteProducts';
 export default function ListingDetailsScreen({ route }) {
   const { itemId: ID } = route.params; 
   const navigation = useNavigation();
