@@ -1,18 +1,63 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { FlatList, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { db } from '../../firebaseConfig';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import CategoriesListing from '../components/CategoriesListing';
 import CustomHeader from '../components/CustomHeader';
-import { categories } from '../data/dummyData';
 
 export default function CategoryScreen() {
   const navigation = useNavigation();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'categories'));
+        const categoryData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setCategories(categoryData);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const handleCategorySelect = async (categoryID, categoryName) => {
+    try {
+      setLoading(true);
+      const productsQuery = query(collection(db, 'products'), where('categoryId', '==', `categories/${categoryID}`));
+      const querySnapshot = await getDocs(productsQuery);
+
+      const products = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      navigation.navigate('ProductList', { categoryID, categoryName, products });
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" color="#2563eb" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <CustomHeader screenName="MainTabs" title="All Available Category" />
+      <CustomHeader screenName="MainTabs" title="All Available Categories" />
 
       <FlatList
         data={categories}
@@ -24,8 +69,8 @@ export default function CategoryScreen() {
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('ProductList', { category: item.name })}>
-            <CategoriesListing {...item} />
+            onPress={() => handleCategorySelect(item.id, item.name)}>
+            <CategoriesListing {...item} name={item.name} icon={item.image} />
           </TouchableOpacity>
         )}
       />
