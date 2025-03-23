@@ -52,15 +52,15 @@ export default function SellScreen({ route }) {
     setImages(selectedImages);
   };
 
-  // Prefill form if product exists 
- // remodify to get daata from firestore
+  // Prefill form if product exists
+  // remodify to get daata from firestore
   useEffect(() => {
     if (isEditMode && product) {
       setProductName(product.name);
       setSubCategory(product.subcategory);
       setSelectedValue(product.selectedValue);
-      if (Array.isArray(product.category)) {
-        setCategory(product.category);
+      if (Array.isArray(product.categoryId)) {
+        setCategory(product.categoryId);
       }
       setIsNegotiable(product.negotiable);
       setProductDescription(product.description);
@@ -76,7 +76,7 @@ export default function SellScreen({ route }) {
   // Clear form fields
   const clearForm = () => {
     setProductName('');
-    setSubCategory('');
+    setSubCategory(['']);
     setSelectedValue(null);
     setIsNegotiable(false);
     setProductDescription('');
@@ -119,10 +119,10 @@ export default function SellScreen({ route }) {
       !brand ||
       !condition ||
       !color ||
-      !year 
+      !year
       // ||
       //(!isEditMode && images.length === 0) //  check only for new listings
-      // images.length === 0 remove this after testing 
+      // images.length === 0 remove this after testing
     ) {
       Alert.alert('Error', 'Please fill in all fields and upload at least one image');
       return;
@@ -141,7 +141,7 @@ export default function SellScreen({ route }) {
       const productData = {
         name: productName,
         subcategory: subCategory,
-        category: selectedValue,
+        categoryId: selectedValue,
         negotiable: isNegotiable,
         description: productDescription,
         brand,
@@ -151,12 +151,12 @@ export default function SellScreen({ route }) {
         year,
         // images: imageUrls,
         userId: auth.currentUser.uid,
-        //userId: user.uid, test which uid works better 
-        ...(!isEditMode && { createdAt: new Date() }), //adds created date only for new listings
+        //userId: user.uid, test which uid works better
+        ...(isEditMode ? {updatedAt: new Date()} : { createdAt: new Date() }), //adds created date only for new listings
       };
 
-        // add images if we have new ones
-        // if (imageUrls.length > 0) {
+      // add images if we have new ones
+      // if (imageUrls.length > 0) {
       // productData.images = imageUrls; }
 
       if (isEditMode) {

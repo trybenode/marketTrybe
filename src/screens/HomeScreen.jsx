@@ -29,7 +29,7 @@ export default function HomeScreen() {
         <SearchBar />
 
         {/*Product Listings */}
-        <ListingCards showAll={true} />
+        <ListingCards  showAll={true} />
       </View>
     </SafeAreaView>
   );
