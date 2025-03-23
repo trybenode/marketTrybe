@@ -18,6 +18,7 @@ import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
+
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,
   authDomain: FIREBASE_AUTH_DOMAIN,
@@ -42,6 +43,7 @@ const androidId = ANDROID_CLIENT_ID;
 const webId= GOOGLE_WEB_CLIENT_ID;
 const iosId = IOS_CLIENT_ID;
 const expoId = EXPO_CLIENT_ID;
+const { faker } = require('@faker-js/faker'); // For generating fake data
 
 
 export { app, db, storage, auth, androidId, webId, iosId, expoId };
