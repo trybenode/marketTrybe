@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebaseConfig'; // Adjust path accordingly
 import Toast from 'react-native-toast-message'; 
 
@@ -105,6 +105,32 @@ export default function LoginScreen() {
   };
   
 
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      Toast.show({
+        type: 'error',
+        text1: 'Missing Email',
+        text2: 'Please enter your email first.',
+      });
+      return;
+    }
+  
+    try {
+      await sendPasswordResetEmail(auth, email);
+    } catch (error) {
+      console.log("Error:", error.message); // Log error for debugging
+    }
+  
+    // Show the same success message regardless of whether the email exists or not
+    Toast.show({
+      type: 'success',
+      text1: 'Reset Email Sent!',
+      text2: 'If this email is registered, you will receive reset instructions.',
+    });
+  };
+  
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       {/* Logo */}
@@ -140,7 +166,7 @@ export default function LoginScreen() {
         />
 
         {/* Forgot Password */}
-        <TouchableOpacity onPress={() => console.log('Reset Password Clicked!')}>
+        <TouchableOpacity onPress={handleForgotPassword}>
           <Text className="mb-3 mt-1 text-left text-blue-600">
               Forgot Password? <Text className="font-bold">Reset</Text>
           </Text>
@@ -187,7 +213,7 @@ export default function LoginScreen() {
             onPress={() => navigation.navigate('SignUp')}
             accessibilityLabel="Sign Up Link"
           >
-            <Text className="text-blue-600 font-bold">Sign Up</Text>
+            <Text className="text-blue-600">Sign Up</Text>
           </TouchableOpacity>
         </View>
 

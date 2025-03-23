@@ -70,7 +70,7 @@ export default function EditProfileScreen() {
               <CustomTextInput
                 value={matricNum}
                 onChangeText={setMatricNum}
-                placeholder="Matric Number or Phone"
+                placeholder="LCU/UG/XX/XXXX"
               />
 
               {/* Location Selection */}

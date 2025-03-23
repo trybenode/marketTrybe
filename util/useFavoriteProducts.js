@@ -1,7 +1,7 @@
 import { db } from "../firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
-import useFavoritesStore from "../store/FavouriteStore";
+import useFavoritesStore from "../src/store/FavouriteStore";
 
 // Function to fetch a single product from Firestore
 const fetchProduct = async (productId) => {
