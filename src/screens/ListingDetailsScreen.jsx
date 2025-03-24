@@ -17,13 +17,34 @@ import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import { images, listings } from '../data/dummyData';
 // import {fetchProduct} from '../../util/useFavoriteProducts';
+
 export default function ListingDetailsScreen({ route }) {
-  const { itemId: ID } = route.params; 
-  const navigation = useNavigation();
-  const [liked, setLiked] = useState(false);
+  // const {product, itemId: ID} = route.params;
+  const {
+    itemId: ID,
+    name,
+    description,
+    price,
+    originalPrice,
+    negotiable,
+    images = [],
+    categoryId,
+    brand,
+    condition,
+    color,
+    year,
+  } = route.params;
+  // const { name, description, price, originalPrice, negotiable, images =[],  categoryId,
+  //   brand,
+  //   condition,
+  //   color,
+  //   year,} = product;
+    
+    const navigation = useNavigation();
+    const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const isNegotiable = true;
+  // const isNegotiable = true;
   const openModal = (image) => {
     setSelectedImage(image);
     setModalVisible(true);
@@ -47,16 +68,23 @@ export default function ListingDetailsScreen({ route }) {
   const handleLiked = async () => {
     await toggleFavorite(ID); 
   };
-
-  const details = [
-    { label: 'Condition', value: 'New' }, 
-    { label: 'Brand', value: 'Samsung' },
-    { label: 'Model', value: 'Galaxy S21' },
-    { label: 'Color', value: 'Black' },
-    { label: 'Storage', value: '128GB' },
-    { label: 'Battery', value: '4000mAh' },
-  ];
-
+  
+  // const details = [
+    //   { label: 'Condition', value: 'New' }, 
+    //   { label: 'Brand', value: 'Samsung' },
+    //   { label: 'Model', value: 'Galaxy S21' },
+    //   { label: 'Color', value: 'Black' },
+    //   { label: 'Storage', value: '128GB' },
+    //   { label: 'Battery', value: '4000mAh' },
+    // ];
+    // const details = [
+    //   { index: 1 , label: 'Category', value: categoryId },
+    //   { index: 2 ,label: 'Brand', value: brand },
+    //   { index: 3 ,label: 'Condition', value: condition },
+    //   { index: 4 ,label: 'Color', value: color },
+    //   {index: 5 , label: 'Year', value: year },
+    // ];
+    const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));
   return (
     <SafeAreaView className="flex-1 bg-white">
       <CustomHeader
@@ -74,26 +102,35 @@ export default function ListingDetailsScreen({ route }) {
       <FlatList
         data={listings}
         className="px-3"
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         ListFooterComponent={null}
         ListHeaderComponent={
           <View>
             {/* Carousel with pop-up (modal) on click */}
             <View className=" mt-5">
               <FlatList
-                data={images}
-                keyExtractor={(item) => item.id}
+                // data={images}
+                data={images.length > 0 ? images : imagePlaceholders} // Fallback if no images
+                // keyExtractor={(item) => item.id}
+                keyExtractor={(item, index) => index.toString()} //  Use index as key since data is not unique
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 0 }} //  Remove extra padding
                 className="flex-grow-0" //  Prevents unnecessary space
                 renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => openModal(item.url)}>
+                  <TouchableOpacity onPress={() => item.url && openModal(item.url)}>
+                  {item.url ? (
                     <Image
                       source={{ uri: item.url }}
                       className="mr-3 h-72 w-72 rounded-lg"
                       resizeMode="cover"
                     />
+                  ) : (
+                    // Placeholder with background color and text
+                    <View className="mr-3 h-72 w-72 items-center justify-center rounded-lg bg-gray-300">
+                      <Text className="text-lg font-semibold text-gray-700">Image Upload in Progress</Text>
+                    </View>
+                  )}
                   </TouchableOpacity>
                 )}
               />
@@ -101,17 +138,25 @@ export default function ListingDetailsScreen({ route }) {
               {/* Title and Price Section */}
               <View className="my-4 p-2">
                 <Text className="text-2xl font-bold tracking-tight text-gray-900">
-                  Brand New Flat Screen TV
+                  {/* Brand New Flat Screen TV */}
+                  {name}  
                 </Text>
 
                 <View className="mt-2 flex-row items-center">
-                  <Text className="text-xl font-extrabold text-green-600">₦40,000</Text>
+                  <Text className="text-xl font-extrabold text-green-600">
+                    {/* ₦40,000 */}
+                    ₦{price}
+                  </Text>
                   {/* Strike-through original price for discount effect */}
-                  <Text className="ml-2 text-sm text-gray-500 line-through">₦50,000</Text>
+                  <Text className="ml-2 text-sm text-gray-500 line-through">
+                    {/* ₦50,000 */}
+                    ₦{originalPrice}
+                  </Text>
                 </View>
 
                 {/* Negotiable Badge */}
-                {isNegotiable && (
+                {/* {isNegotiable && ( */}
+                {negotiable && (
                   <View className="mt-2 self-start rounded-full bg-green-600 px-3 py-1">
                     <Text className="text-xs text-white">Negotiable</Text>
                   </View>
@@ -124,7 +169,7 @@ export default function ListingDetailsScreen({ route }) {
 
                 <View className="mb-4 rounded-lg bg-gray-100 p-2">
                   <View className="flex-row flex-wrap">
-                    {details.map((item, index) => (
+                    {details?.map((item, index) => (
                       <View key={index} className="w-1/3 p-2">
                         <Text className="font-semibold text-gray-800">{item.label}</Text>
                         <Text className="text-gray-600">{item.value}</Text>
@@ -148,10 +193,7 @@ export default function ListingDetailsScreen({ route }) {
 
                   <Text className="font-bold text-gray-600">Detailed Product description </Text>
                   <Text className="mb-4 text-lg">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minima deserunt
-                    inventore dolore quisquam nulla! Quisquam, obcaecati, molestiae et cupiditate
-                    quo facere consequatur voluptatum facilis vel voluptates modi non dolor
-                    reiciendis.
+                   {description}
                   </Text>
 
                   <Text className=" font-bold text-gray-600">Location</Text>
@@ -173,10 +215,10 @@ export default function ListingDetailsScreen({ route }) {
                   </TouchableOpacity>
                 </View>
               </View>
-
+                    {/* {related products} */}
               <View className="p-2 ">
                 <Text className=" my-7 text-center text-lg font-semibold">Related Items</Text>
-                <ListingCards data={listings} buttomPad={10} />
+                <ListingCards />
               </View>
 
               {/* ⚠️ MODAL KEEP AT BOTTOM */}
@@ -200,7 +242,7 @@ export default function ListingDetailsScreen({ route }) {
             </View>
           </View>
         }
-        renderItem={({ item }) => <ListingCards {...item} buttomPad={0} />}
+        // renderItem={({ item }) => <ListingCards {...item} buttomPad={0} />}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
