@@ -33,7 +33,6 @@ export const UserProvider = ({ children }) => {
         if (docSnap.exists()) {
           const firestoreData = docSnap.data();
           // Merge the Auth info with Firestore data.
-          // The Firestore document is expected to have a 'fullName' field from the sign up.
           setCurrentUser({ ...basicUserInfo, ...firestoreData });
         } else {
           // If no extra data exists, use basicUserInfo

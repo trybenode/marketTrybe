@@ -58,7 +58,7 @@ export default function SignUpScreen() {
       await setDoc(userRef, {
         uid: user.uid,
         email: user.email,
-        fullName: fullName, // Corrected: Store fullName from state
+        fullName: fullName, 
         createdAt: new Date().toISOString(), // Optional: Store timestamp
       });
 
