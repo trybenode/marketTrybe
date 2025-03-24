@@ -16,7 +16,7 @@ const ListingCard = ({ product, btnName }) => {
         />
       ) : (
         <View className="h-40 w-full items-center justify-center bg-gray-200">
-          <Text className="text-gray-500">No Image</Text>
+          <Text className="text-gray-500 text-lg">No Image</Text>
         </View>
       )}
 
@@ -41,7 +41,7 @@ const ListingCard = ({ product, btnName }) => {
       <Card.Actions className="mt-2 mx-auto flex items-center justify-center">
         <Button
           mode="contained"
-          labelStyle={{ fontSize: 16 }}
+          labelStyle={{ fontSize: 16, width: "100%" }}
           buttonColor="#2563eb"
           className="w-full px-2"
         >
