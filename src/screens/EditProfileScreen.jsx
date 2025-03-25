@@ -34,28 +34,31 @@ export default function EditProfileScreen() {
   const [selected, setSelected] = useState(currentUser.locationType);
   const [loading, setLoading] = useState(false);
   // Function to upload image to Firebase Storage
-  const uploadImage = async (uri) => {
+  const uploadImageToCloudinary = async (uri) => {
+    const data = new FormData();
+    data.append("file", {
+      uri,
+      type: "image/jpeg",
+      name: "upload.jpg",
+    });
+    data.append("upload_preset", "ProfilePictures"); 
+    data.append("cloud_name", "dj21x4jnt");
+  
     try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
+      const response = await fetch("https://api.cloudinary.com/v1_1/dj21x4jnt/image/upload", {
+        method: "POST",
+        body: data,
+      });
   
-      // Extract file extension manually
-      const fileExtension = uri.split('.').pop().toLowerCase() || "jpg";
-  
-      // Generate a unique filename
-      const imageRef = ref(storage, `images/${Date.now()}.${fileExtension}`);
-  
-      // Upload the image
-      const uploadTask = uploadBytesResumable(imageRef, blob);
-  
-      // Wait for upload completion
-      await uploadTask;
-  
-      // Get and return the Download URL
-      return getDownloadURL(uploadTask.snapshot.ref);
+      const res = await response.json();
+      if (res.secure_url) {
+        return res.secure_url; //image URL to store in Firebase
+      } else {
+        throw new Error("Upload failed");
+      }
     } catch (error) {
-      console.error("Image upload failed:", error);
-      throw error;
+      console.error("Cloudinary Upload Error:", error);
+      throw new Error("Image upload failed.");
     }
   };
   
@@ -68,7 +71,7 @@ export default function EditProfileScreen() {
 
       // Check if a new image was selected
       if (image && image !== currentUser.profilePicture) {
-        imageUrl = await uploadImage(image);
+        imageUrl = await uploadImageToCloudinary(image);
       }
 
       // Updated user data
