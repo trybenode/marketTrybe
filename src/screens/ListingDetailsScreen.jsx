@@ -19,26 +19,26 @@ import { images, listings } from '../data/dummyData';
 // import {fetchProduct} from '../../util/useFavoriteProducts';
 
 export default function ListingDetailsScreen({ route }) {
-  // const {product, itemId: ID} = route.params;
-  const {
-    itemId: ID,
-    name,
-    description,
-    price,
-    originalPrice,
-    negotiable,
-    images = [],
-    categoryId,
-    brand,
-    condition,
-    color,
-    year,
-  } = route.params;
-  // const { name, description, price, originalPrice, negotiable, images =[],  categoryId,
+  const {product, itemId: ID} = route.params;
+  // const {
+  //   itemId: ID,
+  //   name,
+  //   description,
+  //   price,
+  //   originalPrice,
+  //   negotiable,
+  //   images = [],
+  //   categoryId,
   //   brand,
   //   condition,
   //   color,
-  //   year,} = product;
+  //   year,
+  // } = route.params;
+  const { name, description, price, originalPrice, negotiable, images =[],  categoryId,
+    brand,
+    condition,
+    color,
+    year,} = product;
     
     const navigation = useNavigation();
     const [liked, setLiked] = useState(false);
@@ -77,13 +77,13 @@ export default function ListingDetailsScreen({ route }) {
     //   { label: 'Storage', value: '128GB' },
     //   { label: 'Battery', value: '4000mAh' },
     // ];
-    // const details = [
-    //   { index: 1 , label: 'Category', value: categoryId },
-    //   { index: 2 ,label: 'Brand', value: brand },
-    //   { index: 3 ,label: 'Condition', value: condition },
-    //   { index: 4 ,label: 'Color', value: color },
-    //   {index: 5 , label: 'Year', value: year },
-    // ];
+    const details = [
+      { index: 1 , label: 'Category', value: categoryId },
+      { index: 2 ,label: 'Brand', value: brand },
+      { index: 3 ,label: 'Condition', value: condition },
+      { index: 4 ,label: 'Color', value: color },
+      {index: 5 , label: 'Year', value: year },
+    ];
     const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -171,10 +171,14 @@ export default function ListingDetailsScreen({ route }) {
                   <View className="flex-row flex-wrap">
                     {details?.map((item, index) => (
                       <View key={index} className="w-1/3 p-2">
-                        <Text className="font-semibold text-gray-800">{item.label}</Text>
+                        <Text className="font-bold text-gray-800">{item.label}</Text>
                         <Text className="text-gray-600">{item.value}</Text>
                       </View>
                     ))}
+                     <Text className=" mx-auto font-bold text-gray-800">Detailed Product description </Text>
+                  <Text className="mb-4  text-gray-600">
+                   {description}
+                  </Text>
                   </View>
                 </View>
               </View>
@@ -191,10 +195,7 @@ export default function ListingDetailsScreen({ route }) {
                     <Text className="mb-4 text-lg">Demilade Femi</Text>
                   </TouchableOpacity>
 
-                  <Text className="font-bold text-gray-600">Detailed Product description </Text>
-                  <Text className="mb-4 text-lg">
-                   {description}
-                  </Text>
+                 
 
                   <Text className=" font-bold text-gray-600">Location</Text>
                   <Text className="mb-4 text-lg">Hostile, blah blah blah</Text>
@@ -242,7 +243,7 @@ export default function ListingDetailsScreen({ route }) {
             </View>
           </View>
         }
-        // renderItem={({ item }) => <ListingCards {...item} buttomPad={0} />}
+        renderItem={({ item }) => <ListingCards {...item} buttomPad={0} />}
         showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
