@@ -21,6 +21,7 @@ export default function SignUpScreen() {
   const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); // For loading indicator
+  
 
   const handleSignUp = async () => {
     setLoading(true);
@@ -58,7 +59,8 @@ export default function SignUpScreen() {
       await setDoc(userRef, {
         uid: user.uid,
         email: user.email,
-        fullName: fullName, 
+        fullName: fullName,
+        isVerified: false,
         createdAt: new Date().toISOString(), // Optional: Store timestamp
       });
 

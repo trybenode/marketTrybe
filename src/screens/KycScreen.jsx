@@ -174,20 +174,34 @@ export default function KycScreen() {
     }
   };
 
-  const uploadImageAsync = async (uri, path) => {
+  const uploadImageToCloudinary = async (uri) => {
+    const data = new FormData();
+    data.append("file", {
+      uri,
+      type: "image/jpeg",
+      name: "upload.jpg",
+    });
+    data.append("upload_preset", "Markettrybe"); // Replace with Cloudinary upload preset
+    data.append("cloud_name", "dj21x4jnt"); // Replace with your Cloudinary cloud name
+  
     try {
-      const response = await fetch(uri);
-      const blob = await response.blob();
-
-      const storage = getStorage();
-      const storageRef = ref(storage, path);
-      await uploadBytes(storageRef, blob);
-
-      return await getDownloadURL(storageRef);
+      const response = await fetch("https://api.cloudinary.com/v1_1/dj21x4jnt/image/upload", {
+        method: "POST",
+        body: data,
+      });
+  
+      const res = await response.json();
+      if (res.secure_url) {
+        return res.secure_url; // This is the image URL to store in Firebase
+      } else {
+        throw new Error("Upload failed");
+      }
     } catch (error) {
+      console.error("Cloudinary Upload Error:", error);
       throw new Error("Image upload failed.");
     }
   };
+  
 
   const handleSubmit = async () => {
     if (!fullName || !matricNumber || !frontID || !backID) {
@@ -208,8 +222,9 @@ export default function KycScreen() {
       }
 
       // Upload images to Firebase Storage
-      const frontIDUrl = await uploadImageAsync(frontID, `kyc/${user.uid}/frontID.jpg`);
-      const backIDUrl = await uploadImageAsync(backID, `kyc/${user.uid}/backID.jpg`);
+      const frontIDUrl = await uploadImageToCloudinary(frontID);
+      const backIDUrl = await uploadImageToCloudinary(backID);
+      
 
       // Save KYC details to Firestore
       await addDoc(collection(db, "kycRequests"), {
