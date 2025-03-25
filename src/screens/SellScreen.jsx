@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { getDoc, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert , ActivityIndicator} from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -25,14 +25,14 @@ export default function SellScreen({ route }) {
   const [images, setImages] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
   const [category, setCategory] = useState([
-    { value: 'electronics', label: 'Electronics' },
-    { value: 'clothing', label: 'Clothing' },
-    { value: 'home_appliances', label: 'Home Appliances' },
-    { value: 'hair_accessories', label: 'Hair Accessories' },
-    { value: 'jewelry', label: 'Jewelry' },
-    { value: 'body_care', label: 'Body Care' },
-    { value: 'snacks', label: 'Snacks' },
-    { value: 'footwear', label: 'Foot Wear' },
+    // { value: 'electronics', label: 'Electronics' },
+    // { value: 'clothing', label: 'Clothing' },
+    // { value: 'home_appliances', label: 'Home Appliances' },
+    // { value: 'hair_accessories', label: 'Hair Accessories' },
+    // { value: 'jewelry', label: 'Jewelry' },
+    // { value: 'body_care', label: 'Body Care' },
+    // { value: 'snacks', label: 'Snacks' },
+    // { value: 'footwear', label: 'Foot Wear' },
   ]);
 
   const [isNegotiable, setIsNegotiable] = useState(false);
@@ -42,6 +42,7 @@ export default function SellScreen({ route }) {
   const [condition, setCondition] = useState('');
   const [color, setColor] = useState('');
   const [price, setPrice] = useState('');
+  const [originalPrice, setOriginalPrice] = useState('');
   const [year, setYear] = useState('');
 
   const isEditMode = route.params?.product !== undefined;
@@ -52,22 +53,37 @@ export default function SellScreen({ route }) {
     setImages(selectedImages);
   };
 
+  //logic to fetch category from firestore
+  useEffect(() =>{
+    const fetchCategories = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'categories'));
+        const categoryData = querySnapshot.docs.map((doc) => ({ id: doc.id, name:doc.data().name }));
+        setCategory(categoryData);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   // Prefill form if product exists
   // remodify to get daata from firestore
   useEffect(() => {
     if (isEditMode && product) {
       setProductName(product.name);
       setSubCategory(product.subcategory);
-      setSelectedValue(product.selectedValue);
-      if (Array.isArray(product.categoryId)) {
-        setCategory(product.categoryId);
-      }
+      setSelectedValue(product.categoryId);
+      // if (Array.isArray(product.categoryId)) {
+      //   setCategory(product.categoryId);
+      // }
       setIsNegotiable(product.negotiable);
       setProductDescription(product.description);
       setBrand(product.brand);
       setCondition(product.condition);
       setColor(product.color);
       setPrice(product.price);
+      setOriginalPrice(product.originalPrice);
       setYear(product.year);
       setImages(product.images || []);
     }
@@ -84,6 +100,7 @@ export default function SellScreen({ route }) {
     setCondition('');
     setColor('');
     setPrice('');
+    setOriginalPrice('');
     setYear('');
     setImages([]);
   };
@@ -148,6 +165,7 @@ export default function SellScreen({ route }) {
         condition,
         color,
         price,
+        originalPrice,
         year,
         // images: imageUrls,
         userId: auth.currentUser.uid,
@@ -236,6 +254,8 @@ export default function SellScreen({ route }) {
           setColor={setColor}
           price={price}
           setPrice={setPrice}
+          originalPrice={originalPrice}
+          setOriginalPrice={setOriginalPrice}
           year={year}
           setYear={setYear}
         />

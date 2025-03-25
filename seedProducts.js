@@ -142,6 +142,7 @@ const generateMockProducts = () => {
         condition: faker.helpers.arrayElement(['New', 'Used', 'Refurbished']),
         color: faker.color.human(),
         price: parseFloat(faker.commerce.price(1000, 500000)),
+        orignalPrice: price - (price * 0.2), // 5% discount
         year: faker.date.between({ from: '2015-01-01', to: '2023-01-01' }).getFullYear(),
         userId: ADMIN_UID,
         createdAt: new Date(baseTimestamp - i * 1000), // Stagger timestamps

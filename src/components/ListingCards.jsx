@@ -64,7 +64,7 @@ const ListingCards = memo(({ buttomPad = 100, categoryFilter }) => {
   }
 
   return (
-    <View style={{ flex: 1, marginBottom:45, paddingHorizontal: 3 }}>
+    <View style={{ flex: 1, marginBottom:50, paddingHorizontal: 3 }}>
       <FlatList
         data={listingFetched}
         keyExtractor={(item) => item.id}
@@ -75,7 +75,17 @@ const ListingCards = memo(({ buttomPad = 100, categoryFilter }) => {
         }}
         renderItem={({ item }) => (
           <TouchableOpacity
-            onPress={() => navigation.navigate('ListingDetails', { product: item.product })}
+          onPress={() =>
+            navigation.navigate('ListingDetails', {
+              product: {
+                ...item.product,
+                createdAt: item.product.createdAt
+                  ? item.product.createdAt.toISOString() // Convert Date to string
+                  : null,
+              },
+            })
+          }
+          
             className="mb-4 w-[48%]">
             <ListingCard product={item.product} btnName="View" />
           </TouchableOpacity>

@@ -11,6 +11,8 @@ const OtherInformationSection = ({
   setColor,
   price,
   setPrice,
+  originalPrice,
+  setOriginalPrice,
   year,
   setYear,
 }) => {
@@ -44,6 +46,13 @@ const OtherInformationSection = ({
           keyboardType="numeric"
           value={price}
           onChangeText={setPrice}
+        />
+        <TextInput
+          className="mb-4 w-[48%] rounded border bg-white p-4"
+          placeholder="Price (N)"
+          keyboardType="numeric"
+          value={originalPrice}
+          onChangeText={setOriginalPrice}
         />
         <TextInput
           className="mb-4 w-[48%] rounded border bg-white p-4"
