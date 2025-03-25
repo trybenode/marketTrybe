@@ -16,7 +16,12 @@ import SubmitButton from '../components/SubmitButton';
 import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckbox';
 import TestHeader from '../components/TestHeader';
 import UploadImages from '../components/UploadImages';
-import { create } from 'twrnc';
+
+
+//cloudnary setup import statements for image uplaod
+// import cld from './cloudinaryConfig';
+// import { AdvancedImage } from '@cloudinary/react';
+// import { fill } from '@cloudinary/url-gen/actions/resize';
 
 export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
@@ -127,6 +132,13 @@ export default function SellScreen({ route }) {
     //     throw error;
     //   }
     // };
+  //   const img = cld
+  //   .image('your-image-public-id') // Replace with actual image public ID
+  //   .format('auto')
+  //   .quality('auto')
+  //   .resize(fill().width(500).height(500));
+
+  // return <AdvancedImage cldImg={img} />;
 
     if (
       !productName ||
