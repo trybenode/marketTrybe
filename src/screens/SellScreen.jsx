@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { getDoc, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { getDocs, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Alert , ActivityIndicator} from 'react-native';

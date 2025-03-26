@@ -16,19 +16,19 @@ const ListingCard = ({ product, btnName }) => {
         />
       ) : (
         <View className="h-40 w-full items-center justify-center bg-gray-200">
-          <Text className="text-gray-500 text-lg">No Image</Text>
+          <Text className="text-lg text-gray-500">No Image</Text>
         </View>
       )}
 
       <Card.Content>
         {/* Product Name */}
         <Text className="text-lg font-semibold" numberOfLines={1}>
-          {product.name }
+          {product.name}
         </Text>
 
         {/* Product Price */}
         <Text className="mt-1 text-base font-bold text-blue-600">
-          ₦{product.price?.toLocaleString() }
+          ₦{product.price?.toLocaleString()}
         </Text>
 
         {/* Seller Info */}
@@ -38,20 +38,23 @@ const ListingCard = ({ product, btnName }) => {
       </Card.Content>
 
       {/* Action Button */}
-      <Card.Actions className="mt-2 mx-auto flex items-center justify-center">
+      <Card.Actions
+        style={{
+          marginTop: 8,
+          marginHorizontal: 'auto',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
         <Button
           mode="contained"
-          labelStyle={{ fontSize: 16, width: "100%" }}
+          labelStyle={{ fontSize: 16, width: '100%' }}
           buttonColor="#2563eb"
-          className="w-full px-2"
-        >
+          style={{ width: '100%', paddingHorizontal: 8 }}>
           {btnName}
         </Button>
       </Card.Actions>
     </Card>
   );
 };
-
-
 
 export default ListingCard;
