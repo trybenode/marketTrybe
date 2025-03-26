@@ -334,7 +334,41 @@ const fixProductCategoryIds = async () => {
   }
 };
 
-fixProductCategoryIds();
+// fixProductCategoryIds();
+
+
+
+const updateProducts = async () => {
+  try {
+    // Fetch all products
+    const productsSnapshot = await getDocs(collection(db, 'products'));
+    const products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+    // Fetch all categories
+    const categoriesSnapshot = await getDocs(collection(db, 'categories'));
+    const categories = categoriesSnapshot.docs.reduce((acc, doc) => {
+      acc[doc.data().name] = doc.id; // Map category names to their document IDs
+      return acc;
+    }, {});
+
+    // Update each product's categoryId
+    for (const product of products) {
+      if (categories[product.categoryId]) { // Check if category name exists
+        const productRef = doc(db, 'products', product.id);
+        await updateDoc(productRef, { categoryId: categories[product.categoryId] });
+        console.log(`✅ Updated product ${product.id} with categoryId: ${categories[product.categoryId]}`);
+      } else {
+        console.warn(`⚠️ No matching category found for product ${product.id}`);
+        // console.log(doc.data())
+      }
+    }
+  } catch (error) {
+    console.error('🚨 Error updating products:', error);
+  }
+};
+
+updateProducts();
+
 
 
 // node seedProducts.js code to run script 

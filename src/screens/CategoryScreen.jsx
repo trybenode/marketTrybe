@@ -30,22 +30,31 @@ export default function CategoryScreen() {
 
   const handleCategorySelect = async (categoryID, categoryName) => {
     try {
+      console.log("🔹 Fetching products for categoryID:", categoryID);
+      console.log("🔹 Expected categoryName:", categoryName);
       setLoading(true);
-      const productsQuery = query(collection(db, 'products'), where('categoryId', '==', `categories/${categoryID}`));
+  
+      const productsQuery = query(
+        collection(db, 'products'),
+        where('categoryId', '==', categoryID)  // Ensure this field exists in Firestore
+      );
       const querySnapshot = await getDocs(productsQuery);
-
       const products = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-
+  
+      console.log("✅ Products fetched:", products.length);
+      console.log("📝 Fetched products:", products); // Check product data
+  
       navigation.navigate('ProductList', { categoryID, categoryName, products });
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('🚨 Error fetching products:', error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   if (loading) {
     return (
@@ -68,8 +77,7 @@ export default function CategoryScreen() {
         className="mb-2 px-3 py-4"
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => handleCategorySelect(item.id, item.name)}>
+          <TouchableOpacity onPress={() => handleCategorySelect(item.id, item.name)}>
             <CategoriesListing {...item} name={item.name} icon={item.image} />
           </TouchableOpacity>
         )}

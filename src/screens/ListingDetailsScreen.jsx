@@ -12,36 +12,31 @@ import {
   TextInput,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useFavoritesStore from "../store/FavouriteStore";
+import useFavoritesStore from '../store/FavouriteStore';
 import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import { images, listings } from '../data/dummyData';
 // import {fetchProduct} from '../../util/useFavoriteProducts';
 
 export default function ListingDetailsScreen({ route }) {
-  const {product, itemId: ID} = route.params;
-  // const {
-  //   itemId: ID,
-  //   name,
-  //   description,
-  //   price,
-  //   originalPrice,
-  //   negotiable,
-  //   images = [],
-  //   categoryId,
-  //   brand,
-  //   condition,
-  //   color,
-  //   year,
-  // } = route.params;
-  const { name, description, price, originalPrice, negotiable, images =[],  categoryId,
+  const { product, itemId: ID } = route.params;
+
+  const {
+    name,
+    description,
+    price,
+    originalPrice,
+    negotiable,
+    images = [],
+    categoryId,
     brand,
     condition,
     color,
-    year,} = product;
-    
-    const navigation = useNavigation();
-    const [liked, setLiked] = useState(false);
+    year,
+  } = product;
+
+  const navigation = useNavigation();
+  const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   // const isNegotiable = true;
@@ -51,49 +46,39 @@ export default function ListingDetailsScreen({ route }) {
   };
 
   const { favoriteIds, toggleFavorite, loadFavorites } = useFavoritesStore();
-  
+
   // Load favorites on first render
   // useEffect(() => {
   //   loadFavorites();
   //   console.log(ID)
-  // }, []); 
-  
+  // }, []);
+
   // Sync liked state with Zustand store
   useEffect(() => {
     setLiked(favoriteIds.includes(ID));
-    console.log(ID)
-  }, [favoriteIds]); 
-  
+    console.log(ID);
+  }, [favoriteIds]);
+
   // Handle favorite toggle
   const handleLiked = async () => {
-    await toggleFavorite(ID); 
+    await toggleFavorite(ID);
   };
-  
-  // const details = [
-    //   { label: 'Condition', value: 'New' }, 
-    //   { label: 'Brand', value: 'Samsung' },
-    //   { label: 'Model', value: 'Galaxy S21' },
-    //   { label: 'Color', value: 'Black' },
-    //   { label: 'Storage', value: '128GB' },
-    //   { label: 'Battery', value: '4000mAh' },
-    // ];
-    const details = [
-      { index: 1 , label: 'Category', value: categoryId },
-      { index: 2 ,label: 'Brand', value: brand },
-      { index: 3 ,label: 'Condition', value: condition },
-      { index: 4 ,label: 'Color', value: color },
-      {index: 5 , label: 'Year', value: year },
-    ];
-    const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));
+
+  const details = [
+    { index: 1, label: 'Category', value: categoryId },
+    { index: 2, label: 'Brand', value: brand },
+    { index: 3, label: 'Condition', value: condition },
+    { index: 4, label: 'Color', value: color },
+    { index: 5, label: 'Year', value: year },
+  ];
+  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));
   return (
     <SafeAreaView className="flex-1 bg-white">
       <CustomHeader
         screenName="MainTabs"
         title="Product Details"
         extraComponent={
-          <TouchableOpacity
-            className="flex items-center space-y-1"
-            onPress={() => handleLiked()}>
+          <TouchableOpacity className="flex items-center space-y-1" onPress={() => handleLiked()}>
             <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
           </TouchableOpacity>
         }
@@ -119,18 +104,20 @@ export default function ListingDetailsScreen({ route }) {
                 className="flex-grow-0" //  Prevents unnecessary space
                 renderItem={({ item }) => (
                   <TouchableOpacity onPress={() => item.url && openModal(item.url)}>
-                  {item.url ? (
-                    <Image
-                      source={{ uri: item.url }}
-                      className="mr-3 h-72 w-72 rounded-lg"
-                      resizeMode="cover"
-                    />
-                  ) : (
-                    // Placeholder with background color and text
-                    <View className="mr-3 h-72 w-72 items-center justify-center rounded-lg bg-gray-300">
-                      <Text className="text-lg font-semibold text-gray-700">Image Upload in Progress</Text>
-                    </View>
-                  )}
+                    {item.url ? (
+                      <Image
+                        source={{ uri: item.url }}
+                        className="mr-3 h-72 w-72 rounded-lg"
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      // Placeholder with background color and text
+                      <View className="mr-3 h-72 w-72 items-center justify-center rounded-lg bg-gray-300">
+                        <Text className="text-lg font-semibold text-gray-700">
+                          Image Upload in Progress
+                        </Text>
+                      </View>
+                    )}
                   </TouchableOpacity>
                 )}
               />
@@ -139,18 +126,16 @@ export default function ListingDetailsScreen({ route }) {
               <View className="my-4 p-2">
                 <Text className="text-2xl font-bold tracking-tight text-gray-900">
                   {/* Brand New Flat Screen TV */}
-                  {name}  
+                  {name}
                 </Text>
 
                 <View className="mt-2 flex-row items-center">
                   <Text className="text-xl font-extrabold text-green-600">
-                    {/* ₦40,000 */}
-                    ₦{price}
+                    {/* ₦40,000 */}₦{price}
                   </Text>
                   {/* Strike-through original price for discount effect */}
                   <Text className="ml-2 text-sm text-gray-500 line-through">
-                    {/* ₦50,000 */}
-                    ₦{originalPrice}
+                    {/* ₦50,000 */}₦{originalPrice}
                   </Text>
                 </View>
 
@@ -175,10 +160,10 @@ export default function ListingDetailsScreen({ route }) {
                         <Text className="text-gray-600">{item.value}</Text>
                       </View>
                     ))}
-                     <Text className=" mx-auto font-bold text-gray-800">Detailed Product description </Text>
-                  <Text className="mb-4  text-gray-600">
-                   {description}
-                  </Text>
+                    <Text className=" mx-auto font-bold text-gray-800">
+                      Detailed Product description{' '}
+                    </Text>
+                    <Text className="mb-4  text-gray-600">{description}</Text>
                   </View>
                 </View>
               </View>
@@ -194,8 +179,6 @@ export default function ListingDetailsScreen({ route }) {
                     <Text className="font-bold text-gray-600">Name</Text>
                     <Text className="mb-4 text-lg">Demilade Femi</Text>
                   </TouchableOpacity>
-
-                 
 
                   <Text className=" font-bold text-gray-600">Location</Text>
                   <Text className="mb-4 text-lg">Hostile, blah blah blah</Text>
@@ -216,7 +199,7 @@ export default function ListingDetailsScreen({ route }) {
                   </TouchableOpacity>
                 </View>
               </View>
-                    {/* {related products} */}
+              {/* {related products} */}
               <View className="p-2 ">
                 <Text className=" my-7 text-center text-lg font-semibold">Related Items</Text>
                 <ListingCards />

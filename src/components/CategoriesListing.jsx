@@ -12,7 +12,7 @@ const CategoriesListing = memo(({ name, image, id }) => {
       accessible
       accessibilityLabel={`Category: ${name}`}
       accessibilityRole="button"
-      onPress={() => navigation.navigate('ProductList', { categoryID: id })}
+      onPress={() => navigation.navigate('ProductList', { categoryId: id, categoryName: name  })}
       className="items-center mx-2 mb-4"
       activeOpacity={0.7}
     >
