@@ -33,7 +33,9 @@ export default function EditProfileScreen() {
   const [moreInfo, setMoreInfo] = useState(currentUser.address);
   const [selected, setSelected] = useState(currentUser.locationType);
   const [loading, setLoading] = useState(false);
-  // Function to upload image to Firebase Storage
+
+  
+  // Function to upload image to CLoudinary Storage
   const uploadImageToCloudinary = async (uri) => {
     const data = new FormData();
     data.append("file", {
