@@ -3,11 +3,11 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, Alert, ScrollView, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../../firebaseConfig";
-import CustomModal from "../components/CustomSuccessModal";
+import CustomModal from "../components/CustomModal";
 import CustomHeader from "../components/CustomHeader";
 import CustomTextInput from "../components/CustomTextInput";
 import UserProfile from "../components/UserProfile";
@@ -21,6 +21,7 @@ export default function KycScreen() {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const [modalIconType, setModalIconType] = useState("success");
 
   const navigation = useNavigation();
 
@@ -85,6 +86,7 @@ export default function KycScreen() {
     }
   };
   
+  // Default success icon
 
   const handleSubmit = async () => {
     if (!fullName || !matricNumber || !frontID || !backID) {
@@ -101,6 +103,19 @@ export default function KycScreen() {
       if (!user) {
         setLoading(false);
         Alert.alert("Authentication Error", "Please log in first.");
+        return;
+      }
+  
+      // Check if the user already has a KYC request
+      const kycRef = collection(db, "kycRequests");
+      const q = query(kycRef, where("userId", "==", user.uid));
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        setLoading(false);
+        setModalMessage("You already have a KYC request under review.");
+        setModalIconType("caution"); // Change icon to caution
+        setModalVisible(true);
         return;
       }
   
@@ -121,14 +136,16 @@ export default function KycScreen() {
   
       // Show success modal
       setModalMessage("Your KYC request has been submitted. Please wait for verification.");
+      setModalIconType("success"); // Change icon to success
       setModalVisible(true);
     } catch (error) {
-      Alert.alert("Error", "Failed to submit KYC. Try again.");
+      Alert.alert("Error", `Failed to submit KYC: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-  
+    
+
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -166,16 +183,17 @@ export default function KycScreen() {
             </TouchableOpacity>
           </View>
         </View>
-        <CustomModal
-          visible={modalVisible}
-          message={modalMessage}
-          onClose={() => {
-            setModalVisible(false);
-            navigation.navigate("Profile");
-          }}
-        />
 
       </ScrollView>
+      <CustomModal
+        visible={modalVisible}
+        message={modalMessage}
+        iconType={modalIconType}
+        onClose={() => {
+        setModalVisible(false);
+        navigation.navigate("Profile");
+        }}
+      />
       
     </SafeAreaView>
   );
