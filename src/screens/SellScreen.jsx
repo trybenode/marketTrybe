@@ -72,8 +72,7 @@ export default function SellScreen({ route }) {
     fetchCategories();
   }, []);
 
-  // Prefill form if product exists
-  // remodify to get daata from firestore
+  // Prefill form if product exists in firestore 
   useEffect(() => {
     if (isEditMode && product) {
       setProductName(product.name);
@@ -112,31 +111,36 @@ export default function SellScreen({ route }) {
 
   // Handle form submission
   const handleSubmit = async () => {
-    // const uploadImages = async () => {
-    //   try {
-    //     const imageUrls = await Promise.all(
-    //       images.map(async (image, index) => {
-    //         const response = await fetch(image); // Fetch local image
-    //         const blob = await response.blob(); // Convert to blob
+    const uploadImages = async () => {
+      try {
+        const uploadedImageUrls = await Promise.all(
+          images.map(async (image) => {
+            const data = new FormData();
+            data.append("file", {
+              uri:image, //local image uri
+              type: "image/jpeg",
+              name: `product_${Date.now()}.jpg`
+            });
+            data.append("upload_preset", "ProductImage") //sets cloudinary presets 
+            data.append("cloud_name", "dj21x4jnt");
 
-    //         const storageRef = ref(storage, `products/${Date.now()}_${index}.jpg`);
-    //         await uploadBytes(storageRef, blob);
+            const response = await fetch('https://api.cloudinary.com/v1_1/dj21x4jnt/image/upload',{
+            method: "POST",
+            body: data,
+          });
 
-    //         return await getDownloadURL(storageRef); // Get public URL
-    //       })
-    //     );
+          const result = await response.json();
+          return result.secure_url; //returns image address to be uploaded to firestore 
+        })
+        )
+      console.log("uploaded Image URLs:", uploadedImageUrls); // for test purpose 
+      return uploadedImageUrls;
+      }catch(error){
+        console.error("Error uploading images to Cloudinary:", error);
+          throw error;
+        }
+      };
 
-    //     return imageUrls;
-    //   } catch (error) {
-    //     console.error('Error uploading images:', error);
-    //     throw error;
-    //   }
-    // };
-  //   const img = cld
-  //   .image('your-image-public-id') // Replace with actual image public ID
-  //   .format('auto')
-  //   .quality('auto')
-  //   .resize(fill().width(500).height(500));
 
   // return <AdvancedImage cldImg={img} />;
 
@@ -149,8 +153,8 @@ export default function SellScreen({ route }) {
       !condition ||
       !color ||
       !year
-      // ||
-      //(!isEditMode && images.length === 0) //  check only for new listings
+      ||
+      (!isEditMode && images.length === 0) //  check only for new listings
       // images.length === 0 remove this after testing
     ) {
       Alert.alert('Error', 'Please fill in all fields and upload at least one image');
