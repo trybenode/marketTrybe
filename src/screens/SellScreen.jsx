@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getDocs, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert , ActivityIndicator} from 'react-native';
+import { View, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,7 +16,6 @@ import SubmitButton from '../components/SubmitButton';
 import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckbox';
 import TestHeader from '../components/TestHeader';
 import UploadImages from '../components/UploadImages';
-
 
 //cloudnary setup import statements for image uplaod
 // import cld from './cloudinaryConfig';
@@ -53,17 +52,21 @@ export default function SellScreen({ route }) {
   const isEditMode = route.params?.product !== undefined;
   const product = route.params?.product;
   const navigation = useNavigation();
+  // const [isLoading, setIsLoading] = useState(false)
 
   const handleImagesSelected = (selectedImages) => {
     setImages(selectedImages);
   };
 
   //logic to fetch category from firestore
-  useEffect(() =>{
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'categories'));
-        const categoryData = querySnapshot.docs.map((doc) => ({ id: doc.id, name:doc.data().name }));
+        const categoryData = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().name,
+        }));
         setCategory(categoryData);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -72,7 +75,7 @@ export default function SellScreen({ route }) {
     fetchCategories();
   }, []);
 
-  // Prefill form if product exists in firestore 
+  // Prefill form if product exists in firestore
   useEffect(() => {
     if (isEditMode && product) {
       setProductName(product.name);
@@ -116,33 +119,32 @@ export default function SellScreen({ route }) {
         const uploadedImageUrls = await Promise.all(
           images.map(async (image) => {
             const data = new FormData();
-            data.append("file", {
-              uri:image, //local image uri
-              type: "image/jpeg",
-              name: `product_${Date.now()}.jpg`
+            data.append('file', {
+              uri: image, //local image uri
+              type: 'image/jpeg',
+              name: `product_${Date.now()}.jpg`,
             });
-            data.append("upload_preset", "ProductImage") //sets cloudinary presets 
-            data.append("cloud_name", "dj21x4jnt");
+            data.append('upload_preset', 'ProductImage'); //sets cloudinary presets
+            data.append('cloud_name', 'dj21x4jnt');
 
-            const response = await fetch('https://api.cloudinary.com/v1_1/dj21x4jnt/image/upload',{
-            method: "POST",
-            body: data,
-          });
+            const response = await fetch('https://api.cloudinary.com/v1_1/dj21x4jnt/image/upload', {
+              method: 'POST',
+              body: data,
+            });
 
-          const result = await response.json();
-          return result.secure_url; //returns image address to be uploaded to firestore 
-        })
-        )
-      console.log("uploaded Image URLs:", uploadedImageUrls); // for test purpose 
-      return uploadedImageUrls;
-      }catch(error){
-        console.error("Error uploading images to Cloudinary:", error);
-          throw error;
-        }
-      };
+            const result = await response.json();
+            return result.secure_url; //returns image address to be uploaded to firestore
+          })
+        );
+        console.log('uploaded Image URLs:', uploadedImageUrls); // for test purpose
+        return uploadedImageUrls;
+      } catch (error) {
+        console.error('Error uploading images to Cloudinary:', error);
+        throw error;
+      }
+    };
 
-
-  // return <AdvancedImage cldImg={img} />;
+    // return <AdvancedImage cldImg={img} />;
 
     if (
       !productName ||
@@ -152,8 +154,7 @@ export default function SellScreen({ route }) {
       !brand ||
       !condition ||
       !color ||
-      !year
-      ||
+      !year ||
       (!isEditMode && images.length === 0) //  check only for new listings
       // images.length === 0 remove this after testing
     ) {
@@ -167,9 +168,11 @@ export default function SellScreen({ route }) {
         return;
       }
 
-      //let imageUrls = [];
-      //if (images.length > 0) { //uploads image if new one's are added
-      // imageUrls = await uploadImages(); }
+      let imageUrls = [];
+      if (images.length > 0) {
+        //uploads image if new one's are added
+        imageUrls = await uploadImages();
+      }
 
       const productData = {
         name: productName,
@@ -183,10 +186,10 @@ export default function SellScreen({ route }) {
         price,
         originalPrice,
         year,
-        // images: imageUrls,
+        images: imageUrls,
         userId: auth.currentUser.uid,
         //userId: user.uid, test which uid works better
-        ...(isEditMode ? {updatedAt: new Date()} : { createdAt: new Date() }), //adds created date only for new listings
+        ...(isEditMode ? { updatedAt: new Date() } : { createdAt: new Date() }), //adds created date only for new listings
       };
 
       // add images if we have new ones
