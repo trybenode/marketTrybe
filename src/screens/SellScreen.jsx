@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getDocs, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Alert, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -28,17 +28,6 @@ export default function SellScreen({ route }) {
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
-  // const [category, setCategory] = useState([
-    // { value: 'electronics', label: 'Electronics' },
-    // { value: 'clothing', label: 'Clothing' },
-    // { value: 'home_appliances', label: 'Home Appliances' },
-    // { value: 'hair_accessories', label: 'Hair Accessories' },
-    // { value: 'jewelry', label: 'Jewelry' },
-    // { value: 'body_care', label: 'Body Care' },
-    // { value: 'snacks', label: 'Snacks' },
-    // { value: 'footwear', label: 'Foot Wear' },
-  // ]);
-
   const [isNegotiable, setIsNegotiable] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
   const [productDescription, setProductDescription] = useState('');
@@ -59,21 +48,21 @@ export default function SellScreen({ route }) {
   };
 
   //logic to fetch category from firestore
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, 'categories'));
-        const categoryData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          name: doc.data().name,
-        }));
-        setCategory(categoryData);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-    fetchCategories();
-  }, []);
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(collection(db, 'categories'));
+  //       const categoryData = querySnapshot.docs.map((doc) => ({
+  //         id: doc.id,
+  //         name: doc.data().name,
+  //       }));
+  //       setCategory(categoryData);
+  //     } catch (error) {
+  //       console.error('Error fetching categories:', error);
+  //     }
+  //   };
+  //   fetchCategories();
+  // }, []);
 
   // Prefill form if product exists in firestore
   useEffect(() => {
@@ -206,6 +195,7 @@ export default function SellScreen({ route }) {
         await addDoc(collection(db, 'products'), productData);
         Alert.alert('Success', 'Product uploaded successfully');
       }
+      console.log('Product Data:', productData);
 
       clearForm();
       navigation.navigate('MyShop');
@@ -234,6 +224,8 @@ export default function SellScreen({ route }) {
       <TestHeader screenName="MainTabs" title="Product Information" />
 
       <ScrollView
+        behavior="padding"
+        style={{ flex: 1 }}
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
         className="px-4 pb-8">
@@ -242,14 +234,14 @@ export default function SellScreen({ route }) {
           value={productName}
           onChangeText={setProductName}
         />
+
         <CategoryDropdown
           open={open}
           setOpen={setOpen}
           selectedValue={selectedValue}
           setSelectedValue={setSelectedValue}
-          // category={category}
-          // setCategory={setCategory}
         />
+
         <ProductFormInput
           placeholder="Sub-Category"
           value={subCategory}

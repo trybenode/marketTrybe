@@ -1,34 +1,9 @@
-// //category list in sell/upload page.
-// import React, { useState } from 'react';
-// import DropDownPicker from 'react-native-dropdown-picker';
-
-// const CategoryDropdown = ({
-//   open,
-//   setOpen,
-//   selectedValue,
-//   setSelectedValue,
-//   category,
-//   setCategory,
-// }) => {
-//   return (
-//     <DropDownPicker
-//       open={open}
-//       value={selectedValue}
-//       items={category}
-//       setOpen={setOpen}
-//       setValue={setSelectedValue}
-//       setItems={setCategory}
-//       placeholder="Select Category"
-//       style={{ marginBottom: 10 }}
-//     />
-//   );
-// };
-
-// export default CategoryDropdown;
+//category selection 
 import React, { useEffect, useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
+import { View } from 'react-native';
 
 const CategoryDropdown = ({ open, setOpen, selectedValue, setSelectedValue }) => {
   const [category, setCategory] = useState([]);
@@ -46,6 +21,8 @@ const CategoryDropdown = ({ open, setOpen, selectedValue, setSelectedValue }) =>
   }, []);
 
   return (
+
+    <View style={{ zIndex: 1000, elevation: 5 }}>
     <DropDownPicker
       open={open}
       value={selectedValue}
@@ -54,7 +31,11 @@ const CategoryDropdown = ({ open, setOpen, selectedValue, setSelectedValue }) =>
       setValue={setSelectedValue}
       placeholder="Select Category"
       style={{ marginBottom: 10 }}
+      dropDownContainerStyle={{ zIndex: 1000, elevation: 5 }} // Ensure dropdown renders above other components
+      modalProps={{ animationType: 'slide' }} // Use modal to prevent nesting issue
     />
+  </View>
+
   );
 };
 
