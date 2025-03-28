@@ -28,7 +28,7 @@ export default function SellScreen({ route }) {
   const [open, setOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [selectedValue, setSelectedValue] = useState(null);
-  const [category, setCategory] = useState([
+  // const [category, setCategory] = useState([
     // { value: 'electronics', label: 'Electronics' },
     // { value: 'clothing', label: 'Clothing' },
     // { value: 'home_appliances', label: 'Home Appliances' },
@@ -37,7 +37,7 @@ export default function SellScreen({ route }) {
     // { value: 'body_care', label: 'Body Care' },
     // { value: 'snacks', label: 'Snacks' },
     // { value: 'footwear', label: 'Foot Wear' },
-  ]);
+  // ]);
 
   const [isNegotiable, setIsNegotiable] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
@@ -247,8 +247,8 @@ export default function SellScreen({ route }) {
           setOpen={setOpen}
           selectedValue={selectedValue}
           setSelectedValue={setSelectedValue}
-          category={category}
-          setCategory={setCategory}
+          // category={category}
+          // setCategory={setCategory}
         />
         <ProductFormInput
           placeholder="Sub-Category"
