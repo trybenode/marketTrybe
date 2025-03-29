@@ -40,8 +40,8 @@ export default function ListingDetailsScreen({ route }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   // const isNegotiable = true;
-  const openModal = (image) => {
-    setSelectedImage(image);
+  const openModal = (imageUri) => {
+    setSelectedImage(imageUri);
     setModalVisible(true);
   };
 
@@ -71,7 +71,11 @@ export default function ListingDetailsScreen({ route }) {
     { index: 4, label: 'Color', value: color },
     { index: 5, label: 'Year', value: year },
   ];
-  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));
+  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));//array for place holder if no image available 
+
+  const mainImageUri =
+    images && images.length > 0 ? images[0].url || images[0] : null;
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <CustomHeader
@@ -93,34 +97,43 @@ export default function ListingDetailsScreen({ route }) {
           <View>
             {/* Carousel with pop-up (modal) on click */}
             <View className=" mt-5">
-              <FlatList
-                // data={images}
-                data={images.length > 0 ? images : imagePlaceholders} // Fallback if no images
-                // keyExtractor={(item) => item.id}
-                keyExtractor={(item, index) => index.toString()} //  Use index as key since data is not unique
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 0 }} //  Remove extra padding
-                className="flex-grow-0" //  Prevents unnecessary space
-                renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => item.url && openModal(item.url)}>
-                    {item.url ? (
+            <View className="mt-5">
+              {images && images.length > 0 ? (
+                <FlatList
+                  data={images}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 0 }}
+                  className="flex-grow-0"
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity onPress={() => openModal(item.url || item)}>
                       <Image
-                        source={{ uri: item.url }}
+                        source={{ uri: item.url || item }}
                         className="mr-3 h-72 w-72 rounded-lg"
                         resizeMode="cover"
                       />
-                    ) : (
-                      // Placeholder with background color and text
-                      <View className="mr-3 h-72 w-72 items-center justify-center rounded-lg bg-gray-300">
-                        <Text className="text-lg font-semibold text-gray-700">
-                          Image Upload in Progress
-                        </Text>
-                      </View>
-                    )}
-                  </TouchableOpacity>
-                )}
-              />
+                    </TouchableOpacity>
+                  )}
+                />
+              ) : (
+                <FlatList
+                  data={imagePlaceholders}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 0 }}
+                  className="flex-grow-0"
+                  renderItem={() => (
+                    <View className="mr-3 h-72 w-72 items-center justify-center rounded-lg bg-gray-300">
+                      <Text className="text-lg font-semibold text-gray-700">
+                        Image Upload in Progress
+                      </Text>
+                    </View>
+                  )}
+                />
+              )}
+            </View>
 
               {/* Title and Price Section */}
               <View className="my-4 p-2">
