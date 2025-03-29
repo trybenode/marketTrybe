@@ -55,7 +55,7 @@ export default function SellScreen({ route }) {
     }
   }, [isEditMode, product]);
 
-  // Clear form fields
+  // Clears form
   const clearForm = () => {
     setProductName('');
     setSubCategory('');
@@ -71,7 +71,7 @@ export default function SellScreen({ route }) {
     setImages([]);
   };
 
-  // Function to upload multiple images to Cloudinary
+  //images upload  to Cloudinary
   const uploadImages = async (imageUris) => {
     try {
       if (!imageUris || imageUris.length === 0) {
@@ -129,7 +129,7 @@ export default function SellScreen({ route }) {
     setImages(validImages);
   };
 
-  // Handle form submission: upload images, then store product data in Firestore
+  // product upload 
   const handleSubmit = async () => {
     if (
       !productName ||
