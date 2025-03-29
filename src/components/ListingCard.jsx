@@ -3,12 +3,17 @@ import { View, Image } from 'react-native';
 import { Card, Text, Button } from 'react-native-paper';
 
 const ListingCard = ({ product, btnName }) => {
+
+  const imageUri = Array.isArray(product.images) && product.images.length > 0
+    ? product.images[0]
+    : product.image;
+
   return (
     <Card className="m-2 overflow-hidden rounded-xl shadow-md">
       {/* Product Image */}
-      {product.image ? (
+      {imageUri ? (
         <Image
-          source={{ uri: product.image }}
+          source={{ uri: imageUri }}
           className="h-40 w-full"
           resizeMode="cover"
           progressiveRenderingEnabled
@@ -27,14 +32,15 @@ const ListingCard = ({ product, btnName }) => {
         </Text>
 
         {/* Product Price */}
-        <Text className="mt-1 text-base font-bold text-blue-600">
+        <Text className="mt-1 text-base font-bold line-through text-blue-900">
           ₦{product.price?.toLocaleString()}
         </Text>
 
         {/* Seller Info */}
-        {/* {product.seller && (
-          <Text className="mt-1 text-sm text-gray-600">{product.seller.name || 'Unknown Seller'}</Text>
-        )} */}
+        <Text className="mt-1 text-base font-bold text-blue-600">
+          ₦{product.originalPrice?.toLocaleString()}
+        </Text>
+
       </Card.Content>
 
       {/* Action Button */}
