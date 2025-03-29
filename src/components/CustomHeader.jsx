@@ -5,7 +5,7 @@ import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const TestHeader = memo(({ title, extraComponent }) => {
+const CustomHeader = memo(({ title, extraComponent }) => {
   const navigation = useNavigation();
 
   return (
@@ -14,7 +14,7 @@ const TestHeader = memo(({ title, extraComponent }) => {
       <View className="relative h-16 flex-row items-center bg-white px-3">
         {/* Left - Back Button */}
         <View className="flex-1">
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
             <Ionicons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
         </View>
@@ -41,7 +41,7 @@ const TestHeader = memo(({ title, extraComponent }) => {
   );
 });
 
-export default TestHeader;
+export default CustomHeader;
 
 const styles = StyleSheet.create({
   bottomShadow: {

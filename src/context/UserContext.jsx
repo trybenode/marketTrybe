@@ -1,62 +1,3 @@
-// import React, { createContext, useState, useContext, useEffect } from 'react';
-// import { onAuthStateChanged } from 'firebase/auth';
-// import { doc, getDoc } from 'firebase/firestore';
-// import { auth, db } from '../../firebaseConfig';
-
-// const UserContext = createContext();
-
-// export const UserProvider = ({ children }) => {
-//   const [currentUser, setCurrentUser] = useState(null);
-
-//   useEffect(() => {
-//     // Listen for auth changes
-//     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-//       if (user) {
-//         // Basic user info from Firebase Auth.
-//         // We leave fullName empty because we expect it to be provided in Firestore
-//         const basicUserInfo = {
-//           uid: user.uid,
-//           email: user.email,
-//           fullName: user.displayName, 
-//           phoneNumber: user.phoneNumber || '',
-//           profilePicture: user.photoURL || '',
-//           // Placeholders for extra data
-//           matricNumber: '',
-//           address: '',
-//           locationType: '',
-//         };
-
-//         // Fetch extra details from Firestore, which should include the full name
-//         const userRef = doc(db, 'users', user.uid);
-//         const docSnap = await getDoc(userRef);
-
-//         if (docSnap.exists()) {
-//           const firestoreData = docSnap.data();
-//           // Merge the Auth info with Firestore data.
-//           setCurrentUser({ ...basicUserInfo, ...firestoreData });
-//         } else {
-//           // If no extra data exists, use basicUserInfo
-//           setCurrentUser(basicUserInfo);
-//         }
-//       } else {
-//         // User is logged out
-//         setCurrentUser(null);
-//       }
-//     });
-
-//     return () => unsubscribe();
-//   }, []);
-
-//   return (
-//     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
-//       {children}
-//     </UserContext.Provider>
-//   );
-// };
-
-// export const useUser = () => useContext(UserContext);
-
-
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
@@ -70,6 +11,8 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
       if (user) {
+        await user.reload(); // Refresh user data
+
         const userRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(userRef);
 
@@ -82,11 +25,18 @@ export const UserProvider = ({ children }) => {
           matricNumber: '',
           address: '',
           locationType: '',
-          verified: false, // Default to false
+          isVerified: false, // Default
+          emailVerified: user.emailVerified, // Get from Firebase Auth
         };
 
         if (docSnap.exists()) {
           userData = { ...userData, ...docSnap.data() };
+        }
+
+        // 🔹 If email is verified but not updated in Firestore, update it
+        if (user.emailVerified && !userData.emailVerified) {
+          await updateDoc(userRef, { emailVerified: true });
+          userData.emailVerified = true; // Update locally
         }
 
         setCurrentUser(userData);
@@ -97,12 +47,12 @@ export const UserProvider = ({ children }) => {
           if (!snapshot.empty) {
             const kycData = snapshot.docs[0].data();
 
-            if (kycData.status === 'verified' && !userData.verified) {
-              // Update `verified` field in users collection
-              await updateDoc(userRef, { verified: true });
+            if (kycData.status === 'verified' && !userData.isVerified) {
+              // Update Firestore
+              await updateDoc(userRef, { isVerified: true });
 
               // Update local state
-              setCurrentUser((prev) => ({ ...prev, verified: true }));
+              setCurrentUser((prev) => ({ ...prev, isVerified: true }));
             }
           }
         });

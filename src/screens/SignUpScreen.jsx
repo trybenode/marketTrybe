@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth, db } from '../../firebaseConfig'; 
 
 import Toast from 'react-native-toast-message'; // for displaying Flash Messages 
@@ -29,9 +29,9 @@ export default function SignUpScreen() {
     // Basic validation
     if (!email || !fullName || !password) {
       Toast.show({
-        type: 'error',
-        text1: 'Incomplete Fields',
-        text2: 'Please fill in all fields to continue.',
+        type: "error",
+        text1: "Incomplete Fields",
+        text2: "Please fill in all fields to continue.",
       });
       setLoading(false);
       return;
@@ -39,9 +39,9 @@ export default function SignUpScreen() {
 
     if (!/\S+@\S+\.\S+/.test(email)) {
       Toast.show({
-        type: 'error',
-        text1: 'Invalid Email',
-        text2: 'Please enter a valid email address.',
+        type: "error",
+        text1: "Invalid Email",
+        text2: "Please enter a valid email address.",
       });
       setLoading(false);
       return;
@@ -51,70 +51,80 @@ export default function SignUpScreen() {
       // Firebase Sign Up
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      console.log('User registered:', user);
+      // Show success message
+      // console.log("User registered:", user);
+      
+      // Send verification email
+      await sendEmailVerification(user);
+      Toast.show({
+        type: "success",
+        text1: "Account Created",
+        text2: "A verification email has been sent. Please verify your email.",
+      });
 
       // Store user data in Firestore
-      const userRef = doc(db, 'users', user.uid);
+      const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, {
         uid: user.uid,
         email: user.email,
         fullName: fullName,
-        isVerified: false,
-        createdAt: new Date().toISOString(), // Optional: Store timestamp
+        isVerified: false, // KYC verification
+        emailVerified: false, // Track email verification
+        createdAt: new Date().toISOString(),
       });
 
-      console.log('User document created with ID:', user.uid);
+      // console.log("User document created with ID:", user.uid);
 
-      // Show success flash message
+      // Show success message
       Toast.show({
-        type: 'success',
-        text1: 'Account Created',
-        text2: 'You have been logged in successfully.',
+        type: "success",
+        text1: "Account Created",
+        text2: "A verification email has been sent. Please verify your email.",
       });
 
-      // Redirect to MainTabs after short delay
-      setTimeout(() => {
-        navigation.navigate('MainTabs');
-      }, 2000); // 2 seconds delay before navigating
+      // Log user out after sign-up to force email verification
+      setTimeout(async () => {
+        await auth.signOut();
+        navigation.navigate("Login");
+      }, 3000); // Delay before navigating
     } catch (err) {
-      console.error('Sign up error:', err.message);
+      console.error("Sign up error:", err.message);
 
-      // Handle Firebase error messages gracefully using toast
-      if (err.code === 'auth/email-already-in-use') {
+      // Handle Firebase error messages
+      if (err.code === "auth/email-already-in-use") {
         Toast.show({
-          type: 'error',
-          text1: 'Email Already Used',
-          text2: 'This email is already registered. Please login or use another email.',
+          type: "error",
+          text1: "Email Already Used",
+          text2: "This email is already registered. Please login or use another email.",
         });
-      } else if (err.code === 'auth/invalid-email') {
+      } else if (err.code === "auth/invalid-email") {
         Toast.show({
-          type: 'error',
-          text1: 'Invalid Email',
-          text2: 'Please enter a valid email address.',
+          type: "error",
+          text1: "Invalid Email",
+          text2: "Please enter a valid email address.",
         });
-      } else if (err.code === 'auth/weak-password') {
+      } else if (err.code === "auth/weak-password") {
         Toast.show({
-          type: 'error',
-          text1: 'Weak Password',
-          text2: 'Password should be at least 6 characters.',
+          type: "error",
+          text1: "Weak Password",
+          text2: "Password should be at least 6 characters.",
         });
       } else {
         Toast.show({
-          type: 'error',
-          text1: 'Sign Up Failed',
-          text2: 'Something went wrong. Please try again.',
+          type: "error",
+          text1: "Sign Up Failed",
+          text2: "Something went wrong. Please try again.",
         });
       }
     } finally {
-      setLoading(false); // Stop loading when done
+      setLoading(false);
     }
   };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
       {/* Logo and Header */}
-      <View className="my-auto p-8 shadow-md">
+      <View className="my-auto px-8 shadow-md">
         <View className="items-center">
           <Image
             source={require('../assets/logo.png')}
