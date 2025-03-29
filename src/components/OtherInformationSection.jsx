@@ -53,15 +53,15 @@ const OtherInformationSection = ({
           className="mb-4 w-[48%] rounded border bg-white p-4"
           placeholder="Price (N)"
           keyboardType="numeric"
-          value={price}
-          onChangeText={setPrice}
+          value={originalPrice}
+          onChangeText={setOriginalPrice}
         />
         <TextInput
           className="mb-4 w-[48%] rounded border bg-white p-4"
           placeholder="Price (N)"
           keyboardType="numeric"
-          value={originalPrice}
-          onChangeText={setOriginalPrice}
+          value={price}
+          onChangeText={setPrice}
         />
     
       </View>
