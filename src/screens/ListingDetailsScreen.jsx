@@ -142,13 +142,13 @@ export default function ListingDetailsScreen({ route }) {
                   {name}
                 </Text>
 
-                <View className="mt-2 flex-row items-center">
+                <View className="mt-2 flex-row items-center justify-between ">
                   <Text className="text-xl font-extrabold text-green-600">
-                    {/* ₦40,000 */}₦{price}
+                    ₦{originalPrice}
                   </Text>
                   {/* Strike-through original price for discount effect */}
                   <Text className="ml-2 text-sm text-gray-500 line-through">
-                    {/* ₦50,000 */}₦{originalPrice}
+                  ₦{price}
                   </Text>
                 </View>
 
@@ -239,8 +239,8 @@ export default function ListingDetailsScreen({ route }) {
             </View>
           </View>
         }
-        renderItem={({ item }) => <ListingCards {...item} buttomPad={0} />}
-        showsVerticalScrollIndicator={false}
+        // renderItem={({ item }) => <ListingCards {...item} buttomPad={0} />}
+        // showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
