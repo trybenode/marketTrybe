@@ -1,10 +1,9 @@
 import { getAuth, signOut } from "firebase/auth";
+import useUserStore from '../src/store/userStore';
 
 const auth = getAuth();
 
 export const logout = async () => {
   await signOut(auth);
-  // Store will be automatically updated via onAuthStateChanged
+  useUserStore.getState().clearUser();
 };
-
-export const getCurrentUser = () => auth.currentUser;

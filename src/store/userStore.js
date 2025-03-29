@@ -5,9 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const useUserStore = create(
   persist(
     (set) => ({
-      userId: null,
-      setUserId: (id) => set({ userId: id }),
-      clearUserId: () => set({ userId: null }),
+      user: null,
+      setUser: (userData) => set({ user: userData }),
+      clearUser: () => set({ user: null }),
     }),
     {
       name: 'user-storage',
