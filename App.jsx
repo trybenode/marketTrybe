@@ -89,8 +89,6 @@ export default function App() {
           <Stack.Screen name="MyShop" component={MyShopScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
-
-      
       <Toast />
     </UserProvider>
   );

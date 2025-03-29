@@ -7,12 +7,16 @@ export default function WelcomeScreen() {
   const navigation = useNavigation();
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
+      if (user && user.emailVerified) {
         navigation.navigate('MainTabs');
+      } else if (user && !user.emailVerified) {
+        // Prompt user to verify email
+        navigation.navigate('Login');
       }
     });
     return unsubscribe;
   }, []);
+  
   
   return (
     <SafeAreaView className="flex-1 bg-white p-2">

@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../../firebaseConfig'; // Adjust path accordingly
+import { auth } from '../../firebaseConfig'; 
 import Toast from 'react-native-toast-message'; 
 
 import CustomButton from '../components/CustomButton';
@@ -19,92 +19,106 @@ export default function LoginScreen() {
   // const { promptAsync } = useGoogleAuth();
 
   const handleLogin = async () => {
-    // Start loading
     setLoading(true);
   
     // Validate fields
     if (!email || !password) {
       Toast.show({
-        type: 'error',
-        text1: 'Missing Fields',
-        text2: 'Please fill in both email and password.',
+        type: "error",
+        text1: "Missing Fields",
+        text2: "Please fill in both email and password.",
       });
-      setLoading(false); // Stop loading
+      setLoading(false);
       return;
     }
   
     try {
       // Attempt to sign in with Firebase
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      console.log('User logged in:', userCredential.user);
+      const user = userCredential.user;
   
+      // Check if email is verified AFTER login
+      if (!user.emailVerified) {
+        Toast.show({
+          type: "error",
+          text1: "Email Not Verified",
+          text2: "Please check your email and verify your account before logging in.",
+        });
+  
+        await auth.signOut(); 
+        setLoading(false);
+        return;
+      }
+  
+      
       // Show success toast
+      console.log("User email verified:", user.emailVerified);
+      
       Toast.show({
-        type: 'success',
-        text1: 'Login Successful 🎉',
-        text2: 'Welcome back!',
+        type: "success",
+        text1: "Login Successful 🎉",
+        text2: "Welcome back!",
       });
   
       // Navigate to main screen
-      navigation.navigate('MainTabs');
+      navigation.navigate("MainTabs");
     } catch (err) {
-      
+      console.error("Login error:", err.message);
   
       // Extract error code
       const errorCode = err.code;
-  
-      // Handle error cases using if...else if
-      if (errorCode === 'auth/user-not-found') {
+      console.log("Email:", email);
+      console.log("Password:", password);
+      console.log("Loading State:", loading);
+            // Handle Firebase authentication errors
+      if (errorCode === "auth/user-not-found") {
         Toast.show({
-          type: 'error',
-          text1: 'User Not Found',
-          text2: 'No account exists with this email.',
+          type: "error",
+          text1: "User Not Found",
+          text2: "No account exists with this email.",
         });
-      } else if (errorCode === 'auth/wrong-password') {
+      } else if (errorCode === "auth/wrong-password") {
         Toast.show({
-          type: 'error',
-          text1: 'Incorrect Password',
-          text2: 'Password is incorrect. Please try again.',
+          type: "error",
+          text1: "Incorrect Password",
+          text2: "Password is incorrect. Please try again.",
         });
-      } else if (errorCode === 'auth/invalid-email') {
+      } else if (errorCode === "auth/invalid-email") {
         Toast.show({
-          type: 'error',
-          text1: 'Invalid Email',
-          text2: 'Please enter a valid email address.',
+          type: "error",
+          text1: "Invalid Email",
+          text2: "Please enter a valid email address.",
         });
-      } else if (errorCode === 'auth/invalid-credential') {
+      } else if (errorCode === "auth/invalid-credential") {
         Toast.show({
-          type: 'error',
-          text1: 'Invalid Credentials',
-          text2: 'The email or password provided is incorrect.',
+          type: "error",
+          text1: "Invalid Credentials",
+          text2: "The email or password provided is incorrect.",
         });
-      } else if (errorCode === 'auth/too-many-requests') {
+      } else if (errorCode === "auth/too-many-requests") {
         Toast.show({
-          type: 'error',
-          text1: 'Too Many Attempts',
-          text2: 'Too many failed attempts. Please try again later.',
+          type: "error",
+          text1: "Too Many Attempts",
+          text2: "Too many failed attempts. Please try again later.",
         });
-      } else if (errorCode === 'auth/network-request-failed') {
+      } else if (errorCode === "auth/network-request-failed") {
         Toast.show({
-          type: 'error',
-          text1: 'Network Error',
-          text2: 'Please check your internet connection and try again.',
+          type: "error",
+          text1: "Network Error",
+          text2: "Please check your internet connection and try again.",
         });
       } else {
-        // Default unknown error
         Toast.show({
-          type: 'error',
-          text1: 'Login Failed',
+          type: "error",
+          text1: "Login Failed",
           text2: `Unexpected error: ${errorCode}`,
         });
       }
     } finally {
-      // Stop loading regardless of outcome
       setLoading(false);
     }
   };
   
-
 
   const handleForgotPassword = async () => {
     if (!email) {
@@ -134,7 +148,7 @@ export default function LoginScreen() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       {/* Logo */}
-      <View className="my-auto p-8 shadow-md">
+      <View className="my-auto px-8 shadow-md">
         <View className="items-center">
           <Image
             source={require('../assets/logo.png')}
