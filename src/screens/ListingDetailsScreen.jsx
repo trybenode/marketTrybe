@@ -16,6 +16,7 @@ import useFavoritesStore from '../store/FavouriteStore';
 import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
 import { images, listings } from '../data/dummyData';
+import useUserStore from '../store/userStore';
 // import {fetchProduct} from '../../util/useFavoriteProducts';
 
 export default function ListingDetailsScreen({ route }) {
@@ -52,6 +53,7 @@ export default function ListingDetailsScreen({ route }) {
   //   loadFavorites();
   //   console.log(ID)
   // }, []);
+  console.log("User ID:", useUserStore(state => state.user.id));
 
   // Sync liked state with Zustand store
   useEffect(() => {

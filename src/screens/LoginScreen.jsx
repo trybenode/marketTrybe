@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
+import useUserStore from '../store/userStore';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -59,8 +60,13 @@ export default function LoginScreen() {
         text1: "Login Successful 🎉",
         text2: "Welcome back!",
       });
-  
-      // Navigate to main screen
+      
+      // Change this line to use the proper async method
+      await useUserStore.getState().setUser({ 
+        id: user.uid, 
+        email: user.email 
+      });
+      
       navigation.navigate("MainTabs");
     } catch (err) {
       console.error("Login error:", err.message);

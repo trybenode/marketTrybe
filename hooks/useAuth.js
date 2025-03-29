@@ -6,17 +6,26 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    const auth = getAuth();
-    
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      useUserStore.getState().setUser({
-        id: user?.uid || null,
-        email: user?.email || null,
+    const initializeAuth = async () => {
+      await useUserStore.getState().loadUser();
+      
+      const auth = getAuth();
+      return onAuthStateChanged(auth, (user) => {
+        if (user) {
+          useUserStore.getState().setUser({
+            id: user.uid,
+            email: user.email,
+          });
+        } else {
+          useUserStore.getState().clearUser();
+        }
+        setLoading(false);
       });
-      setLoading(false);
-    });
+    };
 
-    return () => unsubscribe();
+    initializeAuth().then(unsubscribe => {
+      return () => unsubscribe();
+    });
   }, []);
 
   return { loading };
