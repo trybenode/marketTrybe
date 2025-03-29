@@ -58,7 +58,7 @@ const OtherInformationSection = ({
         />
         <TextInput
           className="mb-4 w-[48%] rounded border bg-white p-4"
-          placeholder="Price (N)"
+          placeholder="Discount Price (N)"
           keyboardType="numeric"
           value={price}
           onChangeText={setPrice}
