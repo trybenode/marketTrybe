@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,28 +12,50 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Options from '../components/Options';
+import { addMessageToConversation, getConversationWithID } from '../hooks/messaginghooks';
 import TestHeader from '../components/TestHeader';
+import { auth } from '../../firebaseConfig';
 
-export default function ChatScreen() {
-  const [messages, setMessages] = useState([
-    { id: '1', text: 'Hello!', sender: 'me' },
-    { id: '2', text: 'Hi there!', sender: 'them' },
-    { id: '3', text: 'How are you?', sender: 'me' },
-  ]);
-
-  // useEffect(() => {
-
-  // }, [newMessage]);
-
+export default function ChatScreen({ route }) {
+  const { conversationId, otherUserId } = route.params;
+  const [conversation, setConversation] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
   const [newMessage, setNewMessage] = useState('');
 
-  const sendMessage = () => {
-    if (newMessage.trim().length === 0) return;
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) setCurrentUserId(user.uid);
+    });
+    return () => unsubscribe();
+  }, []);
 
-    const message = { id: Date.now().toString(), text: newMessage, sender: 'me' };
-    setMessages([message, ...messages]);
-    setNewMessage('');
+  useEffect(() => {
+    if (conversationId) {
+      const unsubscribe = getConversationWithID(conversationId, setConversation);
+      return () => unsubscribe();
+    }
+  }, [conversationId]);
+
+  const sendMessage = async () => {
+    if (!newMessage.trim() || !currentUserId) return;
+
+    try {
+      const messageObj = {
+        senderID: currentUserId,
+        text: newMessage,
+        timestamp: serverTimestamp(),
+      };
+      await addMessageToConversation(messageObj, conversationId);
+      setNewMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to send message',
+      });
+    }
   };
+
   return (
     <SafeAreaView className="flex-1 bg-white p-2">
       <TestHeader title="Chat" extraComponent={<Options />} />
@@ -42,18 +64,18 @@ export default function ChatScreen() {
         className="flex-1 bg-gray-100">
         {/* Messages List */}
         <FlatList
-          data={messages}
+          data={conversation?.messages || []}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View className={`mx-2 mb-4 ${item.sender === 'me' ? 'items-end' : 'items-start'}`}>
+            <View className={`mx-2 mb-4 ${item.senderID === currentUserId ? 'items-end' : 'items-start'}`}>
               <View
                 className={`max-w-[80%] rounded-2xl p-3 shadow-md ${
-                  item.sender === 'me'
+                  item.senderID === currentUserId
                     ? 'self-end rounded-lg bg-blue-500'
                     : 'self-start rounded-lg border border-gray-200 bg-white'
                 }`}>
                 <Text
-                  className={`text-lg ${item.sender === 'me' ? 'text-white' : 'text-gray-900'}`}>
+                  className={`text-lg ${item.senderID === currentUserId ? 'text-white' : 'text-gray-900'}`}>
                   {item.text}
                 </Text>
               </View>
@@ -62,7 +84,7 @@ export default function ChatScreen() {
           )}
           inverted
           contentContainerStyle={{ padding: 10 }}
-          showsVerticalScrollIndicator={false} // idk why i added this, i'd probably remove it.
+          showsVerticalScrollIndicator={false}
         />
 
         {/* Message Input & Send Button */}
@@ -73,7 +95,7 @@ export default function ChatScreen() {
             value={newMessage}
             onChangeText={setNewMessage}
           />
-          <TouchableOpacity onPress={sendMessage} className="ml-3 rounded-full  bg-blue-500 p-3">
+          <TouchableOpacity onPress={sendMessage} className="ml-3 rounded-full bg-blue-500 p-3">
             <Ionicons name="send" size={24} color="white" />
           </TouchableOpacity>
         </View>

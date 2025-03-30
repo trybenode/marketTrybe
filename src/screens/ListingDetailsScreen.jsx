@@ -18,6 +18,7 @@ import ListingCards from '../components/ListingCards';
 import { auth } from '../../firebaseConfig';
 import { images, listings } from '../data/dummyData';
 import useUserStore from '../store/userStore';
+import TestHeader from '../components/TestHeader';
 import { getUserIdOfSeller, initiateConversation } from '../hooks/messaginghooks';
 
 export default function ListingDetailsScreen({ route }) {
@@ -91,20 +92,11 @@ export default function ListingDetailsScreen({ route }) {
 
   const handleSendMessage = async () => {
     try {
-      if (!message.trim()) {
-        Toast.show({
-          type: 'error',
-          text1: 'Empty Message',
-          text2: 'Please type a message first',
-        });
-        return;
-      }
-
-      if (!currentUserId || !sellerID) {
+      if (!message.trim() || !currentUserId || !sellerID) {
         Toast.show({
           type: 'error',
           text1: 'Error',
-          text2: 'Unable to start conversation. Please try again.',
+          text2: 'Message and user information required',
         });
         return;
       }
@@ -113,14 +105,17 @@ export default function ListingDetailsScreen({ route }) {
       setMessage('');
       
       if (conversationId) {
-        navigation.navigate('Chat', { conversationId });
+        navigation.navigate('Chat', { 
+          conversationId,
+          otherUserId: sellerID 
+        });
       }
     } catch (error) {
       console.error('Error sending message:', error);
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: 'Failed to send message. Please try again.',
+        text2: 'Failed to send message',
       });
     }
   };
@@ -139,7 +134,7 @@ export default function ListingDetailsScreen({ route }) {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <CustomHeader
+      <TestHeader
         screenName="MainTabs"
         title="Product Details"
         extraComponent={
