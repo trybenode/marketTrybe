@@ -1,3 +1,4 @@
+import { db as firestore } from '../../firebaseConfig';
 import {
   arrayUnion,
   serverTimestamp,
@@ -12,7 +13,6 @@ import {
   where,
   onSnapshot,
 } from 'firebase/firestore';
-import { firestore } from '../firebase/config';
 
 const checkIfConversationExists = async (senderID, receiverID) => {
   try {
@@ -36,6 +36,27 @@ const checkIfConversationExists = async (senderID, receiverID) => {
     return null;
   } catch (e) {
     console.log('Error Checking If Conversation Exists', e);
+  }
+};
+
+const getUserIdOfSeller = async(productID) => {
+  try {
+    if (!productID) {
+      throw new Error('Product ID is required');
+    }
+    console.log("Fetching seller for product:", productID);
+    const docSnap = await getDoc(doc(firestore, 'products', productID));
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      console.log("Product data:", data);
+      return data.userId;
+    } else {
+      console.log("No product found with ID:", productID);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error in getUserIdOfSeller:", error);
+    throw error;
   }
 };
 
@@ -106,4 +127,13 @@ const addMessageToConversation = async (messageObj, conversationID) => {
   } catch (error) {
     console.error('Error adding message:', error);
   }
+};
+
+
+export {
+  initiateConversation,
+  getConversationWithID,
+  checkIfConversationExists,
+  addMessageToConversation,
+  getUserIdOfSeller
 };

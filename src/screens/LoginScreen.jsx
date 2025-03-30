@@ -11,6 +11,7 @@ import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
 import useUserStore from '../store/userStore';
+// import getUserIdOfSeller from '../util/getUserIdOfSeller';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -66,6 +67,8 @@ export default function LoginScreen() {
         id: user.uid, 
         email: user.email 
       });
+
+      
       
       navigation.navigate("MainTabs");
     } catch (err) {

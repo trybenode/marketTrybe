@@ -15,13 +15,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import useFavoritesStore from '../store/FavouriteStore';
 import CustomHeader from '../components/CustomHeader';
 import ListingCards from '../components/ListingCards';
+import { auth } from '../../firebaseConfig';
 import { images, listings } from '../data/dummyData';
 import useUserStore from '../store/userStore';
-// import {fetchProduct} from '../../util/useFavoriteProducts';
+import { getUserIdOfSeller, initiateConversation } from '../hooks/messaginghooks';
 
 export default function ListingDetailsScreen({ route }) {
-  const { product, itemId: ID } = route.params;
-
+  const { product, itemId } = route.params;
+  const [sellerID, setSellerID] = useState(null);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [message, setMessage] = useState('');
   const {
     name,
     description,
@@ -40,7 +43,6 @@ export default function ListingDetailsScreen({ route }) {
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  // const isNegotiable = true;
   const openModal = (imageUri) => {
     setSelectedImage(imageUri);
     setModalVisible(true);
@@ -48,22 +50,79 @@ export default function ListingDetailsScreen({ route }) {
 
   const { favoriteIds, toggleFavorite, loadFavorites } = useFavoritesStore();
 
-  // Load favorites on first render
-  // useEffect(() => {
-  //   loadFavorites();
-  //   console.log(ID)
-  // }, []);
-  console.log("User ID:", useUserStore(state => state.user.id));
+  // Lets get the user id of the current user
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) setCurrentUserId(user.uid);
+      return () => unsubscribe();
+    });
+  }, []);
+
+  // Add useEffect for fetching seller ID
+  useEffect(() => {
+    const fetchSellerID = async () => {
+      try {
+        if (itemId) {
+          const id = await getUserIdOfSeller(itemId);
+          setSellerID(id);
+          // console.log("Seller ID fetched:", id);
+        }
+      } catch (error) {
+        console.error("Error fetching seller ID:", error);
+      }
+    };
+
+    fetchSellerID();
+  }, [itemId]);
+
+  console.log("Product ID:", itemId);
+  console.log("Seller ID state:", sellerID);
 
   // Sync liked state with Zustand store
   useEffect(() => {
-    setLiked(favoriteIds.includes(ID));
-    console.log(ID);
+    setLiked(favoriteIds.includes(itemId));
+    console.log(itemId);
   }, [favoriteIds]);
 
   // Handle favorite toggle
   const handleLiked = async () => {
-    await toggleFavorite(ID);
+    await toggleFavorite(itemId);
+  };
+
+  const handleSendMessage = async () => {
+    try {
+      if (!message.trim()) {
+        Toast.show({
+          type: 'error',
+          text1: 'Empty Message',
+          text2: 'Please type a message first',
+        });
+        return;
+      }
+
+      if (!currentUserId || !sellerID) {
+        Toast.show({
+          type: 'error',
+          text1: 'Error',
+          text2: 'Unable to start conversation. Please try again.',
+        });
+        return;
+      }
+
+      const conversationId = await initiateConversation(message, currentUserId, sellerID);
+      setMessage('');
+      
+      if (conversationId) {
+        navigation.navigate('Chat', { conversationId });
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Failed to send message. Please try again.',
+      });
+    }
   };
 
   const details = [
@@ -73,7 +132,7 @@ export default function ListingDetailsScreen({ route }) {
     { index: 4, label: 'Color', value: color },
     { index: 5, label: 'Year', value: year },
   ];
-  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));//array for place holder if no image available 
+  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null })); //array for place holder if no image available 
 
   const mainImageUri =
     images && images.length > 0 ? images[0].url || images[0] : null;
@@ -99,48 +158,47 @@ export default function ListingDetailsScreen({ route }) {
           <View>
             {/* Carousel with pop-up (modal) on click */}
             <View className=" mt-5">
-            <View className="mt-5">
-              {images && images.length > 0 ? (
-                <FlatList
-                  data={images}
-                  keyExtractor={(item, index) => index.toString()}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 0 }}
-                  className="flex-grow-0"
-                  renderItem={({ item, index }) => (
-                    <TouchableOpacity onPress={() => openModal(item.url || item)}>
-                      <Image
-                        source={{ uri: item.url || item }}
-                        className="mr-3 h-72 w-72 rounded-lg"
-                        resizeMode="cover"
-                      />
-                    </TouchableOpacity>
-                  )}
-                />
-              ) : (
-                <FlatList
-                  data={imagePlaceholders}
-                  keyExtractor={(item, index) => index.toString()}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  contentContainerStyle={{ paddingBottom: 0 }}
-                  className="flex-grow-0"
-                  renderItem={() => (
-                    <View className="mr-3 h-72 w-72 items-center justify-center rounded-lg bg-gray-300">
-                      <Text className="text-lg font-semibold text-gray-700">
-                        Image Upload in Progress
-                      </Text>
-                    </View>
-                  )}
-                />
-              )}
-            </View>
+              <View className="mt-5">
+                {images && images.length > 0 ? (
+                  <FlatList
+                    data={images}
+                    keyExtractor={(item, index) => index.toString()}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 0 }}
+                    className="flex-grow-0"
+                    renderItem={({ item, index }) => (
+                      <TouchableOpacity onPress={() => openModal(item.url || item)}>
+                        <Image
+                          source={{ uri: item.url || item }}
+                          className="mr-3 h-72 w-72 rounded-lg"
+                          resizeMode="cover"
+                        />
+                      </TouchableOpacity>
+                    )}
+                  />
+                ) : (
+                  <FlatList
+                    data={imagePlaceholders}
+                    keyExtractor={(item, index) => index.toString()}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 0 }}
+                    className="flex-grow-0"
+                    renderItem={() => (
+                      <View className="mr-3 h-72 w-72 items-center justify-center rounded-lg bg-gray-300">
+                        <Text className="text-lg font-semibold text-gray-700">
+                          Image Upload in Progress
+                        </Text>
+                      </View>
+                    )}
+                  />
+                )}
+              </View>
 
               {/* Title and Price Section */}
               <View className="my-4 p-2">
                 <Text className="text-2xl font-bold tracking-tight text-gray-900">
-                  {/* Brand New Flat Screen TV */}
                   {name}
                 </Text>
 
@@ -150,12 +208,11 @@ export default function ListingDetailsScreen({ route }) {
                   </Text>
                   {/* Strike-through original price for discount effect */}
                   <Text className="ml-2 text-sm text-gray-500 line-through">
-                  ₦{price}
+                    ₦{price}
                   </Text>
                 </View>
 
                 {/* Negotiable Badge */}
-                {/* {isNegotiable && ( */}
                 {negotiable && (
                   <View className="mt-2 self-start rounded-full bg-green-600 px-3 py-1">
                     <Text className="text-xs text-white">Negotiable</Text>
@@ -203,17 +260,22 @@ export default function ListingDetailsScreen({ route }) {
               {/* Message user */}
               <View className="border-t border-gray-200 p-4">
                 <Text className="mb-2 text-lg font-semibold">Make an Offer:</Text>
-
                 <View className="flex-row items-center">
                   <TextInput
                     className="flex-1 rounded-lg border border-gray-300 p-2 text-gray-800"
                     placeholder="Type your message..."
+                    value={message}
+                    onChangeText={setMessage}
                   />
-                  <TouchableOpacity className="ml-4 rounded-lg bg-blue-500 px-4 py-2">
+                  <TouchableOpacity 
+                    className="ml-4 rounded-lg bg-blue-500 px-4 py-2"
+                    onPress={handleSendMessage}
+                  >
                     <Text className="font-semibold text-white">Send</Text>
                   </TouchableOpacity>
                 </View>
               </View>
+
               {/* {related products} */}
               <View className="p-2 ">
                 <Text className=" my-7 text-center text-lg font-semibold">Related Items</Text>
@@ -241,8 +303,6 @@ export default function ListingDetailsScreen({ route }) {
             </View>
           </View>
         }
-        // renderItem={({ item }) => <ListingCards {...item} buttomPad={0} />}
-        // showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );

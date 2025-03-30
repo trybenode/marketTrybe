@@ -90,6 +90,7 @@ const ListingCards = memo(({ buttomPad = 100, categoryFilter, products }) => {
                     ? item.product.createdAt.toISOString()
                     : null,
                 },
+                itemId: item.id,
               })
             }
             className="mb-4 w-[48%]"
