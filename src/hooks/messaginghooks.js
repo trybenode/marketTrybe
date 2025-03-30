@@ -103,7 +103,8 @@ const addMessageToConversation = async (messageObj, conversationID) => {
 
   try {
     const conversationSnap = await getDoc(conversationRef);
-    const otherParticipant = conversationSnap.data().participants.find(
+    const conversationData = conversationSnap.data();
+    const otherParticipants = conversationData.participants.filter(
       id => id !== messageObj.senderID
     );
 
@@ -111,9 +112,8 @@ const addMessageToConversation = async (messageObj, conversationID) => {
       messages: arrayUnion(messageObj),
       lastMessage: messageObj,
       updatedAt: serverTimestamp(),
-      unreadBy: [otherParticipant]
+      unreadBy: otherParticipants // Set all other participants as having unread messages
     });
-    console.log('Message added successfully!');
   } catch (error) {
     console.error('Error adding message:', error);
     throw error;
@@ -123,8 +123,12 @@ const addMessageToConversation = async (messageObj, conversationID) => {
 const markConversationAsRead = async (conversationID, userId) => {
   const conversationRef = doc(firestore, 'conversation', conversationID);
   try {
+    const conversationSnap = await getDoc(conversationRef);
+    const currentUnreadBy = conversationSnap.data()?.unreadBy || [];
+    const updatedUnreadBy = currentUnreadBy.filter(id => id !== userId);
+    
     await updateDoc(conversationRef, {
-      unreadBy: [] // Set to empty array to mark as read
+      unreadBy: updatedUnreadBy
     });
   } catch (error) {
     console.error('Error marking conversation as read:', error);
