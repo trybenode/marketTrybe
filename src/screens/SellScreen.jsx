@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { getDocs, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, ActivityIndicator, Modal, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -32,6 +32,7 @@ export default function SellScreen({ route }) {
   const [price, setPrice] = useState('');
   const [originalPrice, setOriginalPrice] = useState('');
   const [year, setYear] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const isEditMode = route.params?.product !== undefined;
   const product = route.params?.product;
@@ -78,6 +79,7 @@ export default function SellScreen({ route }) {
       if (!imageUris || imageUris.length === 0) {
         throw new Error('No images selected!');
       }
+      setIsLoading(true);
       const uploadedImageUrls = [];
 
       for (const imageUri of imageUris) {
@@ -119,21 +121,22 @@ export default function SellScreen({ route }) {
     } catch (error) {
       console.error('Upload Error:', error.message);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Handler for when images are selected in UploadImages component
   const handleImagesSelected = (selectedImages) => {
-
-    if(!selectedImages || !Array.isArray(selectedImages)) return;
+    if (!selectedImages || !Array.isArray(selectedImages)) return;
     // selectedImages should be an array of URIs
     // Ensure we only keep valid URIs
     const validImages = selectedImages.filter((uri) => !!uri);
-    console.log("Processed Images:", validImages);
+    console.log('Processed Images:', validImages);
     setImages(validImages);
   };
 
-  // product upload 
+  // product upload
   const handleSubmit = async () => {
     if (
       !productName ||
@@ -184,6 +187,8 @@ export default function SellScreen({ route }) {
 
       console.log('Final Product Data:', productData);
 
+      setIsLoading(true);
+
       if (isEditMode) {
         const productRef = doc(db, 'products', product.id);
         await updateDoc(productRef, productData);
@@ -198,26 +203,65 @@ export default function SellScreen({ route }) {
     } catch (error) {
       console.error('Upload Error:', error.message);
       Alert.alert('Error', 'Failed to upload product. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  // const handleDelete = async () => {
+  //   if (isEditMode && product) {
+  //     try {
+  //       setIsLoading(true);
+  //       const productRef = doc(db, 'products', product.id);
+  //       await deleteDoc(productRef);
+  //       Alert.alert('Success', 'Product deleted successfully');
+  //       navigation.navigate('MyShop');
+  //     } catch (error) {
+  //       console.error('Delete Error:', error.message);
+  //       Alert.alert('Error', 'Failed to delete product. Please try again.');
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  // };
+
   const handleDelete = async () => {
-    if (isEditMode && product) {
-      try {
-        const productRef = doc(db, 'products', product.id);
-        await deleteDoc(productRef);
-        Alert.alert('Success', 'Product deleted successfully');
-        navigation.navigate('MyShop');
-      } catch (error) {
-        console.error('Delete Error:', error.message);
-        Alert.alert('Error', 'Failed to delete product. Please try again.');
-      }
-    }
+    if (!isEditMode || !product) return;
+
+    Alert.alert('Confirm Deletion', 'Are you sure you want to delete this product?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: async () => {
+          try {
+            setIsLoading(true);
+            const productRef = doc(db, 'products', product.id);
+            await deleteDoc(productRef);
+            Alert.alert('Deleted', 'Product removed successfully.');
+            navigation.navigate('MyShop');
+          } catch (error) {
+            Alert.alert('Error', 'Failed to delete product.');
+          } finally {
+            setIsLoading(false);
+          }
+        },
+      },
+    ]);
   };
 
   return (
     <SafeAreaView className="mb-20 flex-1 bg-white">
+      {isLoading && (
+  <Modal transparent={true} animationType="fade" visible={isLoading}>
+    <View className="absolute inset-0 flex items-center justify-center  bg-opacity-30">
+      <ActivityIndicator size="large" color="blue" />
+    </View>
+  </Modal>
+)} 
       <TestHeader screenName="MainTabs" title="Product Information" />
+
+
       <ScrollView
         behavior="padding"
         style={{ flex: 1 }}
@@ -273,16 +317,22 @@ export default function SellScreen({ route }) {
         />
 
         <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
-        <View className='items-center flex flex-row justify-evenly mb-20'>
+        <View className="mb-20 flex flex-row items-center justify-evenly">
           {isEditMode && (
             <Button mode="contained" buttonColor="red" onPress={handleDelete}>
               Delete Product
             </Button>
           )}
 
-          <SubmitButton isEditMode={isEditMode} isAgreed={isAgreed} onPress={handleSubmit} />
+          <SubmitButton
+            disabled={isLoading || isAgreed}
+            isEditMode={isEditMode}
+            isAgreed={isAgreed}
+            onPress={handleSubmit}
+          />
         </View>
       </ScrollView>
+      {/* {isLoading && <ActivityIndicator size="large" color="blue" className="mt-4" />} */}
     </SafeAreaView>
   );
 }
