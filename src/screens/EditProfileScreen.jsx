@@ -19,7 +19,7 @@ import RadioButton from '../components/RadioButton';
 import SaveButton from '../components/SaveButton';
 import { useUser } from '../context/UserContext';
 
-import { getDownloadURL, uploadBytesResumable, ref } from 'firebase/storage';
+// import { getDownloadURL, uploadBytesResumable, ref } from 'firebase/storage';
 import { doc, updateDoc } from 'firebase/firestore';
 import { storage, db } from '../../firebaseConfig';
 

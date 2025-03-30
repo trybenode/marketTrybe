@@ -7,10 +7,20 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import CustomProfileOption from '../components/CustomProfileOption';
 import { useUser } from '../context/UserContext';
+import { signOut } from "firebase/auth";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { currentUser } = useUser();
+
+  // const handleSignOut = async () => {
+  //   try {
+  //     await signOut(auth);
+  //     navigation.replace("Login"); // Replace ensures user cannot go back
+  //   } catch (error) {
+  //     console.error("Error signing out:", error.message);
+  //   }
+  // };
 
   // Show an activity indicator while currentUser is still being fetched
   if (!currentUser) {
@@ -87,7 +97,7 @@ export default function ProfileScreen() {
       </View>
 
       {/* Sign Out Button */}
-      <TouchableOpacity className="mt-6" onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity className="mt-6" onPress={() => console.log("signout")}>
         <Text className="text-center text-red-600">Sign Out</Text>
       </TouchableOpacity>
     </SafeAreaView>

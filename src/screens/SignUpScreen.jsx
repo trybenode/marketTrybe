@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, TouchableWithoutFeedback, Image, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
@@ -124,84 +124,86 @@ export default function SignUpScreen() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       {/* Logo and Header */}
-      <View className="my-auto px-8 shadow-md">
-        <View className="items-center">
-          <Image
-            source={require('../assets/logo.png')}
-            className="h-20 w-20"
-            resizeMode="contain"
-            accessibilityLabel="App Logo"
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View className="my-auto px-8 shadow-md">
+          <View className="items-center">
+            <Image
+              source={require('../assets/logo.png')}
+              className="h-20 w-20"
+              resizeMode="contain"
+              accessibilityLabel="App Logo"
+            />
+            <Text className="mt-4 text-2xl font-bold text-gray-800">Create an Account</Text>
+            <Text className="my-4 text-gray-500">Sign up to get started</Text>
+          </View>
+
+          {/* Input Fields */}
+          <CustomTextInput
+            placeholder="Full Name"
+            containerStyle="mt-4"
+            value={fullName}
+            onChangeText={setFullName}
+            keyboardType="default"
+            accessibilityLabel="Full Name Input"
           />
-          <Text className="mt-4 text-2xl font-bold text-gray-800">Create an Account</Text>
-          <Text className="my-4 text-gray-500">Sign up to get started</Text>
-        </View>
-
-        {/* Input Fields */}
-        <CustomTextInput
-          placeholder="Full Name"
-          containerStyle="mt-4"
-          value={fullName}
-          onChangeText={setFullName}
-          keyboardType="default"
-          accessibilityLabel="Full Name Input"
-        />
-        <CustomTextInput
-          placeholder="Email"
-          containerStyle="mt-6"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          accessibilityLabel="Email Input"
-        />
-        <CustomTextInput
-          placeholder="Password"
-          secureTextEntry
-          containerStyle="mt-4"
-          value={password}
-          onChangeText={setPassword}
-          accessibilityLabel="Password Input"
-        />
-
-        {/* Already have an account */}
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Login')}
-          accessibilityLabel="Login Link">
-          <Text className="mb-3 mt-1 text-left text-blue-600">Already have an account? Login.</Text>
-        </TouchableOpacity>
-
-        {/* Sign Up Button with Loading Indicator */}
-        <CustomButton
-          title={loading ? 'Signing up...' : 'Sign Up'}
-          onPress={handleSignUp}
-          disabled={loading}
-          containerStyle="mt-6"
-          buttonStyle={`bg-blue-600 ${loading ? 'opacity-50' : ''}`}
-          textStyle="text-white"
-          accessibilityLabel="Sign Up Button"
-        />
-
-        {/* OR Divider */}
-        <View className="my-6 flex-row items-center" accessibilityLabel="OR Divider">
-          <View className="flex-1 border-b border-gray-300" />
-          <Text className="mx-3 text-gray-500">Or</Text>
-          <View className="flex-1 border-b border-gray-300" />
-        </View>
-
-        {/* Social Authentication Buttons */}
-        <TouchableOpacity
-          className="flex-row border items-center self-center border-gray-300 justify-center p-2 rounded-lg gap-2 w-4/5"
-          accessibilityLabel="Social Login Buttons"
-          onPress={() => console.log("Hey Google")}
-        >
-          <SocialAuthButton
-            name="google"
-            type="FontAwesome"
-            iconColor="#DB4437"
-            accessibilityLabel="Google Login Button"
+          <CustomTextInput
+            placeholder="Email"
+            containerStyle="mt-6"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            accessibilityLabel="Email Input"
           />
-          <Text className="text-grey-700">Sign in with Google</Text>
-        </TouchableOpacity>
-      </View>
+          <CustomTextInput
+            placeholder="Password"
+            secureTextEntry
+            containerStyle="mt-4"
+            value={password}
+            onChangeText={setPassword}
+            accessibilityLabel="Password Input"
+          />
+
+          {/* Already have an account */}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            accessibilityLabel="Login Link">
+            <Text className="mb-3 mt-1 text-left text-blue-600">Already have an account? Login.</Text>
+          </TouchableOpacity>
+
+          {/* Sign Up Button with Loading Indicator */}
+          <CustomButton
+            title={loading ? 'Signing up...' : 'Sign Up'}
+            onPress={handleSignUp}
+            disabled={loading}
+            containerStyle="mt-6"
+            buttonStyle={`bg-blue-600 ${loading ? 'opacity-50' : ''}`}
+            textStyle="text-white"
+            accessibilityLabel="Sign Up Button"
+          />
+
+          {/* OR Divider */}
+          <View className="my-6 flex-row items-center" accessibilityLabel="OR Divider">
+            <View className="flex-1 border-b border-gray-300" />
+            <Text className="mx-3 text-gray-500">Or</Text>
+            <View className="flex-1 border-b border-gray-300" />
+          </View>
+
+          {/* Social Authentication Buttons */}
+          <TouchableOpacity
+            className="flex-row border items-center self-center border-gray-300 justify-center p-2 rounded-lg gap-2 w-4/5"
+            accessibilityLabel="Social Login Buttons"
+            onPress={() => console.log("Hey Google")}
+          >
+            <SocialAuthButton
+              name="google"
+              type="FontAwesome"
+              iconColor="#DB4437"
+              accessibilityLabel="Google Login Button"
+            />
+            <Text className="text-grey-700">Sign in with Google</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
