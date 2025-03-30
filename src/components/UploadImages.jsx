@@ -1,11 +1,18 @@
 //upload image used on sell screen
 import * as ImagePicker from 'expo-image-picker';
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, FlatList, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const UploadImages = memo(({ onImagesSelected }) => {
-  const [images, setImages] = useState([]);
+const UploadImages = memo(({ onImagesSelected, initialImages =[]}) => {
+  const [images, setImages] = useState([initialImages]);
+  useEffect(() => {
+    console.log("Images State:", images);
+  }, [images]);
+  
+  useEffect (()=>{
+    setImages(initialImages) //  set images when component mounts
+  },[initialImages])
 
   const selectImages = async () => {
     try {
@@ -55,13 +62,20 @@ const UploadImages = memo(({ onImagesSelected }) => {
           horizontal
           showsHorizontalScrollIndicator={false}
           className="mt-2"
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <View>
-              <Image
+              {item ? (
+
+                <Image
                 source={{ uri: item }}
                 className="mr-3 h-36 w-36 rounded-lg"
                 resizeMode="cover"
-              />
+                />
+              ):(
+                <Text>
+                  invalid Image
+                </Text>
+              )}
 
               {/*remove button*/}
               <TouchableOpacity

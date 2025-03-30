@@ -246,7 +246,7 @@ export default function SellScreen({ route }) {
             status={isNegotiable ? 'checked' : 'unchecked'}
             onPress={() => setIsNegotiable(!isNegotiable)}
           />
-          <UploadImages onImagesSelected={handleImagesSelected} />
+          <UploadImages onImagesSelected={handleImagesSelected} initialImages={images || []} />
         </View>
 
         <ProductDescriptionInput value={productDescription} onChangeText={setProductDescription} />
