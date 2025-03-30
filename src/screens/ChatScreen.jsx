@@ -43,7 +43,7 @@ export default function ChatScreen({ route }) {
       const messageObj = {
         senderID: currentUserId,
         text: newMessage,
-        timestamp: serverTimestamp(),
+        timestamp: Date.now(),
       };
       await addMessageToConversation(messageObj, conversationId);
       setNewMessage('');
