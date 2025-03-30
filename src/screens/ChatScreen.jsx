@@ -15,11 +15,9 @@ import Options from '../components/Options';
 import TestHeader from '../components/TestHeader';
 
 export default function ChatScreen() {
-  const [messages, setMessages] = useState([
-    { id: '1', text: 'Hello!', sender: 'me' },
-    { id: '2', text: 'Hi there!', sender: 'them' },
-    { id: '3', text: 'How are you?', sender: 'me' },
-  ]);
+  const [messages, setMessages] = useState();
+
+  
 
   // useEffect(() => {
 
