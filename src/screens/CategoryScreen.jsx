@@ -6,7 +6,8 @@ import { db } from '../../firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import CategoriesListing from '../components/CategoriesListing';
-import CustomHeader from '../components/CustomHeader';
+// import CustomHeader from '../components/CustomHeader';
+import TestHeader from '../components/TestHeader';
 
 export default function CategoryScreen() {
   const navigation = useNavigation();
@@ -66,7 +67,7 @@ export default function CategoryScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <CustomHeader screenName="MainTabs" title="All Available Categories" />
+      <TestHeader screenName="MainTabs" title="All Available Categories" />
 
       <FlatList
         data={categories}
