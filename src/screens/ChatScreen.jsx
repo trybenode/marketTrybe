@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,7 @@ export default function ChatScreen({ route }) {
   const [conversation, setConversation] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [newMessage, setNewMessage] = useState('');
+  const flatListRef = useRef(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -56,6 +57,16 @@ export default function ChatScreen({ route }) {
     }
   };
 
+  const scrollToBottom = () => {
+    if (flatListRef.current && conversation?.messages?.length > 0) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [conversation?.messages]);
+
   return (
     <SafeAreaView className="flex-1 bg-white p-2">
       <TestHeader title="Chat" extraComponent={<Options />} />
@@ -64,8 +75,13 @@ export default function ChatScreen({ route }) {
         className="flex-1 bg-gray-100">
         {/* Messages List */}
         <FlatList
+          ref={flatListRef}
           data={conversation?.messages || []}
           keyExtractor={(item, index) => item.id || `msg-${index}`}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-end', padding: 10 }}
+          onContentSizeChange={scrollToBottom}
+          onLayout={scrollToBottom}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <View className={`mx-2 mb-4 ${item.senderID === currentUserId ? 'items-end' : 'items-start'}`}>
               <View
@@ -82,9 +98,6 @@ export default function ChatScreen({ route }) {
               <Text className="mt-1 text-xs text-gray-400">{item.timestamp}</Text>
             </View>
           )}
-          inverted
-          contentContainerStyle={{ padding: 10 }}
-          showsVerticalScrollIndicator={false}
         />
 
         {/* Message Input & Send Button */}
