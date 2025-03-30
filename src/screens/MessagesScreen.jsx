@@ -15,19 +15,23 @@ export default function MessagesScreen() {
   const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
-    
+    let unsubscribe;
     if (currentUserId) {
-      const unsubscribe = getAllConversations(currentUserId, setChats);
+      unsubscribe = getAllConversations(currentUserId, setChats);
     }
-    return () => unsubscribe();
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, [currentUserId]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) setCurrentUserId(user.uid);
       console.log(user.uid);
-      return () => unsubscribe();
     });
+    return () => unsubscribe();
   }, []);
 
   const sortedChats = [...chats].sort((a, b) => {
