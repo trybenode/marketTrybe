@@ -14,25 +14,6 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 
-const checkIfConversationExists = async (senderID, receiverID) => {
-  try {
-    const collectRef = collection(firestore, 'conversation');
-    const docref = query(collectRef, where('participants', 'array-contains', senderID));
-    const querySnapshot = await getDocs(docref);
-    for (const doc of querySnapshot.docs) {
-      const data = doc.data();
-
-      if (data.participants.includes(receiverID)) {
-        return doc.id;
-      }
-    }
-    console.log('No Prior Conversation');
-    return null;
-  } catch (e) {
-    console.log('Error Checking If Conversation Exists', e);
-  }
-};
-
 const getUserIdOfSeller = async(productID) => {
   try {
     if (!productID) {
@@ -56,7 +37,7 @@ const getUserIdOfSeller = async(productID) => {
 
 const initiateConversation = async (message, senderID, receiverID) => {
   try {
-    // Generate a unique conversation ID combining both user IDs
+    // Generate deterministic conversation ID by sorting IDs
     const convoID = [senderID, receiverID].sort().join('_');
     
     const messageObj = {
@@ -65,41 +46,52 @@ const initiateConversation = async (message, senderID, receiverID) => {
       timestamp: serverTimestamp(),
     };
 
-    // Check if conversation exists
-    const priorConvoExists = await checkIfConversationExists(senderID, receiverID);
-    
-    if (priorConvoExists) {
-      // Add message to existing conversation
-      await addMessageToConversation(messageObj, priorConvoExists);
-      return priorConvoExists;
+    const conversationRef = doc(firestore, 'conversation', convoID);
+    const conversationSnap = await getDoc(conversationRef);
+
+    if (conversationSnap.exists()) {
+      // Add to existing conversation
+      await updateDoc(conversationRef, {
+        messages: arrayUnion(messageObj),
+        lastMessage: messageObj,
+        updatedAt: serverTimestamp(),
+      });
     } else {
-      // Create new conversation with predetermined ID
-      await setDoc(doc(firestore, 'conversation', convoID), {
+      // Create new conversation
+      await setDoc(conversationRef, {
         participants: [senderID, receiverID],
         messages: [messageObj],
         createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
         lastMessage: messageObj,
       });
-      return convoID;
     }
+    return convoID;
   } catch (error) {
     console.error('Error in initiateConversation:', error);
     throw error;
   }
 };
 
-const getConversationWithID = async (id, setConversationData) => {
+const getConversationWithID = (id, setConversationData) => {
   try {
     const docRef = doc(firestore, 'conversation', id);
-    onSnapshot(docRef, (docSnap) => {
+    return onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
-        setConversationData(docSnap.data());
+        const data = docSnap.data();
+        // Sort messages by timestamp
+        const sortedMessages = [...data.messages].sort((a, b) => 
+          b.timestamp?.seconds - a.timestamp?.seconds
+        );
+        setConversationData({ ...data, messages: sortedMessages });
       } else {
-        console.log("Document Doesn't exist");
+        console.log("Conversation doesn't exist");
+        setConversationData(null);
       }
     });
   } catch (e) {
-    console.log('DB util getAllConversationWithID function', e);
+    console.error('Error in getConversationWithID:', e);
+    return () => {};
   }
 };
 
@@ -139,7 +131,7 @@ const getAllConversations = async (userID, setConversations) => {
 export {
   initiateConversation,
   getConversationWithID,
-  checkIfConversationExists,
   addMessageToConversation,
-  getUserIdOfSeller
+  getUserIdOfSeller,
+  getAllConversations
 };

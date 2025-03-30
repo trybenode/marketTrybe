@@ -1,14 +1,41 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
+import { auth } from '../../firebaseConfig';
 import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import TestHeader from '../components/TestHeader';
 import UserProfile from '../components/UserProfile';
 import { messages } from '../data/dummyData';
+import {getAllConversations} from '../hooks/messaginghooks';
+
 export default function MessagesScreen() {
-  const [chats, setChats] = useState(messages);
+  const [chats, setChats] = useState([]);
   const navigation = useNavigation();
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        const conversations = await getAllConversations(currentUserId);
+        setChats(conversations);
+      } catch (error) {
+        console.error('Error fetching conversations:', error);
+      }
+    };
+
+    if (currentUserId) {
+      fetchConversations();
+    }
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) setCurrentUserId(user.uid);
+      console.log(user.uid);
+      return () => unsubscribe();
+    });
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -22,7 +49,9 @@ export default function MessagesScreen() {
         renderItem={({ item }) => (
           <TouchableOpacity
             className="flex-row items-center border-b border-gray-200 py-5"
-            onPress={() => navigation.navigate('Chat', { user: item.user, product: item.product })}>
+            // conversationId,
+            // otherUserId: sellerID 
+            onPress={() => navigation.navigate('Chat', { conversationId: `${currentUserId}_${item.userId}`, otherUserId: item.userId })}>
             {/* Product Image */}
             <Image source={{ uri: item.product.image }} className="h-12 w-12 rounded-lg" />
 
