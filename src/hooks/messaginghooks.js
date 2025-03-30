@@ -35,35 +35,37 @@ const getUserIdOfSeller = async(productID) => {
   }
 };
 
-const initiateConversation = async (message, senderID, receiverID) => {
+const initiateConversation = async (message, senderID, receiverID, productDetails) => {
   try {
-    // Generate deterministic conversation ID by sorting IDs
-    const convoID = [senderID, receiverID].sort().join('_');
+    const convoID = `${senderID}_${receiverID}`;
     
     const messageObj = {
       senderID,
       text: message,
-      timestamp: serverTimestamp(),
+      timestamp: Date.now(),
     };
 
     const conversationRef = doc(firestore, 'conversation', convoID);
     const conversationSnap = await getDoc(conversationRef);
 
     if (conversationSnap.exists()) {
-      // Add to existing conversation
       await updateDoc(conversationRef, {
         messages: arrayUnion(messageObj),
         lastMessage: messageObj,
         updatedAt: serverTimestamp(),
       });
     } else {
-      // Create new conversation
       await setDoc(conversationRef, {
         participants: [senderID, receiverID],
         messages: [messageObj],
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         lastMessage: messageObj,
+        product: {
+          name: productDetails.name,
+          imageUrl: productDetails.imageUrl,
+          id: productDetails.id
+        }
       });
     }
     return convoID;

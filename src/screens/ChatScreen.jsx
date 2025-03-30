@@ -17,7 +17,7 @@ import TestHeader from '../components/TestHeader';
 import { auth } from '../../firebaseConfig';
 
 export default function ChatScreen({ route }) {
-  const { conversationId, otherUserId } = route.params;
+  const { conversationId, otherUserId, productDetails } = route.params;
   const [conversation, setConversation] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [newMessage, setNewMessage] = useState('');

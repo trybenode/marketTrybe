@@ -45,5 +45,10 @@ const iosId = IOS_CLIENT_ID;
 const expoId = EXPO_CLIENT_ID;
 const { faker } = require('@faker-js/faker'); // For generating fake data
 
+// Enable offline caching
+// enableIndexedDbPersistence(db).catch((err) => {
+//   console.error('Firestore persistence error:', err);
+// });
+
 
 export { app, db, storage, auth, androidId, webId, iosId, expoId };

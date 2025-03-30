@@ -101,13 +101,26 @@ export default function ListingDetailsScreen({ route }) {
         return;
       }
 
-      const conversationId = await initiateConversation(message, currentUserId, sellerID);
+      const productDetails = {
+        name: name,
+        imageUrl: images[0]?.url || images[0] || '',
+        id: itemId
+      };
+
+      const conversationId = await initiateConversation(
+        message, 
+        currentUserId, 
+        sellerID,
+        productDetails
+      );
+      
       setMessage('');
       
       if (conversationId) {
         navigation.navigate('Chat', { 
           conversationId,
-          otherUserId: sellerID 
+          otherUserId: sellerID,
+          productDetails
         });
       }
     } catch (error) {
