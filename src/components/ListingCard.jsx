@@ -31,15 +31,16 @@ const ListingCard = ({ product, btnName }) => {
           {product.name}
         </Text>
 
-        {/* Product Price */}
-        <Text className="mt-1 text-base font-bold line-through text-blue-900">
+        {/*main price*/}
+        <Text className="mt-1 text-base font-bold line-through text-blue-600">
+          ₦{product.originalPrice?.toLocaleString()}
+        </Text>
+
+        {/* Discounted Product Price */}
+        <Text className="mt-1 text-base font-bold  text-blue-900">
           ₦{product.price?.toLocaleString()}
         </Text>
 
-        {/* Seller Info */}
-        <Text className="mt-1 text-base font-bold text-blue-600">
-          ₦{product.originalPrice?.toLocaleString()}
-        </Text>
 
       </Card.Content>
 
