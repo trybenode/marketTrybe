@@ -65,7 +65,7 @@ export default function ChatScreen({ route }) {
         {/* Messages List */}
         <FlatList
           data={conversation?.messages || []}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => item.id || `msg-${index}`}
           renderItem={({ item }) => (
             <View className={`mx-2 mb-4 ${item.senderID === currentUserId ? 'items-end' : 'items-start'}`}>
               <View
