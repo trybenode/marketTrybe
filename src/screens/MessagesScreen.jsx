@@ -15,11 +15,11 @@ export default function MessagesScreen() {
   const [currentUserId, setCurrentUserId] = useState(null);
 
   useEffect(() => {
-    let unsubscribe;
+    
     if (currentUserId) {
-      unsubscribe = getAllConversations(currentUserId, setChats);
+      const unsubscribe = getAllConversations(currentUserId, setChats);
     }
-    return () => unsubscribe && unsubscribe();
+    return () => unsubscribe();
   }, [currentUserId]);
 
   useEffect(() => {
@@ -30,16 +30,22 @@ export default function MessagesScreen() {
     });
   }, []);
 
+  const sortedChats = [...chats].sort((a, b) => {
+    return (b.lastMessage?.timestamp || 0) - (a.lastMessage?.timestamp || 0);
+  });
+
   return (
     <SafeAreaView className="flex-1 bg-white">
       <TestHeader title="Messages" extraComponent={<UserProfile />} />
       <FlatList
-        data={chats}
+        data={sortedChats}
         keyExtractor={(item) => item.id}
         className="p-4"
         contentContainerStyle={{ paddingBottom: 110 }}
         renderItem={({ item }) => {
           const otherParticipant = item.participants.find(id => id !== currentUserId);
+          const hasUnreadMessages = item.unreadBy?.includes(currentUserId);
+
           return (
             <TouchableOpacity
               className="flex-row items-center border-b border-gray-200 py-5"
@@ -47,13 +53,22 @@ export default function MessagesScreen() {
                 conversationId: item.id, 
                 otherUserId: otherParticipant 
               })}>
-              <Image 
-                source={{ uri: item.product?.imageUrl }} 
-                className="h-12 w-12 rounded-lg" 
-              />
+              <View className="relative">
+                <Image 
+                  source={{ uri: item.product?.imageUrl }} 
+                  className="h-12 w-12 rounded-lg" 
+                />
+                {hasUnreadMessages && (
+                  <View className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-blue-500" />
+                )}
+              </View>
               <View className="ml-4 flex-1">
-                <Text className="text-md font-bold">{item.product?.name}</Text>
-                <Text className="text-gray-500">{item.lastMessage?.text}</Text>
+                <Text className={`text-md ${hasUnreadMessages ? 'font-bold' : 'font-normal'}`}>
+                  {item.product?.name}
+                </Text>
+                <Text className={`${hasUnreadMessages ? 'text-gray-900' : 'text-gray-500'}`}>
+                  {item.lastMessage?.text}
+                </Text>
               </View>
               <View className="items-end">
                 <Text className="text-gray-400">

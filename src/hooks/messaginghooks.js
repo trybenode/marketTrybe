@@ -13,6 +13,7 @@ import {
   where,
   onSnapshot,
 } from 'firebase/firestore';
+import { auth } from '../../firebaseConfig';
 
 const getUserIdOfSeller = async(productID) => {
   try {
@@ -53,6 +54,7 @@ const initiateConversation = async (message, senderID, receiverID, productDetail
         messages: arrayUnion(messageObj),
         lastMessage: messageObj,
         updatedAt: serverTimestamp(),
+        unreadBy: [receiverID]
       });
     } else {
       await setDoc(conversationRef, {
@@ -61,6 +63,7 @@ const initiateConversation = async (message, senderID, receiverID, productDetail
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
         lastMessage: messageObj,
+        unreadBy: [receiverID],
         product: {
           name: productDetails.name,
           imageUrl: productDetails.imageUrl,
@@ -81,11 +84,9 @@ const getConversationWithID = (id, setConversationData) => {
     return onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = docSnap.data();
-        // Sort messages by timestamp
-        const sortedMessages = [...data.messages].sort((a, b) => 
-          b.timestamp?.seconds - a.timestamp?.seconds
-        );
-        setConversationData({ ...data, messages: sortedMessages });
+        // Mark as read when opened
+        markConversationAsRead(id, auth.currentUser?.uid);
+        setConversationData(data);
       } else {
         console.log("Conversation doesn't exist");
         setConversationData(null);
@@ -101,14 +102,32 @@ const addMessageToConversation = async (messageObj, conversationID) => {
   const conversationRef = doc(firestore, 'conversation', conversationID);
 
   try {
+    const conversationSnap = await getDoc(conversationRef);
+    const otherParticipant = conversationSnap.data().participants.find(
+      id => id !== messageObj.senderID
+    );
+
     await updateDoc(conversationRef, {
       messages: arrayUnion(messageObj),
       lastMessage: messageObj,
+      updatedAt: serverTimestamp(),
+      unreadBy: [otherParticipant]
     });
     console.log('Message added successfully!');
   } catch (error) {
     console.error('Error adding message:', error);
     throw error;
+  }
+};
+
+const markConversationAsRead = async (conversationID, userId) => {
+  const conversationRef = doc(firestore, 'conversation', conversationID);
+  try {
+    await updateDoc(conversationRef, {
+      unreadBy: [] // Set to empty array to mark as read
+    });
+  } catch (error) {
+    console.error('Error marking conversation as read:', error);
   }
 };
 
@@ -129,11 +148,11 @@ const getAllConversations = async (userID, setConversations) => {
   }
 }
 
-
 export {
   initiateConversation,
   getConversationWithID,
   addMessageToConversation,
   getUserIdOfSeller,
-  getAllConversations
+  getAllConversations,
+  markConversationAsRead
 };
