@@ -51,7 +51,8 @@ export default function SellScreen({ route }) {
       setPrice(product.price);
       setOriginalPrice(product.originalPrice);
       setYear(product.year);
-      setImages(product.images || []);
+      // setImages(product.images || []);
+      setImages(Array.isArray(product.images) ? product.images : []);
     }
   }, [isEditMode, product]);
 
@@ -123,9 +124,12 @@ export default function SellScreen({ route }) {
 
   // Handler for when images are selected in UploadImages component
   const handleImagesSelected = (selectedImages) => {
+
+    if(!selectedImages || !Array.isArray(selectedImages)) return;
     // selectedImages should be an array of URIs
     // Ensure we only keep valid URIs
     const validImages = selectedImages.filter((uri) => !!uri);
+    console.log("Processed Images:", validImages);
     setImages(validImages);
   };
 

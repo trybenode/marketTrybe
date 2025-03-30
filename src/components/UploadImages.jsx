@@ -4,29 +4,33 @@ import React, { useState, memo, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, FlatList, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const UploadImages = memo(({ onImagesSelected, initialImages =[]}) => {
-  const [images, setImages] = useState([initialImages]);
+const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
+  // const [images, setImages] = useState([initialImages]);
+  const [images, setImages] = useState(initialImages || []);
+
   useEffect(() => {
-    console.log("Images State:", images);
+    console.log('Images State:', images);
   }, [images]);
-  
-  useEffect (()=>{
-    setImages(initialImages) //  set images when component mounts
-  },[initialImages])
+
+  useEffect(() => {
+    setImages(initialImages); //  set images when component mounts
+  }, [initialImages]);
 
   const selectImages = async () => {
     try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync({});
+      if (status !== 'granted') {
+        Alert.alert(
+          'Permission Denied',
+          'Sorry, we need camera roll permissions to upload images.'
+        );
+        return;
+      }
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
         allowsMultipleSelection: true,
         selectionLimit: 5,
         quality: 1,
-
-        // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync({});
-        // if (status !== 'granted') {
-        //   Alert.alert('Permission Denied', 'Sorry, we need camera roll permissions to upload images.');
-        //   return;
-        // }
       });
 
       if (!result.canceled) {
@@ -57,27 +61,19 @@ const UploadImages = memo(({ onImagesSelected, initialImages =[]}) => {
         </TouchableOpacity>
       ) : (
         <FlatList
-          data={images}
+          data={images.filter((uri) => !!uri)} // ✅ Filter out null values
           keyExtractor={(item, index) => index.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
           className="mt-2"
           renderItem={({ item, index }) => (
             <View>
-              {item ? (
-
-                <Image
+              <Image
                 source={{ uri: item }}
                 className="mr-3 h-36 w-36 rounded-lg"
                 resizeMode="cover"
-                />
-              ):(
-                <Text>
-                  invalid Image
-                </Text>
-              )}
-
-              {/*remove button*/}
+              />
+              {/* Remove button */}
               <TouchableOpacity
                 onPress={() => removeImage(index)}
                 className="absolute right-1 top-1 rounded-full bg-red-500 p-1">
