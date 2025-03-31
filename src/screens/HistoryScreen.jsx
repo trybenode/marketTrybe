@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import CustomHeader from '../components/CustomHeader';
 import { dummyTradeHistory } from '../data/dummyData';
+import TestHeader from '../components/TestHeader';
 
 const HistoryScreen = () => {
   const navigation = useNavigation();
@@ -43,7 +44,7 @@ const HistoryScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <CustomHeader title="Trade History" screenName="Market" />
+      <TestHeader title="Trade History" screenName="Market" />
       <FlatList
         data={tradeHistory}
         renderItem={renderItem}

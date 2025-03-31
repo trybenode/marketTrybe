@@ -68,9 +68,12 @@ export default function LoginScreen() {
         email: user.email 
       });
 
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "MainTabs" }],
+      });
       
-      
-      navigation.navigate("MainTabs");
+      // navigation.replace("MainTabs");
     } catch (err) {
       console.error("Login error:", err.message);
   
