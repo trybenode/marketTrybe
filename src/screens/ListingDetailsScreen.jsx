@@ -49,7 +49,7 @@ export default function ListingDetailsScreen({ route }) {
     setModalVisible(true);
   };
 
-  const { favoriteIds, toggleFavorite, loadFavorites } = useFavoritesStore();
+  const { favoriteIds, toggleFavorite } = useFavoritesStore();
 
   // Lets get the user id of the current user
   useEffect(() => {
@@ -58,6 +58,7 @@ export default function ListingDetailsScreen({ route }) {
       return () => unsubscribe();
     });
   }, []);
+
 
   // Add useEffect for fetching seller ID
   useEffect(() => {
@@ -78,6 +79,7 @@ export default function ListingDetailsScreen({ route }) {
 
   console.log("Product ID:", itemId);
   console.log("Seller ID state:", sellerID);
+  console.log("All Favs when loaded: ", favoriteIds)
 
   // Sync liked state with Zustand store
   useEffect(() => {
@@ -88,6 +90,7 @@ export default function ListingDetailsScreen({ route }) {
   // Handle favorite toggle
   const handleLiked = async () => {
     await toggleFavorite(itemId);
+    // console.log("All Favs: ", favoriteIds)
   };
 
   const handleSendMessage = async () => {
