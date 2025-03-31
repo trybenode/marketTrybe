@@ -1,7 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
-import { getDocs, collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert, ActivityIndicator, Modal, Text } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import {  collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import React, { useState, useEffect,useReducer } from 'react';
+import { View, ScrollView, Alert, ActivityIndicator, Modal,BackHandler } from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -21,7 +21,7 @@ export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
   const [subCategory, setSubCategory] = useState('');
   const [open, setOpen] = useState(false);
-  const [images, setImages] = useState([]); // This holds the array of image URIs
+  const [images, setImages] = useState([]); //  holds image URIs
   const [selectedValue, setSelectedValue] = useState(null);
   const [isNegotiable, setIsNegotiable] = useState(false);
   const [isAgreed, setIsAgreed] = useState(false);
@@ -54,6 +54,9 @@ export default function SellScreen({ route }) {
       setYear(product.year);
       // setImages(product.images || []);
       setImages(Array.isArray(product.images) ? product.images : []);
+    }
+    return()=>{
+      clearForm();
     }
   }, [isEditMode, product]);
 
@@ -250,17 +253,46 @@ export default function SellScreen({ route }) {
     ]);
   };
 
+  // const hasUnsavedChanges = () =>{
+  //   return(
+      
+  //   );
+  // };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () =>{
+        if(productName || 
+          price ||
+          selectedValue||
+          productDescription||
+          brand||
+          condition||
+          color||
+          year||
+          images.length > 0) {
+          Alert.alert ("Unsaved Changes", "you have unsaved changes are you sure you want to exit?",[
+            {text: 'Cancel', style: 'cancel' , onPress:()=>null},
+            {text:'Exit', style:'destructive', onPress:() => {clearForm(); navigation.goBack();}
+          }
+          ])
+          return true; //prevent default back action 
+        }return false ;
+      }
+      BackHandler.addEventListener('hardwareBackPress', onBackPress)
+      return ()=> BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, [productName, price, selectedValue, productDescription, brand, condition, color, year, images.length]))
+
   return (
     <SafeAreaView className="mb-20 flex-1 bg-white">
       {isLoading && (
-  <Modal transparent={true} animationType="fade" visible={isLoading}>
-    <View className="absolute inset-0 flex items-center justify-center  bg-opacity-30">
-      <ActivityIndicator size="large" color="blue" />
-    </View>
-  </Modal>
-)} 
+        <Modal transparent={true} animationType="fade" visible={isLoading}>
+          <View className="absolute inset-0 flex items-center justify-center  bg-opacity-30">
+            <ActivityIndicator size="large" color="blue" />
+          </View>
+        </Modal>
+      )}
       <TestHeader screenName="MainTabs" title="Product Information" />
-
 
       <ScrollView
         behavior="padding"
@@ -316,7 +348,7 @@ export default function SellScreen({ route }) {
           }}
         />
 
-        <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
+       {!isEditMode &&  <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />}
         <View className="mb-20 flex flex-row items-center justify-evenly">
           {isEditMode && (
             <Button mode="contained" buttonColor="red" onPress={handleDelete}>
@@ -336,3 +368,155 @@ export default function SellScreen({ route }) {
     </SafeAreaView>
   );
 }
+
+// import { useNavigation, useFocusEffect } from '@react-navigation/native';
+// import { collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+// import React, { useState, useEffect, useReducer } from 'react';
+// import { View, ScrollView, Alert, ActivityIndicator, Modal, BackHandler } from 'react-native';
+// import { Button } from 'react-native-paper';
+// import { SafeAreaView } from 'react-native-safe-area-context';
+
+// import { auth, db } from '../../firebaseConfig'; // Firebase services
+// import CategoryDropdown from '../components/CategoryDropdown';
+// import CheckboxWithLabel from '../components/CheckboxWithLabel';
+// import OtherInformationSection from '../components/OtherInformationSection';
+// import ProductDescriptionInput from '../components/ProductDescriptionInput';
+// import ProductFormInput from '../components/ProductFormInput';
+// import SubmitButton from '../components/SubmitButton';
+// import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckbox';
+// import TestHeader from '../components/TestHeader';
+// import UploadImages from '../components/UploadImages';
+
+// const initialState = {
+//   productName: '',
+//   subCategory: '',
+//   selectedValue: null,
+//   isNegotiable: false,
+//   productDescription: '',
+//   brand: '',
+//   condition: '',
+//   color: '',
+//   price: '',
+//   originalPrice: '',
+//   year: '',
+//   images: [],
+// };
+
+// function formReducer(state, action) {
+//   return { ...state, [action.field]: action.value };
+// }
+
+// export default function SellScreen({ route }) {
+//   const [formState, dispatch] = useReducer(formReducer, initialState);
+//   const [isLoading, setIsLoading] = useState(false);
+//   const [isAgreed, setIsAgreed] = useState(false);
+//   const [open, setOpen] = useState(false);
+
+//   const isEditMode = !!route.params?.product;
+//   const product = route.params?.product;
+//   const navigation = useNavigation();
+
+//   useEffect(() => {
+//     if (isEditMode && product) {
+//       Object.keys(initialState).forEach((key) => {
+//         dispatch({ field: key, value: product[key] || initialState[key] });
+//       });
+//     }
+//   }, [isEditMode, product]);
+
+//   const hasUnsavedChanges = () => Object.values(formState).some((value) => value);
+
+//   useFocusEffect(
+//     React.useCallback(() => {
+//       const onBackPress = () => {
+//         if (hasUnsavedChanges()) {
+//           Alert.alert('Unsaved Changes', 'You have unsaved changes. Exit anyway?', [
+//             { text: 'Cancel', style: 'cancel' },
+//             { text: 'Exit', style: 'destructive', onPress: () => navigation.goBack() },
+//           ]);
+//           return true;
+//         }
+//         return false;
+//       };
+      
+//       const backHandler = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+//       return () => backHandler.remove();
+//     }, [hasUnsavedChanges])
+//   );
+
+//   const handleSubmit = async () => {
+//     if (Object.values(formState).some((value) => !value) || formState.images.length === 0) {
+//       Alert.alert('Error', 'Please fill in all fields and upload at least one image');
+//       return;
+//     }
+//     try {
+//       const user = auth.currentUser;
+//       if (!user) {
+//         Alert.alert('Error', 'You must be logged in to upload a product');
+//         return;
+//       }
+//       setIsLoading(true);
+//       const productData = { ...formState, userId: user.uid, ...(isEditMode ? { updatedAt: new Date() } : { createdAt: new Date() }) };
+//       if (isEditMode) {
+//         await updateDoc(doc(db, 'products', product.id), productData);
+//         Alert.alert('Success', 'Product updated successfully');
+//       } else {
+//         await addDoc(collection(db, 'products'), productData);
+//         Alert.alert('Success', 'Product uploaded successfully');
+//       }
+//       navigation.navigate('MyShop');
+//     } catch (error) {
+//       Alert.alert('Error', 'Failed to upload product. Please try again.');
+//     } finally {
+//       setIsLoading(false);
+//     }
+//   };
+
+//   const handleDelete = async () => {
+//     if (!isEditMode || !product) return;
+//     Alert.alert('Confirm Deletion', 'Are you sure you want to delete this product?', [
+//       { text: 'Cancel', style: 'cancel' },
+//       {
+//         text: 'Delete',
+//         style: 'destructive',
+//         onPress: async () => {
+//           try {
+//             setIsLoading(true);
+//             await deleteDoc(doc(db, 'products', product.id));
+//             Alert.alert('Deleted', 'Product removed successfully.');
+//             navigation.navigate('MyShop');
+//           } catch (error) {
+//             Alert.alert('Error', 'Failed to delete product.');
+//           } finally {
+//             setIsLoading(false);
+//           }
+//         },
+//       },
+//     ]);
+//   };
+
+//   return (
+//     <SafeAreaView className="mb-20 flex-1 bg-white">
+//       {isLoading && (
+//         <Modal transparent animationType="fade" visible>
+//           <View className="absolute inset-0 flex items-center justify-center bg-opacity-30">
+//             <ActivityIndicator size="large" color="blue" />
+//           </View>
+//         </Modal>
+//       )}
+//       <TestHeader screenName="MainTabs" title="Product Information" />
+//       <ScrollView nestedScrollEnabled className="px-4 pb-8">
+//         <ProductFormInput placeholder="Product Name" value={formState.productName} onChangeText={(value) => dispatch({ field: 'productName', value })} />
+//         <CategoryDropdown open={open} setOpen={setOpen} selectedValue={formState.selectedValue} setSelectedValue={(value) => dispatch({ field: 'selectedValue', value })} />
+//         <ProductDescriptionInput value={formState.productDescription} onChangeText={(value) => dispatch({ field: 'productDescription', value })} />
+//         <UploadImages onImagesSelected={(images) => dispatch({ field: 'images', value: images })} initialImages={formState.images} />
+//         <OtherInformationSection {...formState} dispatch={dispatch} />
+//         {!isEditMode && <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />}
+//         <View className="mb-20 flex flex-row items-center justify-evenly">
+//           {isEditMode && <Button mode="contained" buttonColor="red" onPress={handleDelete}>Delete Product</Button>}
+//           <SubmitButton disabled={isLoading || !isAgreed} isEditMode={isEditMode} onPress={handleSubmit} />
+//         </View>
+//       </ScrollView>
+//     </SafeAreaView>
+//   );
+// }
