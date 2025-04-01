@@ -285,7 +285,7 @@ export default function ListingDetailsScreen({ route }) {
                     <Text className="font-semibold text-white">Send</Text>
                   </TouchableOpacity>
                 </View>
-              </View>
+            </View>
 
               {/* {related products} */}
               <View className="p-2 ">
