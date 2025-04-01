@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
-  Modal,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -20,19 +20,27 @@ import { auth } from "../../firebaseConfig"; // Ensure this is correctly importe
 export default function ProfileScreen() {
   const navigation = useNavigation();
   const { currentUser } = useUser();
-  const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
 
   const confirmSignOut = async () => {
     try {
       await signOut(auth);
-      setModalVisible(false); // Close modal after sign-out
       navigation.replace("Login"); // Ensure user cannot go back after sign-out
     } catch (error) {
       console.error("Error signing out:", error.message);
     }
   };
 
-  // Show an activity indicator while currentUser is still being fetched
+  const handleSignOut = () => {
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Yes", onPress: confirmSignOut },
+      ]
+    );
+  };
+
   if (!currentUser) {
     return (
       <SafeAreaView className="flex-1 items-center justify-center bg-white">
@@ -114,45 +122,9 @@ export default function ProfileScreen() {
       </View>
 
       {/* Sign Out Button */}
-      <TouchableOpacity className="mt-6" onPress={() => setModalVisible(true)}>
+      <TouchableOpacity className="mt-6" onPress={handleSignOut}>
         <Text className="text-center text-red-600">Sign Out</Text>
       </TouchableOpacity>
-
-      {/* Logout Confirmation Modal */}
-      <Modal
-      animationType="fade" // Changed from 'slide' to 'fade'
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => setModalVisible(false)}
-      >
-        <View className="flex-1 justify-center items-center bg-black/20"> 
-          {/* Light black transparent background (20% opacity) */}
-          <View className="bg-white p-6 rounded-lg shadow-lg w-80 border border-gray-300">
-            <Text className="text-lg font-semibold text-center mb-4">
-              Are you sure you want to log out?
-            </Text>
-
-            {/* Buttons */}
-            <View className="flex-row justify-around">
-              <TouchableOpacity
-                onPress={() => setModalVisible(false)}
-                className="px-4 py-2 bg-gray-300 rounded-lg"
-              >
-                <Text className="text-gray-700">Cancel</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={confirmSignOut}
-                className="px-4 py-2 bg-red-600 rounded-lg"
-              >
-                <Text className="text-white">Log Out</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
-
-
     </SafeAreaView>
   );
 }
