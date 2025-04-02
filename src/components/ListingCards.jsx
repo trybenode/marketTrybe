@@ -31,7 +31,9 @@ const ListingCards = memo(({ products = [], isFetchingMore, loadMoreProducts, bo
               navigation.navigate('ListingDetails', {
                 product: {
                   ...item.product,
-                  createdAt: item.product.createdAt ? item.product.createdAt.toISOString() : null,
+                  createdAt: item.product.createdAt instanceof Date 
+                    ? item.product.createdAt.toISOString() 
+                    : null,
                 },
                 itemId: item.id,
               })
