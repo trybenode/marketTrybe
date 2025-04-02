@@ -21,7 +21,7 @@ import SuccessKycScreen from './src/screens/SuccessKycScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 import useFavoritesStore from "./src/store/FavouriteStore";
-
+import NetworkListener from './src/Services/NetworkListener'
 import Toast from 'react-native-toast-message';
 
 import './global.css';
@@ -38,6 +38,7 @@ export default function App() {
   return (
     <UserProvider>
       <NavigationContainer>
+        <NetworkListener />
         <Stack.Navigator>
           <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
