@@ -1,3 +1,4 @@
+//All available category 
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
@@ -6,7 +7,6 @@ import { db } from '../../firebaseConfig';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import CategoriesListing from '../components/CategoriesListing';
-// import CustomHeader from '../components/CustomHeader';
 import TestHeader from '../components/TestHeader';
 
 export default function CategoryScreen() {
@@ -37,7 +37,7 @@ export default function CategoryScreen() {
   
       const productsQuery = query(
         collection(db, 'products'),
-        where('categoryId', '==', categoryID)  // Ensure this field exists in Firestore
+        where('categoryId', '==', categoryID)  
       );
       const querySnapshot = await getDocs(productsQuery);
       const products = querySnapshot.docs.map((doc) => ({
@@ -45,8 +45,8 @@ export default function CategoryScreen() {
         ...doc.data(),
       }));
   
-      console.log("✅ Products fetched:", products.length);
-      console.log("📝 Fetched products:", products); // Check product data
+      console.log("✅ Products fetched:", products.length); // debugging 
+      console.log("📝 Fetched products:", products); // debugging 
   
       navigation.navigate('ProductList', { categoryID, categoryName, products });
     } catch (error) {
