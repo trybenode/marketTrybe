@@ -1,35 +1,73 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { query, getDocs, collection, orderBy, startAfter, limit } from 'firebase/firestore';
+import { db } from '../../firebaseConfig';
+import ListingCards from '../components/ListingCards';
 import Categories from '../components/Categories';
-import ListingCards from '../components/ListingCards'; 
 import SearchBar from '../components/SearchBar';
 import UserProfile from '../components/UserProfile';
-import { listings } from '../data/dummyData';
+
+const PAGE_SIZE = 10;
 
 export default function HomeScreen() {
-  // console.log('Listings Data:', listings);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [lastVisible, setLastVisible] = useState(null);
+
+  const fetchProducts = useCallback(async (isLoadMore = false) => {
+    try {
+      if (isLoadMore) setIsFetchingMore(true);
+      else setLoading(true);
+
+      let baseQuery = collection(db, 'products');
+      let constructedQuery = query(baseQuery, orderBy('createdAt', 'desc'), limit(PAGE_SIZE));
+
+      if (isLoadMore && lastVisible) {
+        constructedQuery = query(baseQuery, orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(PAGE_SIZE));
+      }
+
+      const querySnapshot = await getDocs(constructedQuery);
+      const newProducts = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        product: {
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate(),
+          updatedAt: doc.data().updatedAt?.toDate(),
+        },
+      }));
+
+      setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1] || null);
+      setProducts((prev) => (isLoadMore ? [...prev, ...newProducts] : newProducts));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+      setIsFetchingMore(false);
+    }
+  }, [lastVisible]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-white p-0">
       <View className="flex-row items-center justify-between p-4">
-        {/* Header containing Logo and Profile picture */}
-        <View>
-          <Text className="text-2xl font-extrabold color-black">MARKET TRYBE</Text>
-        </View>
+        <Text className="text-2xl font-extrabold color-black">MARKET TRYBE</Text>
         <UserProfile />
       </View>
 
-      {/* Main Content */}
-      <View className=" flex-1 px-3">
-        {/* Categories */}
+      <View className="flex-1 px-3">
         <Categories />
-
         <SearchBar />
 
-        {/*Product Listings */}
-        <ListingCards  showAll={true} />
+        {loading ? (
+          <ActivityIndicator size="large" color="#2563eb" />
+        ) : (
+          <ListingCards products={products} isFetchingMore={isFetchingMore} loadMoreProducts={() => fetchProducts(true)} />
+        )}
       </View>
     </SafeAreaView>
   );

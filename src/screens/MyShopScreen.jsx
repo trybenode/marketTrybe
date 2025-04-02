@@ -74,14 +74,7 @@ export default function MyShopScreen() {
         {hasProduct ? (
           <>
             <SellerProfileCard
-              name={userProfile?.displayName || "Wilson's Shop"}
-              yearCreated={
-                userProfile?.metadata?.creationTime
-                  ? new Date(userProfile.metadata.creationTime).getFullYear()
-                  : 2025
-              }
-              location={userProfile?.location || 'Old Admins Block'}
-              imageUrl={userProfile?.photoURL || 'https://via.placeholder.com/150'}
+              
             />
             <ScrollView showsVerticalScrollIndicator={false}>
               <View className="mt-4 flex flex-row flex-wrap justify-between">

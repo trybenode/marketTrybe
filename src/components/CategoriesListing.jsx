@@ -1,4 +1,4 @@
-//individual category listing component
+//category component
 import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';
 import { TouchableOpacity, Image, Text, View } from 'react-native';
@@ -21,7 +21,6 @@ const CategoriesListing = memo(({ name, image, id }) => {
           source={{ uri: image }} 
           className="h-full w-full"
           resizeMode="cover"
-          // defaultSource={require('../assets/placeholder.png')}
           onError={() => console.warn('Failed to load category image:', image)}
         />
       </View>

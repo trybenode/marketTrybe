@@ -59,7 +59,6 @@ export default function ListingDetailsScreen({ route }) {
     });
   }, []);
 
-
   // Add useEffect for fetching seller ID
   useEffect(() => {
     const fetchSellerID = async () => {
@@ -70,16 +69,16 @@ export default function ListingDetailsScreen({ route }) {
           // console.log("Seller ID fetched:", id);
         }
       } catch (error) {
-        console.error("Error fetching seller ID:", error);
+        console.error('Error fetching seller ID:', error);
       }
     };
 
     fetchSellerID();
   }, [itemId]);
 
-  console.log("Product ID:", itemId);
-  console.log("Seller ID state:", sellerID);
-  console.log("All Favs when loaded: ", favoriteIds)
+  console.log('Product ID:', itemId);
+  console.log('Seller ID state:', sellerID);
+  console.log('All Favs when loaded: ', favoriteIds);
 
   // Sync liked state with Zustand store
   useEffect(() => {
@@ -107,23 +106,23 @@ export default function ListingDetailsScreen({ route }) {
       const productDetails = {
         name: name,
         imageUrl: images[0]?.url || images[0] || '',
-        id: itemId
+        id: itemId,
       };
 
       const conversationId = await initiateConversation(
-        message, 
-        currentUserId, 
+        message,
+        currentUserId,
         sellerID,
         productDetails
       );
-      
+
       setMessage('');
-      
+
       if (conversationId) {
-        navigation.navigate('Chat', { 
+        navigation.navigate('Chat', {
           conversationId,
           otherUserId: sellerID,
-          productDetails
+          productDetails,
         });
       }
     } catch (error) {
@@ -143,10 +142,9 @@ export default function ListingDetailsScreen({ route }) {
     { index: 4, label: 'Color', value: color },
     { index: 5, label: 'Year', value: year },
   ];
-  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null })); //array for place holder if no image available 
+  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null })); //array for place holder if no image available
 
-  const mainImageUri =
-    images && images.length > 0 ? images[0].url || images[0] : null;
+  const mainImageUri = images && images.length > 0 ? images[0].url || images[0] : null;
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -209,18 +207,12 @@ export default function ListingDetailsScreen({ route }) {
 
               {/* Title and Price Section */}
               <View className="my-4 p-2">
-                <Text className="text-2xl font-bold tracking-tight text-gray-900">
-                  {name}
-                </Text>
+                <Text className="text-2xl font-bold tracking-tight text-gray-900">{name}</Text>
 
                 <View className="mt-2 flex-row items-center justify-between ">
-                  <Text className="text-xl font-extrabold text-green-600">
-                    ₦{originalPrice}
-                  </Text>
+                  <Text className="text-xl font-extrabold text-green-600">₦{price}</Text>
                   {/* Strike-through original price for discount effect */}
-                  <Text className="ml-2 text-sm text-gray-500 line-through">
-                    ₦{price}
-                  </Text>
+                  <Text className="ml-2 text-sm text-gray-500 line-through">₦{originalPrice}</Text>
                 </View>
 
                 {/* Negotiable Badge */}
@@ -278,10 +270,9 @@ export default function ListingDetailsScreen({ route }) {
                     value={message}
                     onChangeText={setMessage}
                   />
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     className="ml-4 rounded-lg bg-blue-500 px-4 py-2"
-                    onPress={handleSendMessage}
-                  >
+                    onPress={handleSendMessage}>
                     <Text className="font-semibold text-white">Send</Text>
                   </TouchableOpacity>
                 </View>
