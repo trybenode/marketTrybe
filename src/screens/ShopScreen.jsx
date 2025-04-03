@@ -3,45 +3,44 @@ import React from 'react';
 import { View, TouchableOpacity, ScrollView, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import CustomHeader from '../components/CustomHeader';
+import TestHeader from '../components/TestHeader';
 import ListingCard from '../components/ListingCard';
 import SellerProfileCard from '../components/SellerProfileCard';
 import UserProfile from '../components/UserProfile';
-import { listings } from '../data/dummyData'; // Import your product data
 
-export default function ShopScreen() {
-  const navigation = useNavigation();
-
+export default function ShopScreen({ route }) {
+  const navigation = useNavigation({ route });
+  const { sellerInfo, sellerProducts = [] } = route.params || {};
+  // const sellerProducts = listings.filter((product) => product.userId === sellerInfo.id);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <CustomHeader
-        screenName="ListingDetails"
-        title="Seller's Profile"
-        extraComponent={<UserProfile />}
-      />
+      <TestHeader title={sellerInfo.fullName + "'s shop"} extraComponent={<UserProfile />} />
       <ScrollView className="mb-3 flex-col p-3" showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
         <SellerProfileCard
-          name="Demilade Femi"
-          yearCreated="2025"
-          location="Hostelite, Block C, Enterprise"
-          imageUrl="https://images.pexels.com/photos/31137621/pexels-photo-31137621.jpeg"
+          name={sellerInfo.fullName || 'Unknown Seller'}
+          yearCreated={sellerInfo.yearCreated || 'N/A'}
+          location={sellerInfo.address || 'Unknown Location'}
+          imageUrl={sellerInfo.imageUrl || 'https://via.placeholder.com/150'}
         />
 
-        {/* Shop Title */}
-        <Text className="mt-12 text-center text-lg font-semibold">Demilade’s Shop</Text>
 
-        {/* Product List */}
-        <View className=" mt-4  flex-row flex-wrap justify-between px-2">
-          {listings.map((product) => (
-            <View key={product.id} className="mb-4 w-[48%]">
-              <TouchableOpacity onPress={() => navigation.navigate('ListingDetails')}>
-                <ListingCard {...product} btnName="view" />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
+        {/* Product List displaying Only Seller's Products */}
+        {sellerProducts.length > 0 ? (
+          <View className="mt-4 flex-row flex-wrap justify-between px-2">
+            {sellerProducts.map((product) => (
+              <View key={product.id} className="mb-4 w-[48%]">
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ListingDetails', { product })}>
+                  <ListingCard product={product} btnName="View" />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+        ) : (
+          <Text className="mt-6 text-center text-gray-500">No products found for {sellerInfo.fullName}</Text>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
