@@ -108,11 +108,18 @@ const addMessageToConversation = async (messageObj, conversationID) => {
       id => id !== messageObj.senderID
     );
 
+    // Use serverTimestamp for updatedAt, but keep timestamp as number for easy sorting
     await updateDoc(conversationRef, {
-      messages: arrayUnion(messageObj),
-      lastMessage: messageObj,
+      messages: arrayUnion({
+        ...messageObj,
+        timestamp: Date.now() // Unix timestamp in milliseconds
+      }),
+      lastMessage: {
+        ...messageObj,
+        timestamp: Date.now()
+      },
       updatedAt: serverTimestamp(),
-      unreadBy: otherParticipants // Set all other participants as having unread messages
+      unreadBy: otherParticipants
     });
   } catch (error) {
     console.error('Error adding message:', error);

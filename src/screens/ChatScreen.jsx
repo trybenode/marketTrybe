@@ -67,6 +67,12 @@ export default function ChatScreen({ route }) {
     scrollToBottom();
   }, [conversation?.messages]);
 
+  const formatMessageTimestamp = (timestamp) => {
+    if (!timestamp) return '';
+    const date = new Date(parseInt(timestamp));
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-white p-2">
       <TestHeader title="Chat" extraComponent={<Options />} />
@@ -95,7 +101,9 @@ export default function ChatScreen({ route }) {
                   {item.text}
                 </Text>
               </View>
-              <Text className="mt-1 text-xs text-gray-400">{item.timestamp}</Text>
+              <Text className="mt-1 text-xs text-gray-400">
+                {formatMessageTimestamp(item.timestamp)}
+              </Text>
             </View>
           )}
         />
