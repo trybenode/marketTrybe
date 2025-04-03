@@ -13,13 +13,15 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useFavoritesStore from '../store/FavouriteStore';
-import CustomHeader from '../components/CustomHeader';
-import ListingCards from '../components/ListingCards';
+import Toast from 'react-native-toast-message';
+
+
 import { auth } from '../../firebaseConfig';
 import { images, listings } from '../data/dummyData';
 import useUserStore from '../store/userStore';
 import TestHeader from '../components/TestHeader';
 import { getUserIdOfSeller, initiateConversation } from '../hooks/messaginghooks';
+import UserDetailsAndRelatedProducts from '../components/UserDetailsAndRelatedProducts';
 
 export default function ListingDetailsScreen({ route }) {
   const { product, itemId } = route.params;
@@ -55,26 +57,41 @@ export default function ListingDetailsScreen({ route }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) setCurrentUserId(user.uid);
-      return () => unsubscribe();
     });
+    return () => unsubscribe();
   }, []);
 
   // Add useEffect for fetching seller ID
-  useEffect(() => {
-    const fetchSellerID = async () => {
-      try {
-        if (itemId) {
-          const id = await getUserIdOfSeller(itemId);
+  // useEffect(() => {
+  //   const fetchSellerID = async () => {
+  //     try {
+  //       if (itemId) {
+  //         const id = await getUserIdOfSeller(itemId);
+  //         setSellerID(id);
+  //         // console.log("Seller ID fetched:", id);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching seller ID:', error);
+  //     }
+  //   };
+  const fetchSellerID = async () => {
+    try {
+      if (itemId) {
+        const id = await getUserIdOfSeller(itemId);
+        if (id) {
           setSellerID(id);
-          // console.log("Seller ID fetched:", id);
+        } else {
+          console.warn('Seller ID not found for item:', itemId);
         }
-      } catch (error) {
-        console.error('Error fetching seller ID:', error);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching seller ID:', error);
+    }
+  };
+  
 
     fetchSellerID();
-  }, [itemId]);
+  // }, [itemId]);
 
   console.log('Product ID:', itemId);
   console.log('Seller ID state:', sellerID);
@@ -243,23 +260,6 @@ export default function ListingDetailsScreen({ route }) {
                 </View>
               </View>
 
-              {/* Seller's info Section */}
-              <View>
-                <Text className="p-2 text-lg font-bold">Sellers Information:</Text>
-                <View className="rounded-lg bg-gray-100 p-4">
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate('Shop');
-                    }}>
-                    <Text className="font-bold text-gray-600">Name</Text>
-                    <Text className="mb-4 text-lg">Demilade Femi</Text>
-                  </TouchableOpacity>
-
-                  <Text className=" font-bold text-gray-600">Location</Text>
-                  <Text className="mb-4 text-lg">Hostile, blah blah blah</Text>
-                </View>
-              </View>
-
               {/* Message user */}
               <View className="border-t border-gray-200 p-4">
                 <Text className="mb-2 text-lg font-semibold">Make an Offer:</Text>
@@ -277,13 +277,8 @@ export default function ListingDetailsScreen({ route }) {
                   </TouchableOpacity>
                 </View>
             </View>
-
-              {/* {related products} */}
-              <View className="p-2 ">
-                <Text className=" my-7 text-center text-lg font-semibold">Related Items</Text>
-                <ListingCards />
-              </View>
-
+              {/* Seller's info Section */}
+                <UserDetailsAndRelatedProducts productId={itemId} />
               {/* ⚠️ MODAL KEEP AT BOTTOM */}
               {/* Modal for full-screen image */}
               <Modal visible={modalVisible} transparent animationType="fade">
