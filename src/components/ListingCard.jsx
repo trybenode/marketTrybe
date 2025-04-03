@@ -2,11 +2,12 @@ import React from 'react';
 import { View, Image } from 'react-native';
 import { Card, Text, Button } from 'react-native-paper';
 
-const ListingCard = ({ product, btnName }) => {
-
-  const imageUri = Array.isArray(product.images) && product.images.length > 0
-    ? product.images[0]
-    : product.image;
+const ListingCard = ({ product = {}, btnName = "View Details" }) => {
+  // Ensure product is valid before accessing properties
+  const imageUri =
+    Array.isArray(product.images) && product.images.length > 0
+      ? product.images[0]
+      : product.image || null;
 
   return (
     <Card className="m-2 overflow-hidden rounded-xl shadow-md">
@@ -28,20 +29,20 @@ const ListingCard = ({ product, btnName }) => {
       <Card.Content>
         {/* Product Name */}
         <Text className="text-lg font-semibold" numberOfLines={1}>
-          {product.name}
+          {product?.name || "Unnamed Product"}
         </Text>
 
-        {/*main price*/}
-        <Text className="mt-1 text-base font-bold line-through text-blue-600">
-          ₦{product.originalPrice?.toLocaleString()}
+        {/* Original Price */}
+        {product.originalPrice ? (
+          <Text className="mt-1 text-base font-bold line-through text-blue-600">
+            ₦{product.originalPrice.toLocaleString()}
+          </Text>
+        ) : null}
+
+        {/* Discounted Price */}
+        <Text className="mt-1 text-base font-bold text-blue-900">
+          ₦{product?.price?.toLocaleString() || "N/A"}
         </Text>
-
-        {/* Discounted Product Price */}
-        <Text className="mt-1 text-base font-bold  text-blue-900">
-          ₦{product.price?.toLocaleString()}
-        </Text>
-
-
       </Card.Content>
 
       {/* Action Button */}
@@ -63,5 +64,4 @@ const ListingCard = ({ product, btnName }) => {
     </Card>
   );
 };
-
 export default ListingCard;

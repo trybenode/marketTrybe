@@ -15,7 +15,7 @@ const ListingCards = memo(({ products = [], isFetchingMore, loadMoreProducts, bo
   }
 
   return (
-    <View style={{ flex: 1, marginBottom: bottomPad, paddingHorizontal: 3 }}>
+    <View style={{ flex: 1,  paddingHorizontal: 3 }}>
       <FlatList
         data={products}
         keyExtractor={(item) => item.id}
