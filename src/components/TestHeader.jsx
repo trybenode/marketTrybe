@@ -5,15 +5,8 @@ import React, { memo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const TestHeader = memo(({ title, screenName, extraComponent }) => {
+const TestHeader = memo(({ title, extraComponent }) => {
   const navigation = useNavigation();
-  const handleBack = () => {
-    if (screenName) {
-      navigation.navigate(screenName);
-    } else {
-      navigation.goBack();
-    }
-  };
 
   return (
     <View className="pt-2">
@@ -21,7 +14,7 @@ const TestHeader = memo(({ title, screenName, extraComponent }) => {
       <View className="relative h-16 flex-row items-center bg-white px-3">
         {/* Left - Back Button */}
         <View className="flex-1">
-          <TouchableOpacity onPress={handleBack}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
         </View>
