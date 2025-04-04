@@ -12,7 +12,7 @@ const CategoryDropdown = ({ open, setOpen, selectedValue, setSelectedValue }) =>
     const unsubscribe = onSnapshot(collection(db, 'categories'), (querySnapshot) => {
       const categoryData = querySnapshot.docs.map((doc) => ({
         label: doc.data().name, // DropdownPicker expects label/value format
-        value: doc.id,
+        value: doc.data().name,
       }));
       setCategory(categoryData);
     });

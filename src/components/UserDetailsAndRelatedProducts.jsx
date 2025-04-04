@@ -95,14 +95,15 @@ const UserDetailsAndRelatedProducts = ({ productId }) => {
       {/* Seller Information Section */}
       <View>
         <Text className="p-2 text-lg font-bold">Seller Information:</Text>
-        <View className="rounded-lg bg-gray-100 p-4">
-          <TouchableOpacity onPress={() => navigation.navigate('Shop', {sellerInfo, sellerProducts})}>
-            <Text className="font-bold text-gray-600">
+        
+          <TouchableOpacity className='bg-blue-500 rounded-lg p-2 ' onPress={() => navigation.navigate('Shop', {sellerInfo, sellerProducts})}>
+          <Text className="mb-2 text-sm text-white font-thin text-center">Tap to view seller's shop</Text>
+            <Text className="font-bold text-white">
              Name: {sellerInfo ? sellerInfo.fullName : 'Loading...'}
             </Text>
-             <Text className="mb-4 text-lg">Address: {sellerInfo ? sellerInfo.address : 'N/A'}</Text>
+             <Text className="mb-4 text-lg text-white">Address: {sellerInfo ? sellerInfo.address : 'N/A'}</Text>
           </TouchableOpacity>
-        </View>
+    
       </View>
 
       {/* Related Products Section */}
