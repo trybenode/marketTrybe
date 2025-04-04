@@ -49,7 +49,7 @@ const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
   };
 
   return (
-    <View className="mb-6 items-center">
+    <View className="items-center">
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" className="my-4" />
       ) : images.length === 0 ? (
@@ -64,10 +64,10 @@ const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
           keyExtractor={(item, index) => index.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
-          className="mt-2"
+         className=''
           renderItem={({ item, index }) => (
             <View>
-              <Image source={{ uri: item }} className="mr-3 h-36 w-36 rounded-lg" resizeMode="cover" />
+              <Image source={{ uri: item }} className=" h-36 w-36 rounded-lg mr-2 " resizeMode="cover" />
               <TouchableOpacity onPress={() => removeImage(index)} className="absolute right-1 top-1 rounded-full bg-red-500 p-1">
                 <Ionicons name="close" size={18} color="white" />
               </TouchableOpacity>
