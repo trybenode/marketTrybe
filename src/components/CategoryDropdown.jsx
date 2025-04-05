@@ -1,9 +1,9 @@
-//category selection 
+//category selection
 import React, { useEffect, useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 const CategoryDropdown = ({ open, setOpen, selectedValue, setSelectedValue }) => {
   const [category, setCategory] = useState([]);
@@ -17,25 +17,24 @@ const CategoryDropdown = ({ open, setOpen, selectedValue, setSelectedValue }) =>
       setCategory(categoryData);
     });
 
-    return () => unsubscribe(); // Cleanup listener on unmount
+    return () => unsubscribe();
   }, []);
 
   return (
-
     <View style={{ zIndex: 1000, elevation: 5 }}>
-    <DropDownPicker
-      open={open}
-      value={selectedValue}
-      items={category}
-      setOpen={setOpen}
-      setValue={setSelectedValue}
-      placeholder="Select Category"
-      style={{ marginBottom: 10 }}
-      dropDownContainerStyle={{ zIndex: 1000, elevation: 5 }} // Ensure dropdown renders above other components
-      modalProps={{ animationType: 'slide' }} // Use modal to prevent nesting issue
-    />
-  </View>
-
+      <DropDownPicker
+        open={open}
+        value={selectedValue}
+        items={category}
+        setOpen={setOpen}
+        setValue={setSelectedValue}
+        listMode="MODAL"
+        placeholder="Select Category"
+        style={{ marginBottom: 10 }}
+        dropDownContainerStyle={{ zIndex: 1000, elevation: 5 }}
+        modalProps={{ animationType: 'slide' }}
+      />
+    </View>
   );
 };
 
