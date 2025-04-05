@@ -13,19 +13,7 @@ const db = getFirestore();
 const ADMIN_UID = 'DL3gKN7v6GUUImruQXwoYFspgmm1';
 const PRODUCT_COUNT = 35;
 
-// const { initializeApp } = require('firebase/app');
 
-// const { getFirestore, collection, addDoc} = require('firebase/firestore');
-// const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Admin SDK using environment variables
-// admin.initializeApp({
-//   credential: admin.credential.cert({
-//     projectId: process.env.FIREBASE_PROJECT_ID,
-//     privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'), // Fix line breaks
-//     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-//   }),
-// });
 // const db = admin.firestore(); used to delete product
 
 function normalizeCategory(category) {
@@ -48,9 +36,9 @@ async function updateProductCategories() {
     }
   });
 
-  console.log('✅ Category mapping:', categoryMapping);
+  console.log('Category mapping:', categoryMapping);
 
-  console.log('🔄 Fetching products...');
+  console.log('...Fetching products...');
   const productsSnapshot = await db.collection('products').get();
   let updatedCount = 0;
 
@@ -58,7 +46,7 @@ async function updateProductCategories() {
     const product = productDoc.data();
 
     if (!product.category) {
-      console.warn(`⚠️ No category found for product ${productDoc.id}`);
+      console.warn(` No category found for product ${productDoc.id}`);
       continue;
     }
     const normalizedProductCategory = normalizeCategory(product.category);
@@ -79,19 +67,19 @@ async function updateProductCategories() {
     }
   }
 
-  console.log(`✅ ${updatedCount} products updated with category IDs.`);
+  console.log(` ${updatedCount} products updated with category IDs.`);
 }
 
 // updateProductCategories().catch(console.error);
 
 async function deleteAllProducts() {
-  console.log('🚨 Deleting all products...');
+  console.log('Deleting all products...');
 
   const productsRef = db.collection('products');
   const productsSnapshot = await productsRef.get();
 
   if (productsSnapshot.empty) {
-    console.log('✅ No products found. Nothing to delete.');
+    console.log('No products found. Nothing to delete.');
     return;
   }
 
@@ -101,7 +89,7 @@ async function deleteAllProducts() {
   });
 
   await batch.commit();
-  console.log(`✅ Deleted ${productsSnapshot.size} products.`);
+  console.log(`Deleted ${productsSnapshot.size} products.`);
 }
 
 //   deleteAllProducts().catch(console.error);
@@ -129,7 +117,7 @@ const generateMockProducts = (categories) => {
 
   for (let i = 0; i < PRODUCT_COUNT; i++) {
     const category = faker.helpers.arrayElement(categories);
-    // const price = parseFloat(faker.commerce.price(1000, 500000));
+
 
     products.push({
       name: faker.commerce.productName(),
@@ -140,8 +128,7 @@ const generateMockProducts = (categories) => {
       brand: faker.company.name(),
       condition: faker.helpers.arrayElement(['New', 'Used', 'Refurbished']),
       color: faker.color.human(),
-    //   price: price,
-    //   originalPrice: price - price * 0.2, // 20% discount
+
     price: parseFloat(faker.commerce.price(1000, 500000)),
     originalPrice: parseFloat(faker.commerce.price(800, 400000)), // Ensure proper discount logic
       year: faker.date.between({ from: '2015-01-01', to: '2023-01-01' }).getFullYear(),
@@ -160,18 +147,12 @@ const seedProducts = async () => {
     console.log('🔄 Fetching categories from firestore...');
     const categories = await fetchCategories();
 
-    // if(categories.length === 0){
-    //     console.error('No categories found. Please seed categories first.');
-    //     process.exit(1);
-    // }
     console.log(`found ${categories.length} categories. generating products...`);
     const products = generateMockProducts(categories);
 
     for (const product of products) {
       const docRef = await db.collection('products').add(product);
       console.log(`Uploaded product with ID: ${docRef.id}`);
-    // const docRef = await addDoc(collection(db, 'products'), product);
-    // console.log(`Uploaded product with ID: ${docRef.id}`);
     }
 
     console.log(`Successfully uploaded ${products.length} products!`);
