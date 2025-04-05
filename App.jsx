@@ -8,6 +8,7 @@ import CategoryScreen from './src/screens/CategoryScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import FavouritesScreen from './src/screens/FavouritesScreen';
+// import SellScreen from './src/screens/SellScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 import LoginScreen from './src/screens/LoginScreen';
@@ -32,7 +33,7 @@ export default function App() {
   useEffect(() => {
     loadFavorites();
   }, []);
-
+//screens in bottom tab nav contains navbar
   return (
     <UserProvider>
       <NavigationContainer>
@@ -47,6 +48,7 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="Sell" component={SellScreen} options={{ headerShown: false }}  /> */}
           <Stack.Screen
             name="ListingDetails"
             component={ListingDetailsScreen}

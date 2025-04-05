@@ -22,7 +22,12 @@ const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   return (
-    <Tab.Navigator tabBar={(props) => <NavBar {...props} />}>
+    <Tab.Navigator tabBar={(props) => {
+      const currentRoute = props.state.routes[props.state.index].name;
+      //  Hide NavBar only on SellScreen
+      if (currentRoute === 'Sell') return null;
+      return <NavBar {...props} />;
+    }}>
       <Tab.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Favourite" component={FavouritesScreen} options={{ headerShown: false }} />
       <Tab.Screen name="Sell" component={SellScreen} options={{ headerShown: false }} />

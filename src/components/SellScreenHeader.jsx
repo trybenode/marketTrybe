@@ -3,34 +3,42 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';
 
-const SellScreenHeader = ({ screenName, extraComponent, hasUnsavedChanges, clearForm, isEditMode }) => {
+const SellScreenHeader = ({
+  extraComponent,
+  hasUnsavedChanges,
+  clearForm,
+  isEditMode,
+}) => {
   const navigation = useNavigation();
 
   const handleBack = () => {
-    if (isEditMode) {
-      // Go to 'MyShop' when in edit mode
-      navigation.navigate('MyShop');
-    } else {
-      if (hasUnsavedChanges()) {
-        Alert.alert(
-          'Unsaved Changes',
-          'You have unsaved changes. Are you sure you want to exit?',
-          [
-            { text: 'Cancel', style: 'cancel' },
-            {
-              text: 'Exit',
-              style: 'destructive',
-              onPress: () => {
-                clearForm();
-                navigation.goBack();
-              },
-            },
-          ]
-        );
-      } else {
-        clearForm();
-        navigation.goBack();
-      }
+    if (isEditMode && hasUnsavedChanges) {
+      Alert.alert('Unsaved Changes', 'You have unsaved changes. Are you sure you want to exit?', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Exit',
+          style: 'destructive',
+          onPress: () => {
+            // Go to 'MyShop' when in edit mode
+            clearForm();
+            navigation.navigate('MyShop');
+          },
+        },
+      ]);
+    } else if(hasUnsavedChanges()) {
+      Alert.alert('Unsaved Changes', 'You have unsaved changes. Are you sure you want to exit?', [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Exit',
+          style: 'destructive',
+          onPress: () => {
+            clearForm();
+            navigation.goBack();
+          },
+        },
+      ]);
+    }else{
+      navigation.goBack();
     }
   };
 
@@ -48,7 +56,7 @@ const SellScreenHeader = ({ screenName, extraComponent, hasUnsavedChanges, clear
 
           {/* Center - Absolute Positioned Title */}
           <View className="absolute left-0 right-0 items-center">
-            <Text className="text-center text-xl font-extrabold">Product Information</Text>
+            <Text className="text-center text-xl font-extrabold">{isEditMode? "Product Edit" : "Product Information"}</Text>
           </View>
 
           {/* Right - Optional Component */}

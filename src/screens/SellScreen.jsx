@@ -1,7 +1,17 @@
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-import React, { useState, useEffect,useCallback } from 'react';
-import { View, ScrollView, Alert, ActivityIndicator, Modal, BackHandler } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  View,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+  Modal,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+} from 'react-native';
 import { Button } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { auth, db } from '../../firebaseConfig';
@@ -54,7 +64,8 @@ export default function SellScreen({ route }) {
       setImages(Array.isArray(product.images) ? product.images : []);
     }
   }, [isEditMode, product]);
-  // cleanup on unmount
+
+  // cleanup on unmount 
   useEffect(() => {
     return () => {
       clearForm();
@@ -62,7 +73,7 @@ export default function SellScreen({ route }) {
   }, []);
 
   //clears form after leaving page
-  const clearForm = () => {
+  const clearForm = useCallback(() => {
     setProductName('');
     setSubCategory('');
     setSelectedValue(null);
@@ -75,196 +86,68 @@ export default function SellScreen({ route }) {
     setOriginalPrice('');
     setYear('');
     setImages([]);
-  };
-
-  //alert users of unsave change when leaving screen
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     const onBackPress = () => {
-  //       if (
-  //         productName ||
-  //         price ||
-  //         selectedValue ||
-  //         productDescription ||
-  //         brand ||
-  //         condition ||
-  //         color ||
-  //         year ||
-  //         images.length > 0
-  //       ) {
-  //         Alert.alert(
-  //           'Unsaved Changes',
-  //           'You have unsaved changes. Do you want to save them before exiting?',
-  //           [
-  //             { text: 'Cancel', style: 'cancel' },
-  //             {
-  //               text: 'Exit Without Saving',
-  //               style: 'destructive',
-  //               onPress: () => {
-  //                 clearForm();
-  //                 navigation.goBack();
-  //               },
-  //             },
-  //             {
-  //               text: 'Save and Exit',
-  //               onPress: async () => {
-  //                 await handleSubmit();
-  //                 navigation.goBack();
-  //               },
-  //             },
-  //           ]
-  //         );
-  //         return true;
-  //       } else {
-  //         clearForm();
-  //         return false;
-  //       }
-  //     };
-
-  //     BackHandler.addEventListener('hardwareBackPress', onBackPress);
-  //     return () => {
-  //       BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  //     };
-  //     // clearForm();}
-  //   }, [
-  //     productName,
-  //     price,
-  //     selectedValue,
-  //     productDescription,
-  //     brand,
-  //     condition,
-  //     color,
-  //     year,
-  //     images,
-  //   ])
-  // );
-  useFocusEffect(
-    useCallback(() => {
-      const onBackPress = () => {
-        if (isEditMode) {
-          navigation.navigate('MyShop');
-          return true; // Prevent default back behavior
-        }
-  
-        if (
-          productName ||
-          price ||
-          selectedValue ||
-          productDescription ||
-          brand ||
-          condition ||
-          color ||
-          year ||
-          images.length > 0
-        ) {
-          Alert.alert(
-            'Unsaved Changes',
-            'You have unsaved changes. Do you want to save them before exiting?',
-            [
-              { text: 'Cancel', style: 'cancel' },
-              {
-                text: 'Exit Without Saving',
-                style: 'destructive',
-                onPress: () => {
-                  clearForm();
-                  navigation.goBack();
-                },
-              },
-              {
-                text: 'Save and Exit',
-                onPress: async () => {
-                  await handleSubmit();
-                  navigation.goBack();
-                },
-              },
-            ]
-          );
-          return true;
-        }
-  
-        return false;
-      };
-  
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    }, [
-      isEditMode,
-      productName,
-      price,
-      selectedValue,
-      productDescription,
-      brand,
-      condition,
-      color,
-      year,
-      images,
-    ])
-  );
-  
-//alert users of unsave change when leaving screen with bottom nav
-// useEffect(() => {
-//   const unsubscribe = navigation.addListener('blur', (e) => {
-//     if (!hasUnsavedChanges()) return;
-
-//     // Prevent tab switch
-//     e.preventDefault?.(); // Defensive for native-stack / tab events
-
-//     Alert.alert(
-//       'Discard changes?',
-//       'You have unsaved changes. Are you sure you want to discard them?',
-//       [
-//         { text: 'Stay', style: 'cancel' },
-//         {
-//           text: 'Discard',
-//           style: 'destructive',
-//           onPress: () => {
-//             clearForm();
-//             navigation.dispatch(e.target ? { ...e, target: e.target } : e.data.action);
-//           },
-//         },
-//       ]
-//     );
-//   });
-
-//   return unsubscribe;
-// }, [navigation, hasUnsavedChanges]);
-
-useEffect(() => {
-  const unsubscribe = navigation.addListener('blur', (e) => {
-    if (!hasUnsavedChanges()) {
-      if (isEditMode) {
-        navigation.navigate('MyShop');
-      }
-      return;
-    }
-
-    e.preventDefault?.(); // Prevent tab switch
-
-    Alert.alert(
-      'Discard changes?',
-      'You have unsaved changes. Are you sure you want to discard them?',
-      [
-        { text: 'Stay', style: 'cancel' },
-        {
-          text: 'Discard',
-          style: 'destructive',
-          onPress: () => {
-            clearForm();
-            if (isEditMode) {
-              navigation.navigate('MyShop');
-            } else {
-              navigation.dispatch(e.data.action);
-            }
-          },
-        },
-      ]
-    );
   });
-
-  return unsubscribe;
-}, [navigation, hasUnsavedChanges, isEditMode]);
-
+  const arraysAreEqual = (arr1, arr2) =>
+    arr1.length === arr2.length && arr1.every((val, index) => val === arr2[index]);
   
+  const hasUnsavedChanges = useCallback(() => {
+    if (!isEditMode) {
+      return (
+        productName.trim() !== '' ||
+        price.toString().trim() !== '' ||
+        selectedValue !== null ||
+        productDescription.trim() !== '' ||
+        brand.trim() !== '' ||
+        condition.trim() !== '' ||
+        color.trim() !== '' ||
+        year.trim() !== '' ||
+        images.length > 0
+      );
+    }
+  
+    // Edit mode logic
+    return (
+      productName !== (product?.name || '') ||
+      Number(price) !== Number(product?.price || '') ||
+      selectedValue !== product?.categoryId ||
+      subCategory !== product?.subcategory ||
+      isNegotiable !== Boolean(product?.negotiable) ||
+      productDescription !== (product?.description || '') ||
+      brand !== (product?.brand || '') ||
+      condition !== (product?.condition || '') ||
+      color !== (product?.color || '') ||
+      Number(originalPrice) !== Number(product?.originalPrice || '') ||
+      year !== (product?.year || '') ||
+      !arraysAreEqual(images, product?.images || [])
+    );
+  }, [
+    isEditMode,
+    product,
+    productName,
+    price,
+    selectedValue,
+    subCategory,
+    isNegotiable,
+    productDescription,
+    brand,
+    condition,
+    color,
+    originalPrice,
+    year,
+    images,
+  ]);
+  
+
+  const isFormValid = () =>
+    productName &&
+    price &&
+    selectedValue &&
+    productDescription &&
+    brand &&
+    condition &&
+    color &&
+    year &&
+    images.length > 0;
   
   //logic for image upload using cloudinary
   const uploadImages = async (imageUris) => {
@@ -365,66 +248,6 @@ useEffect(() => {
       setIsLoading(false);
     }
   };
-  // const allFieldsFilled = () => {
-  //   return (
-  //     productName &&
-  //     price &&
-  //     selectedValue &&
-  //     productDescription &&
-  //     brand &&
-  //     condition &&
-  //     color &&
-  //     year &&
-  //     images.length > 0
-  //   );
-  // };
-  //
-
-  const hasUnsavedChanges = useCallback(() => {
-    if (!isEditMode) {
-      return (
-        !!productName ||
-        !!price ||
-        !!selectedValue ||
-        !!productDescription ||
-        !!brand ||
-        !!condition ||
-        !!color ||
-        !!year ||
-        images.length > 0
-      );
-    } else {
-      return (
-        productName !== (product?.name || '') ||
-        selectedValue !== (product?.categoryId || '') ||
-        subCategory !== (product?.subcategory || '') ||
-        isNegotiable !== !!product?.negotiable ||
-        productDescription !== (product?.description || '') ||
-        brand !== (product?.brand || '') ||
-        condition !== (product?.condition || '') ||
-        color !== (product?.color || '') ||
-        price !== (product?.price || '') ||
-        originalPrice !== (product?.originalPrice || '') ||
-        year !== (product?.year || '') ||
-        JSON.stringify(images) !== JSON.stringify(product?.images || [])
-      );
-    }
-  }, [
-    productName,
-    price,
-    selectedValue,
-    productDescription,
-    brand,
-    condition,
-    color,
-    year,
-    images,
-    product,
-    isNegotiable,
-    subCategory,
-    originalPrice,
-    isEditMode,
-  ]);
 
   //logic for deleting products
   const handleDelete = async () => {
@@ -453,94 +276,111 @@ useEffect(() => {
   };
 
   return (
-    <SafeAreaView className="mb-20 flex-1 bg-white">
-      {isLoading && (
-        <Modal transparent={true} animationType="fade" visible={isLoading}>
-          <View className="absolute inset-0 flex items-center justify-center bg-opacity-30">
-            <ActivityIndicator size="large" color="blue" />
-          </View>
-        </Modal>
-      )}
-    <SellScreenHeader
-  screenName={isEditMode ? 'MyShop' : 'MainTabs'}
-  hasUnsavedChanges={hasUnsavedChanges}
-  clearForm={clearForm}
-  isEditMode={isEditMode} 
-/>
-
-      <ScrollView
-        behavior="padding"
-        style={{ flex: 1 }}
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-        nestedScrollEnabled={true}
-        className="px-4 py-8">
-        <ProductFormInput
-          placeholder="Product Name"
-          value={productName}
-          onChangeText={setProductName}
-        />
-
-        <CategoryDropdown
-          open={open}
-          setOpen={setOpen}
-          selectedValue={selectedValue}
-          setSelectedValue={setSelectedValue}
-        />
-
-        <ProductFormInput
-          placeholder="Sub-Category"
-          value={subCategory}
-          onChangeText={setSubCategory}
-        />
-
-        <View className="flex-row items-center justify-between mx-auto my-4">
-          <UploadImages onImagesSelected={setImages} initialImages={images || []} />
-        </View>
-          <CheckboxWithLabel
-            label="Negotiable"
-            status={isNegotiable ? 'checked' : 'unchecked'}
-            onPress={() => setIsNegotiable(!isNegotiable)}
-          />
-
-        <ProductDescriptionInput value={productDescription} onChangeText={setProductDescription} />
-
-        <OtherInformationSection
-          {...{
-            brand,
-            setBrand,
-            condition,
-            setCondition,
-            color,
-            setColor,
-            price,
-            setPrice,
-            originalPrice,
-            setOriginalPrice,
-            year,
-            setYear,
-          }}
-        />
-
-        {!isEditMode && (
-          <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
-        )}
-        {/*buttons*/}
-        <View className="mb-20 flex flex-row items-center justify-evenly">
-          {isEditMode && (
-            <Button mode="contained" buttonColor="red" onPress={handleDelete}>
-              Delete Product
-            </Button>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'} 
+      style={{ flex: 1 }}
+      // keyboardVerticalOffset={Platform.OS === 'ios' ? 1 : 0}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView className=" flex-1 bg-white">
+          {isLoading && (
+            <Modal transparent={true} animationType="fade" visible={isLoading}>
+              <View className="absolute inset-0 flex items-center justify-center bg-opacity-30">
+                <ActivityIndicator size="large" color="blue" />
+              </View>
+            </Modal>
           )}
-
-          <SubmitButton
-            disabled={isLoading || !isAgreed || !hasUnsavedChanges()}
+          <SellScreenHeader
+            screenName={isEditMode ? 'MyShop' : 'MainTabs'}
+            hasUnsavedChanges={hasUnsavedChanges}
+            clearForm={clearForm}
             isEditMode={isEditMode}
-            isAgreed={isAgreed}
-            onPress={handleSubmit}
           />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+
+          <ScrollView
+            style={{ flex: 1 }}
+            contentContainerStyle={{ flexGrow: 1 }}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            nestedScrollEnabled={true}
+            className="px-4 py-8">
+            <ProductFormInput
+              placeholder="Product Name"
+              value={productName}
+              onChangeText={setProductName}
+            />
+
+            <CategoryDropdown
+              open={open}
+              setOpen={setOpen}
+              selectedValue={selectedValue}
+              setSelectedValue={setSelectedValue}
+              dropDownDirection="AUTO"
+              listMode="MODAL" // or "SCROLLVIEW", "FLATLIST", "MODAL"
+              modalProps={{
+                animationType: 'slide',
+              }}
+            />
+
+            <ProductFormInput
+              placeholder="Sub-Category"
+              value={subCategory}
+              onChangeText={setSubCategory}
+            />
+
+            <View className="mx-auto my-4 flex-row items-center justify-between">
+              <UploadImages onImagesSelected={setImages} initialImages={images || []} />
+            </View>
+            <CheckboxWithLabel
+              label="Negotiable"
+              status={isNegotiable ? 'checked' : 'unchecked'}
+              onPress={() => setIsNegotiable(!isNegotiable)}
+            />
+
+            <ProductDescriptionInput
+              value={productDescription}
+              onChangeText={setProductDescription}
+            />
+
+            <OtherInformationSection
+              {...{
+                brand,
+                setBrand,
+                condition,
+                setCondition,
+                color,
+                setColor,
+                price,
+                setPrice,
+                originalPrice,
+                setOriginalPrice,
+                year,
+                setYear,
+              }}
+            />
+
+            {!isEditMode && (
+              <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
+            )}
+            {/*buttons*/}
+            <View className="flex flex-row items-center justify-evenly">
+              {isEditMode && (
+                <Button mode="contained" buttonColor="red" onPress={handleDelete}>
+                  Delete Product
+                </Button>
+              )}
+
+              <SubmitButton
+               disabled={isLoading || (!isEditMode && (!isFormValid() || !isAgreed)) || !hasUnsavedChanges()}
+                // disabled={isLoading || !isAgreed || !hasUnsavedChanges()}
+                isEditMode={isEditMode}
+                isAgreed={isAgreed}
+                onPress={handleSubmit}
+              />
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
