@@ -1,15 +1,36 @@
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, StatusBar, TouchableOpacity, Alert } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { memo } from 'react';
 
-const  SellScreenHeader = ({ screenName }) => {
+const SellScreenHeader = ({ screenName, extraComponent, hasUnsavedChanges, clearForm, isEditMode }) => {
   const navigation = useNavigation();
+
   const handleBack = () => {
-    if (screenName) {
-      navigation.navigate(screenName);
+    if (isEditMode) {
+      // Go to 'MyShop' when in edit mode
+      navigation.navigate('MyShop');
     } else {
-      navigation.goBack();
+      if (hasUnsavedChanges()) {
+        Alert.alert(
+          'Unsaved Changes',
+          'You have unsaved changes. Are you sure you want to exit?',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            {
+              text: 'Exit',
+              style: 'destructive',
+              onPress: () => {
+                clearForm();
+                navigation.goBack();
+              },
+            },
+          ]
+        );
+      } else {
+        clearForm();
+        navigation.goBack();
+      }
     }
   };
 
@@ -20,58 +41,37 @@ const  SellScreenHeader = ({ screenName }) => {
         <View className="relative h-16 flex-row items-center bg-white px-3">
           {/* Left - Back Button */}
           <View className="flex-1">
-            <TouchableOpacity
-              onPress={() => {
-                if (hasUnsavedChanges()) {
-                  Alert.alert(
-                    'Unsaved Changes',
-                    'You have unsaved changes. Are you sure you want to exit?',
-                    [
-                      { text: 'Cancel', style: 'cancel' },
-                      {
-                        text: 'Exit',
-                        style: 'destructive',
-                        onPress: () => {
-                          clearForm(); // Clear form when leaving
-                          navigation.goBack(); // Navigate back
-                        },
-                      },
-                    ]
-                  );
-                } else {
-                  clearForm(); // Clear form when no unsaved changes
-                  navigation.goBack(); // Navigate back
-                }
-              }}>
+            <TouchableOpacity onPress={handleBack}>
               <Ionicons name="arrow-back" size={30} color="black" />
             </TouchableOpacity>
           </View>
 
-          {/* Center - Title */}
-          <View className="flex-shrink">
+          {/* Center - Absolute Positioned Title */}
+          <View className="absolute left-0 right-0 items-center">
             <Text className="text-center text-xl font-extrabold">Product Information</Text>
           </View>
 
-          {/* Right - Extra component or placeholder */}
+          {/* Right - Optional Component */}
           <View className="flex-1 items-end">
             {typeof extraComponent === 'string' ? (
               <Text>{extraComponent}</Text>
             ) : extraComponent ? (
               extraComponent
             ) : (
-              <View style={{ width: 30 }} /> // Placeholder to balance layout
+              <View style={{ width: 30 }} /> // placeholder
             )}
           </View>
         </View>
+
         {/* Bottom Shadow */}
         <View style={styles.bottomShadow} />
       </View>
-      );
     </View>
   );
 };
 
-export default  SellScreenHeader;
+export default memo(SellScreenHeader);
+
 const styles = StyleSheet.create({
   bottomShadow: {
     position: 'absolute',
@@ -88,4 +88,3 @@ const styles = StyleSheet.create({
     zIndex: -1,
   },
 });
-
