@@ -15,7 +15,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import useFavoritesStore from '../store/FavouriteStore';
 import Toast from 'react-native-toast-message';
 
-
 import { auth } from '../../firebaseConfig';
 import { images, listings } from '../data/dummyData';
 import useUserStore from '../store/userStore';
@@ -88,9 +87,8 @@ export default function ListingDetailsScreen({ route }) {
       console.error('Error fetching seller ID:', error);
     }
   };
-  
 
-    fetchSellerID();
+  fetchSellerID();
   // }, [itemId]);
 
   console.log('Product ID:', itemId);
@@ -161,7 +159,7 @@ export default function ListingDetailsScreen({ route }) {
   ];
   const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null })); //array for place holder if no image available
 
-  const mainImageUri = images && images.length > 0 ? images[0].url || images[0] : null;
+
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -276,9 +274,9 @@ export default function ListingDetailsScreen({ route }) {
                     <Text className="font-semibold text-white">Send</Text>
                   </TouchableOpacity>
                 </View>
-            </View>
+              </View>
               {/* Seller's info Section */}
-                <UserDetailsAndRelatedProducts productId={itemId} />
+              <UserDetailsAndRelatedProducts productId={itemId} />
               {/* ⚠️ MODAL KEEP AT BOTTOM */}
               {/* Modal for full-screen image */}
               <Modal visible={modalVisible} transparent animationType="fade">

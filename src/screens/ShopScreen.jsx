@@ -19,6 +19,7 @@ export default function ShopScreen({ route }) {
       <ScrollView className="mb-3 flex-col p-3" showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
         <SellerProfileCard
+          sellerInfo={sellerInfo}
           name={sellerInfo.fullName || 'Unknown Seller'}
           yearCreated={sellerInfo.yearCreated || 'N/A'}
           location={sellerInfo.address || 'Unknown Location'}
@@ -39,7 +40,7 @@ export default function ShopScreen({ route }) {
             ))}
           </View>
         ) : (
-          <Text className="mt-6 text-center text-gray-500">No products found for {sellerInfo.fullName}</Text>
+          <Text className="mt-6 text-center text-gray-500">No other products found for {sellerInfo.fullName}</Text>
         )}
       </ScrollView>
     </SafeAreaView>
