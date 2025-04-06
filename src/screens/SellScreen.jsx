@@ -65,7 +65,7 @@ export default function SellScreen({ route }) {
     }
   }, [isEditMode, product]);
 
-  // cleanup on unmount 
+  // cleanup on unmount
   useEffect(() => {
     return () => {
       clearForm();
@@ -89,7 +89,7 @@ export default function SellScreen({ route }) {
   });
   const arraysAreEqual = (arr1, arr2) =>
     arr1.length === arr2.length && arr1.every((val, index) => val === arr2[index]);
-  
+
   const hasUnsavedChanges = useCallback(() => {
     if (!isEditMode) {
       return (
@@ -104,7 +104,7 @@ export default function SellScreen({ route }) {
         images.length > 0
       );
     }
-  
+
     // Edit mode logic
     return (
       productName !== (product?.name || '') ||
@@ -136,7 +136,6 @@ export default function SellScreen({ route }) {
     year,
     images,
   ]);
-  
 
   const isFormValid = () =>
     productName &&
@@ -148,7 +147,7 @@ export default function SellScreen({ route }) {
     color &&
     year &&
     images.length > 0;
-  
+
   //logic for image upload using cloudinary
   const uploadImages = async (imageUris) => {
     try {
@@ -277,7 +276,7 @@ export default function SellScreen({ route }) {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'} 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'undefined'}
       style={{ flex: 1 }}
       // keyboardVerticalOffset={Platform.OS === 'ios' ? 1 : 0}
     >
@@ -371,7 +370,11 @@ export default function SellScreen({ route }) {
               )}
 
               <SubmitButton
-               disabled={isLoading || (!isEditMode && (!isFormValid() || !isAgreed)) || !hasUnsavedChanges()}
+                disabled={
+                  isLoading ||
+                  (!isEditMode && (!isFormValid() || !isAgreed)) ||
+                  !hasUnsavedChanges()
+                }
                 // disabled={isLoading || !isAgreed || !hasUnsavedChanges()}
                 isEditMode={isEditMode}
                 isAgreed={isAgreed}
