@@ -364,7 +364,12 @@ export default function SellScreen({ route }) {
             {/*buttons*/}
             <View className="mb-20 flex flex-row items-center justify-evenly">
               {isEditMode && (
-                <Button mode="contained" buttonColor="red" onPress={handleDelete}>
+                <Button
+                  mode="contained"
+                  buttonColor="red"
+                  onPress={handleDelete}
+                  labelStyle={{ width: '100%' }}
+                  style={{ width: '45%' }}>
                   Delete Product
                 </Button>
               )}
