@@ -1,6 +1,14 @@
 import * as ImagePicker from 'expo-image-picker';
 import React, { useState, memo, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, FlatList, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
@@ -16,13 +24,16 @@ const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
       setIsLoading(true); // Start loading
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
-        Alert.alert('Permission Denied', 'Sorry, we need camera roll permissions to upload images.');
+        Alert.alert(
+          'Permission Denied',
+          'Sorry, we need camera roll permissions to upload images.'
+        );
         setIsLoading(false);
         return;
       }
 
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: ['images'],
         allowsMultipleSelection: true,
         selectionLimit: 5,
         quality: 1,
@@ -64,11 +75,17 @@ const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
           keyExtractor={(item, index) => index.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
-         className=''
+          className=""
           renderItem={({ item, index }) => (
             <View>
-              <Image source={{ uri: item }} className=" h-36 w-36 rounded-lg mr-2 " resizeMode="cover" />
-              <TouchableOpacity onPress={() => removeImage(index)} className="absolute right-1 top-1 rounded-full bg-red-500 p-1">
+              <Image
+                source={{ uri: item }}
+                className=" mr-2 h-36 w-36 rounded-lg "
+                resizeMode="cover"
+              />
+              <TouchableOpacity
+                onPress={() => removeImage(index)}
+                className="absolute right-1 top-1 rounded-full bg-red-500 p-1">
                 <Ionicons name="close" size={18} color="white" />
               </TouchableOpacity>
             </View>
