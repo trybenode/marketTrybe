@@ -1,4 +1,4 @@
-//category component
+//rounded category ui component
 import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';
 import { TouchableOpacity, Image, Text, View } from 'react-native';

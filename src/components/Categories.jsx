@@ -51,7 +51,10 @@ const CategoryList = memo(() => {
         data={categories}
         keyExtractor={(item) => item.id}
         className="p-2"
-        renderItem={({ item }) => <CategoriesListing {...item} />}
+        renderItem={({ item }) => <CategoriesListing {...item} 
+        // name={item.name} 
+        // icon={item.image}
+        />}
       />
     </View>
   );

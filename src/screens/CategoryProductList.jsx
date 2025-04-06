@@ -12,43 +12,74 @@ import UserProfile from '../components/UserProfile';
 
 function CategoryProductList() {
   const route = useRoute();
-  const { categoryId, categoryName: initialCategoryName } = route.params || {};
+  const { categoryId : initialCategoryId, categoryName: initialCategoryName } = route.params || {};
+  const [categoryId, setCategoryId] =useState(initialCategoryId);
   const [categoryName, setCategoryName] = useState(initialCategoryName || '');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+  // Reset state when params change
   useEffect(() => {
-    if (initialCategoryName) {
-      setLoading(false);
-    } else {
-      const fetchCategoryName = async () => {
-        try {
-          const categoryRef = doc(db, 'categories', categoryId);
-          const categorySnap = await getDoc(categoryRef);
-          if (categorySnap.exists()) {
-            setCategoryName(categorySnap.data().name);
-          } else {
-            setError('Category not found');
-          }
-        } catch (err) {
-          setError('Failed to load category');
-          console.error(err);
-        } finally {
-          setLoading(false);
+    setCategoryId(initialCategoryId);
+    setCategoryName(initialCategoryName || '');
+    setProducts([]);
+    setLoading(true);
+    setError(null);
+  }, [initialCategoryId, initialCategoryName]);
+
+  // useEffect(() => {
+  //   if (initialCategoryName) {
+  //     setLoading(false);
+  //   } else {
+  //     const fetchCategoryName = async () => {
+  //       try {
+  //         const categoryRef = doc(db, 'categories', categoryId);
+  //         const categorySnap = await getDoc(categoryRef);
+  //         if (categorySnap.exists()) {
+  //           setCategoryName(categorySnap.data().name);
+  //         } else {
+  //           setError('Category not found');
+  //         }
+  //       } catch (err) {
+  //         setError('Failed to load category');
+  //         console.error(err);
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     };
+  //     fetchCategoryName();
+  //   }
+  // }, [categoryId, initialCategoryName]);
+
+  useEffect(() => {
+    const fetchCategoryName = async () => {
+      if (categoryName) return;
+      
+      try {
+        const categoryRef = doc(db, 'categories', categoryId);
+        const categorySnap = await getDoc(categoryRef);
+        if (categorySnap.exists()) {
+          setCategoryName(categorySnap.data().name);
         }
-      };
+      } catch (err) {
+        setError('Failed to load category');
+      }
+    };
+  
+    if (categoryId && !categoryName) {
       fetchCategoryName();
     }
-  }, [categoryId, initialCategoryName]);
-
+  }, [categoryId, categoryName]);
+  
   useEffect(() => {
     const fetchCategoryProducts = async () => {
       try {
         setLoading(true);
         const q = query(
           collection(db, 'products'),
-          where('categoryId', '==', categoryId),
+          where('categoryId', '==', categoryId), // check here
           orderBy('createdAt', 'desc'),
           limit(10)
         );
@@ -67,9 +98,6 @@ function CategoryProductList() {
         });
 
         setProducts(fetchedProducts);
-      } catch (err) {
-        setError('Failed to load products');
-        console.error(err);
       } finally {
         setLoading(false);
       }
