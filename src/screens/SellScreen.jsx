@@ -362,7 +362,7 @@ export default function SellScreen({ route }) {
               <TermsAndConditionsCheckbox isAgreed={isAgreed} setIsAgreed={setIsAgreed} />
             )}
             {/*buttons*/}
-            <View className="flex flex-row items-center justify-evenly">
+            <View className="mb-20 flex flex-row items-center justify-evenly">
               {isEditMode && (
                 <Button mode="contained" buttonColor="red" onPress={handleDelete}>
                   Delete Product

@@ -10,7 +10,7 @@ const SubmitButton = ({ isEditMode, isAgreed, onPress, isLoading }) => {
       onPress={onPress}
       labelStyle={{ fontSize: 16, width: '100%' }}
       buttonColor={isEditMode ? 'red' : undefined}
-      style={{ width: '45%', marginBottom: 42 }}>
+      style={{ width: '45%' }}>
       {isLoading ? (
         <ActivityIndicator size="small" color="blue" />
       ) : isEditMode ? (
