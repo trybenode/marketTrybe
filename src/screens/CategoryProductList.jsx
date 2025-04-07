@@ -1,4 +1,3 @@
-// screen that displays products based on category filter
 import { useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
@@ -12,101 +11,78 @@ import UserProfile from '../components/UserProfile';
 
 function CategoryProductList() {
   const route = useRoute();
-  const { categoryId : initialCategoryId, categoryName: initialCategoryName } = route.params || {};
-  const [categoryId, setCategoryId] =useState(initialCategoryId);
+  const { categoryId, categoryName: initialCategoryName } = route.params || {};
   const [categoryName, setCategoryName] = useState(initialCategoryName || '');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-
-  // Reset state when params change
+  // Reset state when parameters changes (used to fixed stall)
   useEffect(() => {
-    setCategoryId(initialCategoryId);
     setCategoryName(initialCategoryName || '');
     setProducts([]);
     setLoading(true);
     setError(null);
-  }, [initialCategoryId, initialCategoryName]);
-
-  // useEffect(() => {
-  //   if (initialCategoryName) {
-  //     setLoading(false);
-  //   } else {
-  //     const fetchCategoryName = async () => {
-  //       try {
-  //         const categoryRef = doc(db, 'categories', categoryId);
-  //         const categorySnap = await getDoc(categoryRef);
-  //         if (categorySnap.exists()) {
-  //           setCategoryName(categorySnap.data().name);
-  //         } else {
-  //           setError('Category not found');
-  //         }
-  //       } catch (err) {
-  //         setError('Failed to load category');
-  //         console.error(err);
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     };
-  //     fetchCategoryName();
-  //   }
-  // }, [categoryId, initialCategoryName]);
-
+  }, [initialCategoryName]);
+// fetch category name 
   useEffect(() => {
     const fetchCategoryName = async () => {
-      if (categoryName) return;
+      if (categoryName || !categoryId) return;
       
       try {
         const categoryRef = doc(db, 'categories', categoryId);
         const categorySnap = await getDoc(categoryRef);
         if (categorySnap.exists()) {
           setCategoryName(categorySnap.data().name);
+        } else {
+          setError('Category not found');
         }
       } catch (err) {
         setError('Failed to load category');
+        console.error(err);
       }
     };
   
-    if (categoryId && !categoryName) {
-      fetchCategoryName();
-    }
+    fetchCategoryName();
   }, [categoryId, categoryName]);
-  
+
+  //fetch products
   useEffect(() => {
-    const fetchCategoryProducts = async () => {
+    const fetchProducts = async () => {
       try {
+        if (!categoryName) return;
+        
         setLoading(true);
+        setError(null);
+
         const q = query(
           collection(db, 'products'),
-          where('categoryId', '==', categoryId), // check here
+          where('categoryId', '==', categoryName),
           orderBy('createdAt', 'desc'),
           limit(10)
         );
+
         const snapshot = await getDocs(q);
+        const productsData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          product: { 
+            ...doc.data(),
+            createdAt: doc.data().createdAt?.toDate() || new Date(),
+            updatedAt: doc.data().updatedAt?.toDate() || new Date(),
+          }
+        }));
 
-        const fetchedProducts = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            product: {
-              ...data,
-              createdAt: data.createdAt?.toDate() || new Date(), // Ensure it's a JS Date
-              updatedAt: data.updatedAt?.toDate() || new Date(),
-            },
-          };
-        });
-
-        setProducts(fetchedProducts);
+        setProducts(productsData);
+      } catch (err) {
+        setError('Failed to load products');
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
 
-    if (categoryId) {
-      fetchCategoryProducts();
-    }
-  }, [categoryId]);
+    fetchProducts();
+  }, [categoryName]);
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -116,6 +92,8 @@ function CategoryProductList() {
           <ActivityIndicator size="large" color="#2563eb" />
         ) : error ? (
           <Text className="mt-4 text-center text-red-500">{error}</Text>
+        ) : products.length === 0 ? (
+          <Text className="text-center text-gray-500">No products found in this category</Text>
         ) : (
           <ListingCards products={products} />
         )}
@@ -123,4 +101,5 @@ function CategoryProductList() {
     </SafeAreaView>
   );
 }
+
 export default CategoryProductList;
