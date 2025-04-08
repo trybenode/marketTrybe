@@ -27,14 +27,14 @@ export default function ShopScreen({ route }) {
     try {
       if (!sellerInfo) {
         console.warn('No sellerInfo object found');
-        Alert.alert('Error', 'Cannot refresh - missing seller information');
+        // Alert.alert('Error', 'Cannot refresh - missing seller information');
         return;
       }
 
       const sellerId = sellerInfo.uid;
       if (!sellerId) {
         console.warn('No seller ID found in sellerInfo:', sellerInfo);
-        Alert.alert('Error', 'Cannot refresh - invalid seller information');
+        // Alert.alert('Error', 'Cannot refresh - invalid seller information');
         return;
       }
 
@@ -54,7 +54,7 @@ export default function ShopScreen({ route }) {
     try {
       if (!sellerId) {
         console.warn('No sellerId provided');
-        Alert.alert('Error', 'Cannot fetch products - missing seller ID');
+        // Alert.alert('Error', 'Cannot fetch products - missing seller ID');
         return [];
       }
 
@@ -100,7 +100,7 @@ export default function ShopScreen({ route }) {
           <View className="mb-4 w-[48%]">
             <TouchableOpacity
               onPress={() => {
-                if (product) navigation.navigate('ListingDetails', { product });
+                if (product) navigation.navigate('ListingDetails', { product, itemId: product.id });
               }}>
               <ListingCard product={product} btnName="View" />
             </TouchableOpacity>

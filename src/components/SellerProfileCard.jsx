@@ -49,7 +49,7 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
         <Image
           source={
             isOnShopScreen
-              ? { uri: sellerInfo.imageUrl || 'https://via.placeholder.com/120x140' }
+              ? { uri: sellerInfo.profilePicture || 'https://via.placeholder.com/120x140' }
               : { uri: user.profilePicture || 'https://via.placeholder.com/120x140' }
           }
           style={{ width: '100%', height: '100%' }}
@@ -88,4 +88,3 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
 });
 
 export default SellerProfileCard;
-
