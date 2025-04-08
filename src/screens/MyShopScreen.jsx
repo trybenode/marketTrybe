@@ -1,7 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
+
+// SafeAreaView to respect notches/status bar areas
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+// Firebase auth and firestore
 import { auth, db } from '../../firebaseConfig';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 
@@ -12,52 +24,68 @@ import UserProfile from '../components/UserProfile';
 
 export default function MyShopScreen() {
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(true);
-  const [userProfile, setUserProfile] = useState(null);
+  const [loading, setLoading] = useState(true); // Controls overall loading spinner
+  const [refreshing, setRefreshing] = useState(false); // Controls pull-to-refresh indicator
+  const [userProfile, setUserProfile] = useState(null); // Holds current user's profile data
   const [userProducts, setUserProducts] = useState([]);
+
   const currentUser = auth.currentUser;
+
   const hasProduct = userProducts.length > 0;
 
+  // Fetch user profile from Firestore
+  const fetchUserProfile = async () => {
+    try {
+      if (currentUser) {
+        const userDoc = await getDocs(
+          query(collection(db, 'users'), where('userId', '==', currentUser.uid))
+        );
+        if (!userDoc.empty) {
+          setUserProfile(userDoc.docs[0].data());
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
+
+  // Fetch products uploaded by the current user
+  const fetchUserProducts = async () => {
+    try {
+      if (currentUser) {
+        const productQuery = query(
+          collection(db, 'products'),
+          where('userId', '==', currentUser.uid)
+        );
+        const productDocs = await getDocs(productQuery);
+        const products = productDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setUserProducts(products);
+      }
+    } catch (error) {
+      console.error('Error fetching user products:', error);
+    }
+  };
+
+  // Fetch both profile and product data
+  const fetchData = async () => {
+    await fetchUserProfile();
+    await fetchUserProducts();
+    setLoading(false);
+    setRefreshing(false);
+  };
+
+  // Run fetchData once when screen loads or currentUser changes
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        if (currentUser) {
-          const userDoc = await getDocs(
-            query(collection(db, 'users'), where('userId', '==', currentUser.uid))
-          );
-          if (!userDoc.empty) {
-            setUserProfile(userDoc.docs[0].data());
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching user profile:', error);
-      }
-    };
-
-    const fetchUserProducts = async () => {
-      try {
-        if (currentUser) {
-          const productQuery = query(
-            collection(db, 'products'),
-            where('userId', '==', currentUser.uid)
-          );
-          const productDocs = await getDocs(productQuery);
-          const products = productDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          setUserProducts(products);
-        }
-      } catch (error) {
-        console.error('Error fetching user products:', error);
-      }
-    };
-
-    const fetchData = async () => {
-      await fetchUserProfile();
-      await fetchUserProducts();
-      setLoading(false);
-    };
     fetchData();
   }, [currentUser]);
 
+  // Handle pull-to-refresh gesture
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchData();
+  };
+
+  // Show loading spinner while fetching data
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -70,27 +98,40 @@ export default function MyShopScreen() {
     <SafeAreaView className="flex-1 bg-white">
       <CustomHeader screenName="Profile" title="MyShop" extraComponent={<UserProfile />} />
 
-      <View className="flex-1 p-3 pb-20">
+      <View className="flex-1 pb-20">
         {hasProduct ? (
-          <>
-            <SellerProfileCard
-              
-            />
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View className="mt-4 flex flex-row flex-wrap justify-between">
-                {userProducts.map(( product ) => (
-                  <View key={product.id} className="mb-4 w-[48%]">
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate('Sell', { product})}>
-                      <ListingCard product={product} btnName="Edit" />
-                    </TouchableOpacity>
-                  </View>
-                ))}
+          <FlatList
+            data={userProducts}
+            numColumns={2}
+            keyExtractor={(item) => item.id}
+            columnWrapperStyle={{ justifyContent: 'space-between' }}
+            contentContainerStyle={{ padding: 12, paddingBottom: 20 }}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              // Pull to refresh control
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={['#2563eb']}
+                tintColor="#2563eb"
+              />
+            }
+            ListHeaderComponent={
+              // Seller profile displayed above product list
+              <View className="mb-4">
+                <SellerProfileCard />
               </View>
-            </ScrollView>
-          </>
+            }
+            renderItem={({ item }) => (
+              <View className="mb-4 w-[48%]">
+                <TouchableOpacity onPress={() => navigation.navigate('Sell', { product: item })}>
+                  <ListingCard product={item} btnName="Edit" />
+                </TouchableOpacity>
+              </View>
+            )}
+          />
         ) : (
-          <View className="flex-1 items-center justify-center">
+          <View className="flex-1 items-center justify-center p-6">
             <Text className="text-center text-lg text-gray-500">
               You haven't uploaded any products yet.
             </Text>
