@@ -1,31 +1,43 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { auth } from '../../firebaseConfig';
-import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
 
 import TestHeader from '../components/TestHeader';
 import UserProfile from '../components/UserProfile';
-import { messages } from '../data/dummyData';
+// import { messages } from '../data/dummyData';
 import { getAllConversations } from '../hooks/messaginghooks';
 
 export default function MessagesScreen() {
   const [chats, setChats] = useState([]);
   const navigation = useNavigation();
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      await getAllConversations(currentUserId, setChats);
+    } catch (error) {
+      console.error('Error refreshing conversations:', error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     let unsubscribeListener = null;
-    
+
     if (currentUserId) {
       getAllConversations(currentUserId, setChats)
-        .then(unsubscribe => {
+        .then((unsubscribe) => {
           unsubscribeListener = unsubscribe;
         })
-        .catch(error => {
-          console.error("Error setting up conversation listener:", error);
+        .catch((error) => {
+          console.error('Error setting up conversation listener:', error);
         });
     }
 
@@ -52,7 +64,7 @@ export default function MessagesScreen() {
     if (!timestamp) return '';
     const date = new Date(parseInt(timestamp));
     const now = new Date();
-    
+
     // If message is from today, show time
     if (date.toDateString() === now.toDateString()) {
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -69,16 +81,17 @@ export default function MessagesScreen() {
     try {
       const productRef = doc(db, 'products', item.product.id);
       const productSnap = await getDoc(productRef);
-      
+
       if (productSnap.exists()) {
         const productData = productSnap.data();
         navigation.navigate('ListingDetails', {
           product: {
             ...productData,
             id: productSnap.id,
-            createdAt: productData.createdAt?.toDate?.() instanceof Date 
-              ? productData.createdAt.toDate().toISOString() 
-              : null,
+            createdAt:
+              productData.createdAt?.toDate?.() instanceof Date
+                ? productData.createdAt.toDate().toISOString()
+                : null,
           },
           itemId: productSnap.id,
         });
@@ -118,9 +131,7 @@ export default function MessagesScreen() {
           </Text>
         </View>
         <View className="items-end">
-          <Text className="text-gray-400">
-            {formatTimestamp(item.lastMessage?.timestamp)}
-          </Text>
+          <Text className="text-gray-400">{formatTimestamp(item.lastMessage?.timestamp)}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -135,6 +146,14 @@ export default function MessagesScreen() {
         className="p-4"
         contentContainerStyle={{ paddingBottom: 110 }}
         renderItem={renderItem}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={['#2563eb']}
+            tintColor="#2563eb"
+          />
+        }
       />
     </SafeAreaView>
   );

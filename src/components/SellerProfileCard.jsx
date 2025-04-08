@@ -45,7 +45,7 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
   return (
     <View className="flex-row gap-2 rounded-lg bg-gray-100 p-4 px-4">
       {/* Seller Profile Image */}
-      <View className="h-[140px] w-[120px] overflow-hidden rounded-lg">
+      <View className="h-[140px] w-[120px] overflow-hidden rounded-lg bg-gray-300">
         <Image
           source={
             isOnShopScreen
