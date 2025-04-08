@@ -1,6 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,49 +10,73 @@ import {
   Modal,
   Pressable,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useFavoritesStore from '../store/FavouriteStore';
 import Toast from 'react-native-toast-message';
-
-import { auth } from '../../firebaseConfig';
-import { images, listings } from '../data/dummyData';
-import useUserStore from '../store/userStore';
+import { auth, db } from '../../firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
+import { images } from '../data/dummyData';
 import TestHeader from '../components/TestHeader';
 import { getUserIdOfSeller, initiateConversation } from '../hooks/messaginghooks';
 import UserDetailsAndRelatedProducts from '../components/UserDetailsAndRelatedProducts';
 
 export default function ListingDetailsScreen({ route }) {
-  const { product, itemId } = route.params;
+  const { product: routeProduct, itemId } = route.params || {};
+  const [currentProduct, setCurrentProduct] = useState(null);
   const [sellerID, setSellerID] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [message, setMessage] = useState('');
-  const {
-    name,
-    description,
-    price,
-    originalPrice,
-    negotiable,
-    images = [],
-    categoryId,
-    brand,
-    condition,
-    color,
-    year,
-  } = product;
-
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
   const [liked, setLiked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const openModal = (imageUri) => {
-    setSelectedImage(imageUri);
-    setModalVisible(true);
-  };
 
   const { favoriteIds, toggleFavorite } = useFavoritesStore();
+  const effectiveProductId = itemId || currentProduct?.id;
 
-  // Lets get the user id of the current user
+  // Memoized favoriteIds to prevent unnecessary updates
+  const stableFavoriteIds = useMemo(() => favoriteIds, [favoriteIds]);
+
+  // Normalize product data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Case 1: checks Product data passed directly
+        if (routeProduct) {
+          setCurrentProduct({
+            ...routeProduct,
+            id: itemId || routeProduct.id,
+          });
+          return;
+        }
+
+        // Case 2: checks Only itemId was passed - fetch the product
+        if (itemId) {
+          const docRef = doc(db, 'products', itemId);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setCurrentProduct({
+              id: docSnap.id,
+              ...docSnap.data(),
+            });
+          } else {
+            console.warn('Product not found');
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [routeProduct, itemId]);
+
+  // Get current user ID
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) setCurrentUserId(user.uid);
@@ -60,51 +84,57 @@ export default function ListingDetailsScreen({ route }) {
     return () => unsubscribe();
   }, []);
 
-  // Add useEffect for fetching seller ID
-  // useEffect(() => {
-  //   const fetchSellerID = async () => {
-  //     try {
-  //       if (itemId) {
-  //         const id = await getUserIdOfSeller(itemId);
-  //         setSellerID(id);
-  //         // console.log("Seller ID fetched:", id);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching seller ID:', error);
-  //     }
-  //   };
-  const fetchSellerID = async () => {
-    try {
-      if (itemId) {
-        const id = await getUserIdOfSeller(itemId);
-        if (id) {
-          setSellerID(id);
-        } else {
-          console.warn('Seller ID not found for item:', itemId);
+  // Set seller ID when product is available
+  useEffect(() => {
+    if (currentProduct?.userId) {
+      setSellerID(currentProduct.userId);
+    } else if (itemId) {
+      // Fallback to fetch seller ID if not in product data
+      const fetchSeller = async () => {
+        try {
+          const id = await getUserIdOfSeller(itemId);
+          if (id) setSellerID(id);
+        } catch (error) {
+          console.error('Error fetching seller ID:', error);
         }
-      }
-    } catch (error) {
-      console.error('Error fetching seller ID:', error);
+      };
+      fetchSeller();
     }
-  };
+  }, [currentProduct, itemId]);
 
-  fetchSellerID();
-  // }, [itemId]);
+  // Destructured product with fallbacks
+  const {
+    name = '',
+    description = '',
+    price = 0,
+    originalPrice = 0,
+    negotiable = false,
+    images = [],
+    categoryId = '',
+    brand = '',
+    condition = '',
+    subcategory = '',
+    color = '',
+    year = '',
+  } = currentProduct || {};
 
-  console.log('Product ID:', itemId);
-  console.log('Seller ID state:', sellerID);
-  console.log('All Favs when loaded: ', favoriteIds);
 
   // Sync liked state with Zustand store
   useEffect(() => {
-    setLiked(favoriteIds.includes(itemId));
-    console.log(itemId);
-  }, [favoriteIds]);
+    if (effectiveProductId) {
+      setLiked(stableFavoriteIds.includes(effectiveProductId));
+    }
+  }, [stableFavoriteIds, effectiveProductId]);
 
-  // Handle favorite toggle
+  const openModal = (imageUri) => {
+    setSelectedImage(imageUri);
+    setModalVisible(true);
+  };
+
   const handleLiked = async () => {
-    await toggleFavorite(itemId);
-    // console.log("All Favs: ", favoriteIds)
+    if (effectiveProductId) {
+      await toggleFavorite(effectiveProductId);
+    }
   };
 
   const handleSendMessage = async () => {
@@ -119,9 +149,9 @@ export default function ListingDetailsScreen({ route }) {
       }
 
       const productDetails = {
-        name: name,
+        name,
         imageUrl: images[0]?.url || images[0] || '',
-        id: itemId,
+        id: effectiveProductId,
       };
 
       const conversationId = await initiateConversation(
@@ -152,14 +182,30 @@ export default function ListingDetailsScreen({ route }) {
 
   const details = [
     { index: 1, label: 'Category', value: categoryId },
-    { index: 2, label: 'Brand', value: brand },
-    { index: 3, label: 'Condition', value: condition },
-    { index: 4, label: 'Color', value: color },
-    { index: 5, label: 'Year', value: year },
+    { index: 2, label: 'Sub Categories', value: subcategory },
+    { index: 3, label: 'Brand', value: brand },
+    { index: 4, label: 'Condition', value: condition },
+    { index: 5, label: 'Color', value: color },
+    { index: 6, label: 'Year', value: year },
   ];
-  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null })); //array for place holder if no image available
 
+  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));
 
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 bg-white">
+        <ActivityIndicator size="large" className="mt-10" />
+      </SafeAreaView>
+    );
+  }
+
+  if (!currentProduct) {
+    return (
+      <SafeAreaView className="flex-1 bg-white">
+        <Text className="mt-10 text-center">Product not found</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -167,21 +213,21 @@ export default function ListingDetailsScreen({ route }) {
         screenName="MainTabs"
         title="Product Details"
         extraComponent={
-          <TouchableOpacity className="flex items-center space-y-1" onPress={() => handleLiked()}>
+          <TouchableOpacity className="flex items-center space-y-1" onPress={handleLiked}>
             <MaterialIcons name={liked ? 'favorite' : 'favorite-border'} size={30} color="black" />
           </TouchableOpacity>
         }
       />
 
       <FlatList
-        data={listings}
+        data={[]} 
         className="px-3"
         keyExtractor={(item) => item.id.toString()}
         ListFooterComponent={null}
         ListHeaderComponent={
           <View>
             {/* Carousel with pop-up (modal) on click */}
-            <View className=" mt-5">
+            <View className="mt-5">
               <View className="mt-5">
                 {images && images.length > 0 ? (
                   <FlatList
@@ -221,16 +267,18 @@ export default function ListingDetailsScreen({ route }) {
               </View>
 
               {/* Title and Price Section */}
-              <View className="my-4 p-2">
+              <View className="my-4 p-4 rounded-lg bg-gray-100 border-b-hairline border-blue-500 ">
                 <Text className="text-2xl font-bold tracking-tight text-gray-900">{name}</Text>
 
-                <View className="mt-2 flex-row items-center justify-between ">
+                <View className="mt-2 flex-row items-center justify-between">
                   <Text className="text-xl font-extrabold text-green-600">₦{price}</Text>
-                  {/* Strike-through original price for discount effect */}
-                  <Text className="ml-2 text-sm text-gray-500 line-through">₦{originalPrice}</Text>
+                  {originalPrice > 0 && (
+                    <Text className="ml-2 text-sm text-gray-500 line-through">
+                      ₦{originalPrice}
+                    </Text>
+                  )}
                 </View>
 
-                {/* Negotiable Badge */}
                 {negotiable && (
                   <View className="mt-2 self-start rounded-full bg-green-600 px-3 py-1">
                     <Text className="text-xs text-white">Negotiable</Text>
@@ -239,27 +287,31 @@ export default function ListingDetailsScreen({ route }) {
               </View>
 
               {/* Details Section */}
-              <View className="">
+              <View>
                 <Text className="p-2 text-lg font-bold">Listing Details</Text>
 
-                <View className="mb-4 rounded-lg bg-gray-100 p-2">
+                <View className="mb-4 rounded-lg bg-gray-100 border-b-hairline border-blue-500 p-2">
                   <View className="flex-row flex-wrap">
-                    {details?.map((item, index) => (
+                    {details.map((item, index) => (
                       <View key={index} className="w-1/3 p-2">
                         <Text className="font-bold text-gray-800">{item.label}</Text>
-                        <Text className="text-gray-600">{item.value}</Text>
+                        <Text className="text-gray-500">{item.value || 'N/A'}</Text>
                       </View>
                     ))}
-                    <Text className=" mx-auto font-bold text-gray-800">
-                      Detailed Product description{' '}
-                    </Text>
-                    <Text className="mb-4  text-gray-600">{description}</Text>
                   </View>
+                    <View className=" flex flex-col">
+                      <Text className="mx-auto font-bold flex text-gray-800">
+                        Detailed Product description
+                      </Text>
+                      <Text className="mb-4 flex  text-gray-600">
+                        {description || 'No description available'}
+                      </Text>
+                    </View>
                 </View>
               </View>
 
               {/* Message user */}
-              <View className="border-t border-gray-200 p-4">
+              <View className="border-t mb-4 rounded-lg bg-gray-100 border-b-hairline border-blue-500  p-4">
                 <Text className="mb-2 text-lg font-semibold">Make an Offer:</Text>
                 <View className="flex-row items-center">
                   <TextInput
@@ -276,29 +328,33 @@ export default function ListingDetailsScreen({ route }) {
                 </View>
               </View>
               {/* Seller's info Section */}
-              <UserDetailsAndRelatedProducts productId={itemId} />
-              {/* ⚠️ MODAL KEEP AT BOTTOM */}
-              {/* Modal for full-screen image */}
-              <Modal visible={modalVisible} transparent animationType="fade">
-                <View className="flex-1 items-center justify-center bg-black/90">
-                  {selectedImage && (
-                    <Image
-                      source={{ uri: selectedImage }}
-                      className="h-4/5 w-11/12 rounded-lg"
-                      resizeMode="contain"
-                    />
-                  )}
-                  <Pressable
-                    onPress={() => setModalVisible(false)}
-                    className="mt-5 rounded bg-white px-4 py-2">
-                    <Text className="px-2 text-lg">Close</Text>
-                  </Pressable>
-                </View>
-              </Modal>
+              <UserDetailsAndRelatedProducts
+                key={effectiveProductId}
+                productId={effectiveProductId}
+                product={currentProduct}
+              />
             </View>
           </View>
         }
       />
+
+      {/* Modal for full-screen image */}
+      <Modal visible={modalVisible} transparent animationType="fade">
+        <View className="flex-1 items-center justify-center bg-black/90">
+          {selectedImage && (
+            <Image
+              source={{ uri: selectedImage }}
+              className="h-4/5 w-11/12 rounded-lg"
+              resizeMode="contain"
+            />
+          )}
+          <Pressable
+            onPress={() => setModalVisible(false)}
+            className="mt-5 rounded bg-white px-4 py-2">
+            <Text className="px-2 text-lg">Close</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
