@@ -16,54 +16,54 @@ const SearchBar = ({ onResults}) => {
   
   const debounceQuery = useDebounce(searchQuery, 500)
   
+  //product fetch
   useEffect(()=>{
-    const fetchProducts = async ()=>{
-      setLoading(true)
+    const fetchProducts = async () => {
+      setLoading(true);
       const querySnapshot = await getDocs(collection(db, 'products'));
-      const data = querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data() }));
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        product: {
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate(),
+          updatedAt: doc.data().updatedAt?.toDate(),
+        },
+      }));
       setProducts(data);
       setFiltered(data);
       setLoading(false);
-    }
+    };
 
     fetchProducts();
   },[])
 
-  useEffect(() =>{
-    if (!debounceQuery.trim() ){
+  //search query 
+  useEffect(() => {
+    if (!debounceQuery.trim()) {
+
+      onResults([], false); // Send empty array and search inactive
       setFiltered(products);
+    
       return;
     }
-
-    const filteredData = products.filter(product => 
-      product.name.toLowerCase().includes(debounceQuery.toLowerCase()) ||
-      product.categoryId.toLowerCase().includes(debounceQuery.toLowerCase()) ||
-      product.brand.toLowerCase().includes(debounceQuery.toLowerCase()) ||
-      product.subcategory.toLowerCase().includes(debounceQuery.toLowerCase()) ||
-      (product.tags && product.tags.some(tag => tag.toLowerCase().includes(debounceQuery.toLowerCase())))
-
-    ).map((prod) => ({
-      id: prod.id,
-      product: {
-        ...prod,
-        createdAt: prod.createdAt,
-        updatedAt: prod.updatedAt,
-      },
-    }));
-  onResults(filteredData, false)
+  
+    const filteredData = products.filter(prod =>
+      prod.product.name.toLowerCase().includes(debounceQuery.toLowerCase()) ||
+      prod.product.categoryId.toLowerCase().includes(debounceQuery.toLowerCase()) ||
+      prod.product.brand.toLowerCase().includes(debounceQuery.toLowerCase()) ||
+      prod.product.subcategory.toLowerCase().includes(debounceQuery.toLowerCase()) ||
+      (prod.product.tags && prod.product.tags.some(tag => tag.toLowerCase().includes(debounceQuery.toLowerCase())))
+    );
+  
+    onResults(filteredData, true);
     setFiltered(filteredData);
-  }, [debounceQuery,products])
+  }, [debounceQuery, products]);
+  
 
-  useEffect(() => {
-    if (onResults) {
-      onResults(filtered, loading);
-    }
-  }, [filtered, loading]);
 
   const handleClearSearch = () =>{
     setSearchQuery('');
     Keyboard.dismiss();
-    onResults([], false);
   }
  
   return (
@@ -75,16 +75,21 @@ const SearchBar = ({ onResults}) => {
         value={searchQuery}
         onChangeText={setSearchQuery}
       />
-      {searchQuery.length > 0 && (
-          <Ionicons 
-          name="close-circle"
-          size={30}
-          color="blue"
-          onPress={handleClearSearch} // Clear search
-        />
 
-        )
-      }
+{searchQuery.length > 0 && (
+  <View className="flex-row items-center">
+    {loading ? (
+      <ActivityIndicator color="blue" style={{ marginRight: 8 }}  />
+    ) : (
+      <Ionicons 
+        name="close-circle"
+        size={30}
+        color="blue"
+        onPress={handleClearSearch}
+      />
+    )}
+  </View>
+)}
     </View>
   );
 };
