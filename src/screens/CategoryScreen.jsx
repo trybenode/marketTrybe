@@ -1,4 +1,4 @@
-//All available category 
+//All available category
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
@@ -31,23 +31,23 @@ export default function CategoryScreen() {
 
   const handleCategorySelect = async (categoryID, categoryName) => {
     try {
-      console.log("🔹 Fetching products for categoryID:", categoryID);
-      console.log("🔹 Expected categoryName:", categoryName);
+      console.log('🔹 Fetching products for categoryID:', categoryID);
+      console.log('🔹 Expected categoryName:', categoryName);
       setLoading(true);
-  
+
       const productsQuery = query(
         collection(db, 'products'),
-        where('categoryId', '==', categoryID)  
+        where('categoryId', '==', categoryID)
       );
       const querySnapshot = await getDocs(productsQuery);
       const products = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-  
-      console.log("✅ Products fetched:", products.length); // debugging 
-      console.log("📝 Fetched products:", products); // debugging 
-  
+
+      console.log('✅ Products fetched:', products.length); // debugging
+      console.log('📝 Fetched products:', products); // debugging
+
       navigation.navigate('ProductList', { categoryID, categoryName, products });
     } catch (error) {
       console.error('🚨 Error fetching products:', error);
@@ -55,7 +55,6 @@ export default function CategoryScreen() {
       setLoading(false);
     }
   };
-  
 
   if (loading) {
     return (

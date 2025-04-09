@@ -15,6 +15,7 @@ function CategoryProductList() {
   const [categoryName, setCategoryName] = useState(initialCategoryName || '');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
 
   // Reset state when parameters changes (used to fixed stall)
@@ -24,11 +25,11 @@ function CategoryProductList() {
     setLoading(true);
     setError(null);
   }, [initialCategoryName]);
-// fetch category name 
+  // fetch category name
   useEffect(() => {
     const fetchCategoryName = async () => {
       if (categoryName || !categoryId) return;
-      
+
       try {
         const categoryRef = doc(db, 'categories', categoryId);
         const categorySnap = await getDoc(categoryRef);
@@ -42,47 +43,59 @@ function CategoryProductList() {
         console.error(err);
       }
     };
-  
+
     fetchCategoryName();
   }, [categoryId, categoryName]);
 
-  //fetch products
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        if (!categoryName) return;
-        
+  const fetchProducts = async (isRefresh = false) => {
+    try {
+      if (!categoryName) return;
+
+      if (isRefresh) {
+        setRefreshing(true);
+      } else {
         setLoading(true);
-        setError(null);
+      }
+      setError(null);
 
-        const q = query(
-          collection(db, 'products'),
-          where('categoryId', '==', categoryName),
-          orderBy('createdAt', 'desc'),
-          limit(10)
-        );
+      const q = query(
+        collection(db, 'products'),
+        where('categoryId', '==', categoryName),
+        orderBy('createdAt', 'desc'),
+        limit(10)
+      );
 
-        const snapshot = await getDocs(q);
-        const productsData = snapshot.docs.map(doc => ({
-          id: doc.id,
-          product: { 
-            ...doc.data(),
-            createdAt: doc.data().createdAt?.toDate() || new Date(),
-            updatedAt: doc.data().updatedAt?.toDate() || new Date(),
-          }
-        }));
+      const snapshot = await getDocs(q);
+      const productsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        product: {
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate() || new Date(),
+          updatedAt: doc.data().updatedAt?.toDate() || new Date(),
+        },
+      }));
 
-        setProducts(productsData);
-      } catch (err) {
-        setError('Failed to load products');
-        console.error(err);
-      } finally {
+      setProducts(productsData);
+    } catch (err) {
+      setError('Failed to load products');
+      console.error(err);
+    } finally {
+      if (isRefresh) {
+        setRefreshing(false);
+      } else {
         setLoading(false);
       }
-    };
+    }
+  };
 
+  //fetch products
+  useEffect(() => {
     fetchProducts();
   }, [categoryName]);
+
+  const onRefresh = () => {
+    fetchProducts(true);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -95,7 +108,7 @@ function CategoryProductList() {
         ) : products.length === 0 ? (
           <Text className="text-center text-gray-500">No products found in this category</Text>
         ) : (
-          <ListingCards products={products} />
+          <ListingCards products={products} onRefresh={onRefresh} refreshing={refreshing} />
         )}
       </View>
     </SafeAreaView>
