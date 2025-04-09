@@ -88,9 +88,12 @@ export default function MyShopScreen() {
   // Show loading spinner while fetching data
   if (loading) {
     return (
-      <View className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color="#2563eb" />
-      </View>
+      <SafeAreaView className="flex-1 bg-white">
+        <CustomHeader screenName="Profile" title="MyShop" extraComponent={<UserProfile />} />
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="#2563eb" />
+        </View>
+      </SafeAreaView>
     );
   }
 
