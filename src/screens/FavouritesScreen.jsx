@@ -8,7 +8,8 @@ import { useFavorites } from '../hooks/FavoritesHook';
 import TestHeader from '../components/TestHeader';
 
 export default function FavouritesScreen() {
-  const { products, loading, isFetchingMore, fetchFavorites, loadMore } = useFavorites();
+  const { products, loading, isFetchingMore, refreshing, fetchFavorites, loadMore, onRefresh } =
+    useFavorites();
 
   useEffect(() => {
     fetchFavorites();
@@ -18,10 +19,12 @@ export default function FavouritesScreen() {
     <SafeAreaView className="flex-1 bg-white">
       <TestHeader title="Favourites" screenName="Market" extraComponent={<UserProfile />} />
       <View className="flex-1 p-4">
-        <ListingCards 
-          products={products} 
+        <ListingCards
+          products={products}
           isFetchingMore={isFetchingMore}
           loadMoreProducts={loadMore}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
         />
       </View>
     </SafeAreaView>

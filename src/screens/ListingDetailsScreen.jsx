@@ -55,7 +55,7 @@ export default function ListingDetailsScreen({ route }) {
           });
           return;
         }
-  
+
         // Case 2: only itemId is passed - fetch the product
         if (itemId) {
           const docRef = doc(db, 'products', itemId);
@@ -75,10 +75,9 @@ export default function ListingDetailsScreen({ route }) {
         setLoading(false);
       }
     };
-  
+
     fetchData();
   }, [product, itemId]);
-  
 
   // Get current user ID
   useEffect(() => {
@@ -121,7 +120,6 @@ export default function ListingDetailsScreen({ route }) {
     color = '',
     year = '',
   } = currentProduct || {};
-
 
   // Sync liked state with Zustand store
   useEffect(() => {
@@ -207,7 +205,7 @@ export default function ListingDetailsScreen({ route }) {
       />
 
       <FlatList
-        data={[]} 
+        data={[]}
         className="px-3"
         keyExtractor={(item) => item.id.toString()}
         ListFooterComponent={null}
@@ -254,7 +252,7 @@ export default function ListingDetailsScreen({ route }) {
               </View>
 
               {/* Title and Price Section */}
-              <View className="my-4 p-4 rounded-lg bg-gray-100 border-b-hairline border-blue-500 ">
+              <View className="border-b-hairline my-4 rounded-lg border-blue-500 bg-gray-100 p-4 ">
                 <Text className="text-2xl font-bold tracking-tight text-gray-900">{name}</Text>
 
                 <View className="mt-2 flex-row items-center justify-between">
@@ -277,7 +275,7 @@ export default function ListingDetailsScreen({ route }) {
               <View>
                 <Text className="p-2 text-lg font-bold">Listing Details</Text>
 
-                <View className="mb-4 rounded-lg bg-gray-100 border-b-hairline border-blue-500 p-2">
+                <View className="border-b-hairline mb-4 rounded-lg border-blue-500 bg-gray-100 p-2">
                   <View className="flex-row flex-wrap">
                     {details.map((item, index) => (
                       <View key={index} className="w-1/3 p-2">
@@ -286,19 +284,19 @@ export default function ListingDetailsScreen({ route }) {
                       </View>
                     ))}
                   </View>
-                    <View className=" flex flex-col">
-                      <Text className="mx-auto font-bold flex text-gray-800">
-                        Detailed Product description
-                      </Text>
-                      <Text className="mb-4 flex  text-gray-600">
-                        {description || 'No description available'}
-                      </Text>
-                    </View>
+                  <View className=" flex flex-col">
+                    <Text className="mx-auto ml-2 flex w-full text-start font-bold text-gray-800">
+                      Detailed Product description
+                    </Text>
+                    <Text className="mb-4 ml-2 flex text-gray-600">
+                      {description || 'No description available'}
+                    </Text>
+                  </View>
                 </View>
               </View>
 
               {/* Message user */}
-              <View className="border-t mb-4 rounded-lg bg-gray-100 border-b-hairline border-blue-500  p-4">
+              <View className="border-b-hairline mb-4 rounded-lg border-t border-blue-500 bg-gray-100  p-4">
                 <Text className="mb-2 text-lg font-semibold">Make an Offer:</Text>
                 <View className="flex-row items-center">
                   <TextInput
