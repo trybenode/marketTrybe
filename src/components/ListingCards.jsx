@@ -9,13 +9,13 @@ const ListingCards = memo(({ products = [], isFetchingMore, loadMoreProducts, bo
   if (!products.length) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Text className="text-gray-500">No products found</Text>
+        <Text className="text-red-500">No products found</Text>
       </View>
     );
   }
 
   return (
-    <View style={{ flex: 1,  paddingHorizontal: 3 }}>
+    <View style={{ flex: 1,  paddingHorizontal: 3, marginBottom: 70 }}>
       <FlatList
         data={products}
         keyExtractor={(item) => item.id}
