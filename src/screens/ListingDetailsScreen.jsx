@@ -27,6 +27,8 @@ export default function ListingDetailsScreen({ route }) {
   const { product, itemId: routeItemId } = route.params;
   const itemId = routeItemId || product?.id;
   const [sellerID, setSellerID] = useState(null);
+  const [currentProduct, setCurrentProduct] = useState(null);
+
   const [currentUserId, setCurrentUserId] = useState(null);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
@@ -45,16 +47,16 @@ export default function ListingDetailsScreen({ route }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Case 1: checks Product data passed directly
-        if (routeProduct) {
+        // Case 1: checks if product was passed directly
+        if (product) {
           setCurrentProduct({
-            ...routeProduct,
-            id: itemId || routeProduct.id,
+            ...product,
+            id: itemId || product.id,
           });
           return;
         }
-
-        // Case 2: checks Only itemId was passed - fetch the product
+  
+        // Case 2: only itemId is passed - fetch the product
         if (itemId) {
           const docRef = doc(db, 'products', itemId);
           const docSnap = await getDoc(docRef);
@@ -73,9 +75,10 @@ export default function ListingDetailsScreen({ route }) {
         setLoading(false);
       }
     };
-
+  
     fetchData();
-  }, [routeProduct, itemId]);
+  }, [product, itemId]);
+  
 
   // Get current user ID
   useEffect(() => {

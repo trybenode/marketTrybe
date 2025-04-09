@@ -9,6 +9,7 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
   
   const navigation = useNavigation();
   const [sellerInfo, setSellerInfo] = useState(null);
+  const [sellerProducts, setSellersProducts] = useState([]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -47,8 +48,9 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
           throw new Error('Incomplete product data');
         }
 
-        const [sellerSnap, categorySnap, subCategorySnap] = await Promise.all([
+        const [sellerSnap, categorySnap, subCategorySnap, sellerProductsSnap] = await Promise.all([
           getDoc(doc(db, 'users', userId)),
+          getDocs(query(collection(db, 'product'), where ("userId", "==", userId))),
           getDocs(query(collection(db, 'products'), where('categoryId', '==', categoryId))),
           getDocs(query(collection(db, 'products'), where('subcategory', '==', subcategory)))
         ]);
@@ -56,7 +58,15 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
         if (sellerSnap.exists()) {
           setSellerInfo(sellerSnap.data());
         }
-
+        const sellerProductsList = sellerProductsSnap.docs
+        .filter((doc) => doc.id !== productId)
+        .map((doc) => ({
+          id: doc.id,
+          product: doc.data(),
+        }));
+      
+      setSellersProducts(sellerProductsList);
+      
         const processProducts = (snapshot, excludeId) =>
           snapshot.docs
             .filter((doc) => doc.id !== excludeId)
@@ -94,20 +104,28 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
     <View>
       {/* Seller Info Section */}
       {sellerInfo && (
-        <View className=" rounded-lg bg-gray-100 border-b-hairline border-blue-500 ">
-          <Text className="p-2 mt-5 text-lg font-bold">Seller Information</Text>
-          <TouchableOpacity
-            className="rounded-lg p-4"
-            onPress={() =>
-              navigation.navigate('Shop', {
-                sellerInfo,
-                sellerProducts: sellerProducts.map((p) => p.product),
-              })
-            }>
-            <Text >Seller: {sellerInfo.fullName || 'N/A'}</Text>
-            <Text >Location: {sellerInfo.address || 'Not specified'}</Text>
-          </TouchableOpacity>
-        </View>
+       <View className="rounded-lg bg-gray-100 border-b-hairline border-blue-500 p-4 mt-5">
+       <Text className="text-lg font-bold mb-2">Seller Information</Text>
+     
+       <View className="flex-row justify-between items-center">
+         <View>
+           <Text>Seller: {sellerInfo.fullName || 'N/A'}</Text>
+           <Text>Location: {sellerInfo.address || 'Not specified'}</Text>
+         </View>
+     
+         <TouchableOpacity
+           className="ml-4 rounded-lg bg-blue-500 px-4 py-2"
+           onPress={() =>
+             navigation.navigate('Shop', {
+               sellerInfo,
+               sellerProducts: sellerProducts.map((p) => p.product),
+             })
+           }>
+           <Text className="font-semibold text-white">View Shop</Text>
+         </TouchableOpacity>
+       </View>
+     </View>
+     
       )}
 
       {/* Related Products */}
