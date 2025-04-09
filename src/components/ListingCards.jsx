@@ -7,6 +7,7 @@ import {
   Text,
   ActivityIndicator,
   RefreshControl,
+  useWindowDimensions,
 } from 'react-native';
 import ListingCard from './ListingCard';
 
@@ -53,7 +54,12 @@ const ListingCards = memo(
           )}
           showsVerticalScrollIndicator={false}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#2563eb']} />
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={['#2563eb']}
+              progressViewOffset={useWindowDimensions().height * 0.1}
+            />
           }
           ListFooterComponent={isFetchingMore && <ActivityIndicator size="small" color="#2563eb" />}
           onEndReached={loadMoreProducts}

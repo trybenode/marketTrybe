@@ -12,17 +12,23 @@ const PAGE_SIZE = 10;
 
 export default function HomeScreen() {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] =useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [lastVisible, setLastVisible] = useState(null);
-  const [hasSearchQuery, setHasSearchQuery] = useState(false)
+  const [hasSearchQuery, setHasSearchQuery] = useState(false);
 
   const fetchProducts = useCallback(
-    async (isLoadMore = false) => {
+    async (isLoadMore = false, isRefresh = false) => {
       try {
-        if (isLoadMore) setIsFetchingMore(true);
-        else setLoading(true);
+        if (isRefresh) {
+          setRefreshing(true);
+        } else if (isLoadMore) {
+          setIsFetchingMore(true);
+        } else {
+          setLoading(true);
+        }
 
         let baseQuery = collection(db, 'products');
         let constructedQuery = query(baseQuery, orderBy('createdAt', 'desc'), limit(PAGE_SIZE));
@@ -36,23 +42,27 @@ export default function HomeScreen() {
           );
         }
 
-      const querySnapshot = await getDocs(constructedQuery);
-      const newProducts = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        product: {
-          ...doc.data(),
-          createdAt: doc.data().createdAt?.toDate(),
-          updatedAt: doc.data().updatedAt?.toDate(),
-        },
-      }));
+        const querySnapshot = await getDocs(constructedQuery);
+        const newProducts = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          product: {
+            ...doc.data(),
+            createdAt: doc.data().createdAt?.toDate(),
+            updatedAt: doc.data().updatedAt?.toDate(),
+          },
+        }));
 
         setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1] || null);
         setProducts((prev) => (isLoadMore ? [...prev, ...newProducts] : newProducts));
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false);
-        setIsFetchingMore(false);
+        if (isRefresh) {
+          setRefreshing(false);
+        } else {
+          setLoading(false);
+          setIsFetchingMore(false);
+        }
       }
     },
     [lastVisible]
@@ -61,7 +71,7 @@ export default function HomeScreen() {
   useEffect(() => {
     fetchProducts();
   }, []);
-  const productsToDisplay = hasSearchQuery ? filteredProducts: products;
+  const productsToDisplay = hasSearchQuery ? filteredProducts : products;
   return (
     <SafeAreaView className="flex-1 bg-white p-0">
       <View className="flex-row items-center justify-between p-4">
@@ -74,7 +84,7 @@ export default function HomeScreen() {
         <SearchBar
           onResults={(results, isSearchActive) => {
             setFilteredProducts(results);
-            setHasSearchQuery(isSearchActive)
+            setHasSearchQuery(isSearchActive);
           }}
         />
 
@@ -84,13 +94,17 @@ export default function HomeScreen() {
           <ListingCards
             products={productsToDisplay}
             isFetchingMore={isFetchingMore}
-            loadMoreProducts={() =>{ 
-              if(!hasSearchQuery) fetchProducts(true)}}
+            loadMoreProducts={() => {
+              if (!hasSearchQuery) fetchProducts(true);
+            }}
+            onRefresh={() => fetchProducts(false, true)}
+            refreshing={refreshing}
+            refreshPosition="top"
           />
         ) : (
           <View className="flex-1  items-center">
             <Text className="text-lg text-red-500">
-              {hasSearchQuery ? "No products found" : "No products available"}
+              {hasSearchQuery ? 'No products found' : 'No products available'}
             </Text>
           </View>
         )}
