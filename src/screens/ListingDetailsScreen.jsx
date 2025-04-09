@@ -23,8 +23,9 @@ import { getUserIdOfSeller, initiateConversation } from '../hooks/messaginghooks
 import UserDetailsAndRelatedProducts from '../components/UserDetailsAndRelatedProducts';
 
 export default function ListingDetailsScreen({ route }) {
-  const { product: routeProduct, itemId } = route.params || {};
-  const [currentProduct, setCurrentProduct] = useState(null);
+  // const { product, itemId } = route.params;
+  const { product, itemId: routeItemId } = route.params;
+  const itemId = routeItemId || product?.id;
   const [sellerID, setSellerID] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
   const [message, setMessage] = useState('');
@@ -188,24 +189,7 @@ export default function ListingDetailsScreen({ route }) {
     { index: 5, label: 'Color', value: color },
     { index: 6, label: 'Year', value: year },
   ];
-
-  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null }));
-
-  if (loading) {
-    return (
-      <SafeAreaView className="flex-1 bg-white">
-        <ActivityIndicator size="large" className="mt-10" />
-      </SafeAreaView>
-    );
-  }
-
-  if (!currentProduct) {
-    return (
-      <SafeAreaView className="flex-1 bg-white">
-        <Text className="mt-10 text-center">Product not found</Text>
-      </SafeAreaView>
-    );
-  }
+  const imagePlaceholders = Array.from({ length: 3 }, (_, i) => ({ id: i, url: null })); //array for place holder if no image available
 
   return (
     <SafeAreaView className="flex-1 bg-white">

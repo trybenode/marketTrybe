@@ -45,11 +45,11 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
   return (
     <View className="flex-row gap-2 rounded-lg bg-gray-100 p-4 px-4">
       {/* Seller Profile Image */}
-      <View className="h-[140px] w-[120px] overflow-hidden rounded-lg">
+      <View className="h-[140px] w-[120px] overflow-hidden rounded-lg bg-gray-300">
         <Image
           source={
             isOnShopScreen
-              ? { uri: sellerInfo.imageUrl || 'https://via.placeholder.com/120x140' }
+              ? { uri: sellerInfo.profilePicture || 'https://via.placeholder.com/120x140' }
               : { uri: user.profilePicture || 'https://via.placeholder.com/120x140' }
           }
           style={{ width: '100%', height: '100%' }}
@@ -88,4 +88,3 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
 });
 
 export default SellerProfileCard;
-
