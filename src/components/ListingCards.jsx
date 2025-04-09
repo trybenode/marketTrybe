@@ -21,6 +21,13 @@ const ListingCards = memo(
         </View>
       );
     }
+    if (!products.length) {
+      return (
+        <View className="flex-1 items-center justify-center">
+          <Text className="text-red-500">No products found</Text>
+        </View>
+      );
+    }
 
     return (
       <View style={{ flex: 1, paddingHorizontal: 3 }}>
@@ -52,21 +59,9 @@ const ListingCards = memo(
             </TouchableOpacity>
           )}
           showsVerticalScrollIndicator={false}
-          ListFooterComponent={
-            isFetchingMore ? <ActivityIndicator size="small" color="#2563eb" /> : null
-          }
+          ListFooterComponent={isFetchingMore && <ActivityIndicator size="small" color="#2563eb" />}
           onEndReached={loadMoreProducts}
           onEndReachedThreshold={0.5}
-          refreshControl={
-            onRefresh ? (
-              <RefreshControl
-                refreshing={!!refreshing}
-                onRefresh={onRefresh}
-                colors={['#2563eb']}
-                tintColor="#2563eb"
-              />
-            ) : undefined
-          }
         />
       </View>
     );

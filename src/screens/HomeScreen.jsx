@@ -12,21 +12,29 @@ const PAGE_SIZE = 10;
 
 export default function HomeScreen() {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] =useState([]);
   const [loading, setLoading] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [lastVisible, setLastVisible] = useState(null);
+  const [hasSearchQuery, setHasSearchQuery] = useState(false)
 
-  const fetchProducts = useCallback(async (isLoadMore = false) => {
-    try {
-      if (isLoadMore) setIsFetchingMore(true);
-      else setLoading(true);
+  const fetchProducts = useCallback(
+    async (isLoadMore = false) => {
+      try {
+        if (isLoadMore) setIsFetchingMore(true);
+        else setLoading(true);
 
-      let baseQuery = collection(db, 'products');
-      let constructedQuery = query(baseQuery, orderBy('createdAt', 'desc'), limit(PAGE_SIZE));
+        let baseQuery = collection(db, 'products');
+        let constructedQuery = query(baseQuery, orderBy('createdAt', 'desc'), limit(PAGE_SIZE));
 
-      if (isLoadMore && lastVisible) {
-        constructedQuery = query(baseQuery, orderBy('createdAt', 'desc'), startAfter(lastVisible), limit(PAGE_SIZE));
-      }
+        if (isLoadMore && lastVisible) {
+          constructedQuery = query(
+            baseQuery,
+            orderBy('createdAt', 'desc'),
+            startAfter(lastVisible),
+            limit(PAGE_SIZE)
+          );
+        }
 
       const querySnapshot = await getDocs(constructedQuery);
       const newProducts = querySnapshot.docs.map((doc) => ({
@@ -38,20 +46,22 @@ export default function HomeScreen() {
         },
       }));
 
-      setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1] || null);
-      setProducts((prev) => (isLoadMore ? [...prev, ...newProducts] : newProducts));
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-      setIsFetchingMore(false);
-    }
-  }, [lastVisible]);
+        setLastVisible(querySnapshot.docs[querySnapshot.docs.length - 1] || null);
+        setProducts((prev) => (isLoadMore ? [...prev, ...newProducts] : newProducts));
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+        setIsFetchingMore(false);
+      }
+    },
+    [lastVisible]
+  );
 
   useEffect(() => {
     fetchProducts();
   }, []);
-
+  const productsToDisplay = hasSearchQuery ? filteredProducts: products;
   return (
     <SafeAreaView className="flex-1 bg-white p-0">
       <View className="flex-row items-center justify-between p-4">
@@ -61,12 +71,28 @@ export default function HomeScreen() {
 
       <View className="flex-1 px-3">
         <Categories />
-        <SearchBar />
+        <SearchBar
+          onResults={(results, isSearchActive) => {
+            setFilteredProducts(results);
+            setHasSearchQuery(isSearchActive)
+          }}
+        />
 
         {loading ? (
           <ActivityIndicator size="large" color="#2563eb" />
+        ) : productsToDisplay.length > 0 ? (
+          <ListingCards
+            products={productsToDisplay}
+            isFetchingMore={isFetchingMore}
+            loadMoreProducts={() =>{ 
+              if(!hasSearchQuery) fetchProducts(true)}}
+          />
         ) : (
-          <ListingCards products={products} isFetchingMore={isFetchingMore} loadMoreProducts={() => fetchProducts(true)} />
+          <View className="flex-1  items-center">
+            <Text className="text-lg text-red-500">
+              {hasSearchQuery ? "No products found" : "No products available"}
+            </Text>
+          </View>
         )}
       </View>
     </SafeAreaView>
