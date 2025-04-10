@@ -6,13 +6,12 @@ import {
   TouchableOpacity,
   Text,
   ActivityIndicator,
-  RefreshControl,
   useWindowDimensions,
 } from 'react-native';
 import ListingCard from './ListingCard';
 
 const ListingCards = memo(
-  ({ products = [], isFetchingMore, loadMoreProducts, onRefresh, refreshing, bottomPad = 100 }) => {
+  ({ products = [], isFetchingMore, loadMoreProducts, bottomPad = 100 }) => {
     const navigation = useNavigation();
 
     if (!products.length) {
@@ -53,14 +52,6 @@ const ListingCards = memo(
             </TouchableOpacity>
           )}
           showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              colors={['#2563eb']}
-              progressViewOffset={useWindowDimensions().height * 0.1}
-            />
-          }
           ListFooterComponent={isFetchingMore && <ActivityIndicator size="small" color="#2563eb" />}
           onEndReached={loadMoreProducts}
           onEndReachedThreshold={0.5}

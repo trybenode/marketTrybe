@@ -15,16 +15,13 @@ export default function HomeScreen() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const [lastVisible, setLastVisible] = useState(null);
   const [hasSearchQuery, setHasSearchQuery] = useState(false);
 
   const fetchProducts = useCallback(
-    async (isLoadMore = false, isRefresh = false) => {
+    async (isLoadMore = false) => {
       try {
-        if (isRefresh) {
-          setRefreshing(true);
-        } else if (isLoadMore) {
+        if (isLoadMore) {
           setIsFetchingMore(true);
         } else {
           setLoading(true);
@@ -57,12 +54,8 @@ export default function HomeScreen() {
       } catch (err) {
         console.error(err);
       } finally {
-        if (isRefresh) {
-          setRefreshing(false);
-        } else {
-          setLoading(false);
-          setIsFetchingMore(false);
-        }
+        setLoading(false);
+        setIsFetchingMore(false);
       }
     },
     [lastVisible]
@@ -71,7 +64,9 @@ export default function HomeScreen() {
   useEffect(() => {
     fetchProducts();
   }, []);
+
   const productsToDisplay = hasSearchQuery ? filteredProducts : products;
+
   return (
     <SafeAreaView className="flex-1 bg-white p-0">
       <View className="flex-row items-center justify-between p-4">
@@ -97,12 +92,9 @@ export default function HomeScreen() {
             loadMoreProducts={() => {
               if (!hasSearchQuery) fetchProducts(true);
             }}
-            onRefresh={() => fetchProducts(false, true)}
-            refreshing={refreshing}
-            refreshPosition="top"
           />
         ) : (
-          <View className="flex-1  items-center">
+          <View className="flex-1 items-center">
             <Text className="text-lg text-red-500">
               {hasSearchQuery ? 'No products found' : 'No products available'}
             </Text>

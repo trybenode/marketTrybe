@@ -15,7 +15,6 @@ function CategoryProductList() {
   const [categoryName, setCategoryName] = useState(initialCategoryName || '');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
 
   // Reset state when parameters changes (used to fixed stall)
@@ -25,6 +24,7 @@ function CategoryProductList() {
     setLoading(true);
     setError(null);
   }, [initialCategoryName]);
+
   // fetch category name
   useEffect(() => {
     const fetchCategoryName = async () => {
@@ -47,15 +47,11 @@ function CategoryProductList() {
     fetchCategoryName();
   }, [categoryId, categoryName]);
 
-  const fetchProducts = async (isRefresh = false) => {
+  const fetchProducts = async () => {
     try {
       if (!categoryName) return;
 
-      if (isRefresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
-      }
+      setLoading(true);
       setError(null);
 
       const q = query(
@@ -80,11 +76,7 @@ function CategoryProductList() {
       setError('Failed to load products');
       console.error(err);
     } finally {
-      if (isRefresh) {
-        setRefreshing(false);
-      } else {
-        setLoading(false);
-      }
+      setLoading(false);
     }
   };
 
@@ -92,10 +84,6 @@ function CategoryProductList() {
   useEffect(() => {
     fetchProducts();
   }, [categoryName]);
-
-  const onRefresh = () => {
-    fetchProducts(true);
-  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -108,7 +96,7 @@ function CategoryProductList() {
         ) : products.length === 0 ? (
           <Text className="text-center text-gray-500">No products found in this category</Text>
         ) : (
-          <ListingCards products={products} onRefresh={onRefresh} refreshing={refreshing} />
+          <ListingCards products={products} />
         )}
       </View>
     </SafeAreaView>

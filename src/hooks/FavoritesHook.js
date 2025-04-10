@@ -1,6 +1,6 @@
 import useFavoritesStore from '../store/FavouriteStore';
 import { db } from '../../firebaseConfig';
-import { collection, setDoc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useState, useCallback } from 'react';
 
 const fetchDocumentsByIdsBatch = async (collectionName, docIds) => {
@@ -31,21 +31,17 @@ const fetchDocumentsByIdsBatch = async (collectionName, docIds) => {
 
 export const useFavorites = () => {
   const [loading, setLoading] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const [isFetchingMore, setIsFetchingMore] = useState(false);
   const [products, setProducts] = useState([]);
   const { favoriteIds, toggleFavorite } = useFavoritesStore();
 
-  const fetchFavorites = useCallback(
-    async (isRefresh = false) => {
-      if (isRefresh) {
-        setRefreshing(true);
-      } else {
-        setLoading(true);
-      }
+  const fetchFavorites = useCallback(async () => {
+    let isMounted = true;
+    setLoading(true);
 
-      try {
-        const favoriteProducts = await fetchDocumentsByIdsBatch('products', favoriteIds);
+    try {
+      const favoriteProducts = await fetchDocumentsByIdsBatch('products', favoriteIds);
+      if (isMounted) {
         setProducts(
           favoriteProducts.map((product) => ({
             id: product.id,
@@ -55,22 +51,15 @@ export const useFavorites = () => {
             },
           }))
         );
-      } catch (error) {
-        console.error('Error fetching favorites:', error);
-      } finally {
-        if (isRefresh) {
-          setRefreshing(false);
-        } else {
-          setLoading(false);
-        }
       }
-    },
-    [favoriteIds]
-  );
-
-  const onRefresh = useCallback(() => {
-    fetchFavorites(true);
-  }, [fetchFavorites]);
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+    } finally {
+      if (isMounted) {
+        setLoading(false);
+      }
+    }
+  }, [favoriteIds]);
 
   const loadMore = async () => {
     return;
@@ -79,10 +68,9 @@ export const useFavorites = () => {
   return {
     products,
     loading,
-    refreshing,
     isFetchingMore,
     fetchFavorites,
-    onRefresh,
     loadMore,
+    toggleFavorite,
   };
 };
