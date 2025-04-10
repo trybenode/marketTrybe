@@ -8,7 +8,6 @@ import CategoryScreen from './src/screens/CategoryScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import EditProfileScreen from './src/screens/EditProfileScreen';
 import FavouritesScreen from './src/screens/FavouritesScreen';
-// import SellScreen from './src/screens/SellScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import ListingDetailsScreen from './src/screens/ListingDetailsScreen';
 import LoginScreen from './src/screens/LoginScreen';
