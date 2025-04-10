@@ -6,7 +6,6 @@ import { db } from '../../firebaseConfig';
 import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 
 const UserDetailsAndRelatedProducts = ({ productId, product }) => {
-  
   const navigation = useNavigation();
   const [sellerInfo, setSellerInfo] = useState(null);
   const [sellerProducts, setSellersProducts] = useState([]);
@@ -15,14 +14,15 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("error fetching related products for:", productId)
-    if (!productId || !product) {
-      setLoading(false)
-      return
-    }
+    console.log('error fetching related products for:', productId);
+    // if (!productId || !product ) {
+    //   setError('product ID is Missing')
+    //   setLoading(false)
+    //   return
+    // }
 
     const fetchData = async () => {
-      if (!productId || !product) {
+      if (!productId) {
         setError('Product ID is missing');
         setLoading(false);
         return;
@@ -34,14 +34,20 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
         setLoading(true);
         setError(null);
 
-        const productRef = doc(db, 'products', productId);
-        const productSnap = await getDoc(productRef);
+        let productData;
+        if (product?.userId && product?.categoryId && product?.subcategory) {
+          productData = product;
+        } else {
+          const productRef = doc(db, 'products', productId);
+          const productSnap = await getDoc(productRef);
 
-        if (!productSnap.exists()) {
-          throw new Error('Product not found');
+          if (!productSnap.exists()) {
+            throw new Error('Product not found');
+          }
+          productData = { id: productId, ...productSnap.data() };
         }
 
-        const productData = productSnap.data();
+        // const productData = productSnap.data();
         const { userId, categoryId, subcategory } = productData;
 
         if (!userId || !categoryId || !subcategory) {
@@ -50,23 +56,23 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
 
         const [sellerSnap, categorySnap, subCategorySnap, sellerProductsSnap] = await Promise.all([
           getDoc(doc(db, 'users', userId)),
-          getDocs(query(collection(db, 'product'), where ("userId", "==", userId))),
+          getDocs(query(collection(db, 'products'), where('userId', '==', userId))),
           getDocs(query(collection(db, 'products'), where('categoryId', '==', categoryId))),
-          getDocs(query(collection(db, 'products'), where('subcategory', '==', subcategory)))
+          getDocs(query(collection(db, 'products'), where('subcategory', '==', subcategory))),
         ]);
 
         if (sellerSnap.exists()) {
           setSellerInfo(sellerSnap.data());
         }
         const sellerProductsList = sellerProductsSnap.docs
-        .filter((doc) => doc.id !== productId)
-        .map((doc) => ({
-          id: doc.id,
-          product: doc.data(),
-        }));
-      
-      setSellersProducts(sellerProductsList);
-      
+          .filter((doc) => doc.id !== productId)
+          .map((doc) => ({
+            id: doc.id,
+            product: doc.data(),
+          }));
+
+        setSellersProducts(sellerProductsList);
+
         const processProducts = (snapshot, excludeId) =>
           snapshot.docs
             .filter((doc) => doc.id !== excludeId)
@@ -78,13 +84,18 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
         const categoryProducts = processProducts(categorySnap, productId);
         const subcategoryProducts = processProducts(subCategorySnap, productId);
 
-        const merged = [
-          ...new Map(
-            [...categoryProducts, ...subcategoryProducts].map((item) => [item.id, item])
-          ).values(),
-        ];
+        // const merged = [
+        //   ...new Map(
+        //     [...categoryProducts, ...subcategoryProducts].map((item) => [item.id, item])
+        //   ).values(),
+        // ];
 
-        setRelatedProducts(merged);
+        // setRelatedProducts(merged);
+        const mergedRelated = [...categoryProducts, ...subcategoryProducts].filter(
+          (v, i, a) => a.findIndex((t) => t.id === v.id) === i
+        );
+
+        setRelatedProducts(mergedRelated);
       } catch (err) {
         console.error('Fetch error:', err);
         setError(err.message);
@@ -94,8 +105,7 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
     };
 
     fetchData();
-  }, [productId, product]); 
-
+  }, [productId]);
 
   if (loading) return <ActivityIndicator size="large" />;
   if (error) return <Text className="p-4 text-red-500">{error}</Text>;
@@ -104,33 +114,32 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
     <View>
       {/* Seller Info Section */}
       {sellerInfo && (
-       <View className="rounded-lg bg-gray-100 border-b-hairline border-blue-500 p-4 mt-5">
-       <Text className="text-lg font-bold mb-2">Seller Information</Text>
-     
-       <View className="flex-row justify-between items-center">
-         <View>
-           <Text>Seller: {sellerInfo.fullName || 'N/A'}</Text>
-           <Text>Location: {sellerInfo.address || 'Not specified'}</Text>
-         </View>
-     
-         <TouchableOpacity
-           className="ml-4 rounded-lg bg-blue-500 px-4 py-2"
-           onPress={() =>
-             navigation.navigate('Shop', {
-               sellerInfo,
-               sellerProducts: sellerProducts.map((p) => p.product),
-             })
-           }>
-           <Text className="font-semibold text-white">View Shop</Text>
-         </TouchableOpacity>
-       </View>
-     </View>
-     
+        <View className="border-b-hairline mt-5 rounded-lg border-blue-500 bg-gray-100 p-4">
+          <Text className="mb-2 text-lg font-bold">Seller Information</Text>
+
+          <View className="flex-row items-center justify-between">
+            <View>
+              <Text>Seller: {sellerInfo.fullName || 'N/A'}</Text>
+              <Text>Location: {sellerInfo.address || 'Not specified'}</Text>
+            </View>
+
+            <TouchableOpacity
+              className="ml-4 rounded-lg bg-blue-500 px-4 py-2"
+              onPress={() =>
+                navigation.navigate('Shop', {
+                  sellerInfo,
+                  sellerProducts: sellerProducts.map((p) => p.product),
+                })
+              }>
+              <Text className="font-semibold text-white">View Shop</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
 
       {/* Related Products */}
       <View className="my-8">
-        <Text className="mb-4 text-lg text-center font-bold">Related Products</Text>
+        <Text className="mb-4 text-center text-lg font-bold">Related Products</Text>
         {relatedProducts.length > 0 ? (
           <View className="flex-row flex-wrap justify-between">
             {relatedProducts.slice(0, 4).map((item) => (
@@ -138,8 +147,9 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
                 <TouchableOpacity
                   onPress={() =>
                     navigation.push('ListingDetails', {
-                      productId:item.id,
-                      product:item.product
+                      item: item,
+                      itemId: item.id,
+                      product: item.product,
                     })
                   }>
                   <ListingCard product={item.product} btnName="View" />
@@ -148,7 +158,7 @@ const UserDetailsAndRelatedProducts = ({ productId, product }) => {
             ))}
           </View>
         ) : (
-          <Text className="text-gray-500 text-center">No related products available</Text>
+          <Text className="text-center text-gray-500">No related products available</Text>
         )}
       </View>
     </View>
