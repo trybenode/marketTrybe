@@ -47,7 +47,6 @@ export default function ListingDetailsScreen({ route }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Case 1: checks if product was passed directly
         if (product) {
           setCurrentProduct({
             ...product,
@@ -56,7 +55,7 @@ export default function ListingDetailsScreen({ route }) {
           return;
         }
 
-        // Case 2: only itemId is passed - fetch the product
+  
         if (itemId) {
           const docRef = doc(db, 'products', itemId);
           const docSnap = await getDoc(docRef);
