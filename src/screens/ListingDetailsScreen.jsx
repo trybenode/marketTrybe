@@ -17,7 +17,6 @@ import useFavoritesStore from '../store/FavouriteStore';
 import Toast from 'react-native-toast-message';
 import { auth, db } from '../../firebaseConfig';
 import { doc, getDoc } from 'firebase/firestore';
-import { images } from '../data/dummyData';
 import TestHeader from '../components/TestHeader';
 import { getUserIdOfSeller, initiateConversation } from '../hooks/messaginghooks';
 import UserDetailsAndRelatedProducts from '../components/UserDetailsAndRelatedProducts';
@@ -213,7 +212,6 @@ export default function ListingDetailsScreen({ route }) {
             {/* Carousel with pop-up (modal) on click */}
             <View className="mt-5">
               <View className="mt-5">
-                {images && images.length > 0 ? (
                   <FlatList
                     data={images}
                     keyExtractor={(item, index) => index.toString()}
@@ -231,23 +229,7 @@ export default function ListingDetailsScreen({ route }) {
                       </TouchableOpacity>
                     )}
                   />
-                ) : (
-                  <FlatList
-                    data={imagePlaceholders}
-                    keyExtractor={(item, index) => index.toString()}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 0 }}
-                    className="flex-grow-0"
-                    renderItem={() => (
-                      <View className="mr-3 h-72 w-72 items-center justify-center rounded-lg bg-gray-300">
-                        <Text className="text-lg font-semibold text-gray-700">
-                          Image Upload in Progress
-                        </Text>
-                      </View>
-                    )}
-                  />
-                )}
+                
               </View>
 
               {/* Title and Price Section */}
