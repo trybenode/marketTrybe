@@ -8,6 +8,7 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 
 import CategoriesListing from '../components/CategoriesListing';
 import TestHeader from '../components/TestHeader';
+import { View } from 'react-native';
 
 export default function CategoryScreen() {
   const navigation = useNavigation();
@@ -58,8 +59,11 @@ export default function CategoryScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center">
-        <ActivityIndicator size="large" color="#2563eb" />
+      <SafeAreaView className="flex-1 bg-white">
+        <TestHeader title="All Available Categories" />
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="#2563eb" />
+        </View>
       </SafeAreaView>
     );
   }

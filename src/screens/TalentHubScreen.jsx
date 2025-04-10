@@ -10,7 +10,7 @@ const TalentHubScreen = () => {
   };
 
   const openWaitlist = () => {
-    // Linking.openURL('add google form link'); 
+    // Linking.openURL('add google form link');
   };
 
   const contactSupport = () => {
@@ -21,78 +21,72 @@ const TalentHubScreen = () => {
     <SafeAreaView className="flex-1 bg-white">
       <TestHeader title="TalentHub" />
       <ScrollView>
-
-
-      <View className="flex-1 justify-center self-center px-8">
-        {/* Hero Image/Icon */}
-        <View className="items-center my-6">
-          <Ionicons name="rocket" size={20} color="#4F46E5" />
-        </View>
-
-        <Text className="mb-4 text-center text-2xl font-bold text-gray-900">
-          Exciting Updates Coming Soon!
-        </Text>
-
-        <Text className="mb-6 text-center text-base leading-relaxed text-gray-600">
-          We're revolutionizing how artisans and service providers connect with clients. Our team is working hard  building a new
-          features for this purpose
-          Our next release will include:
-        </Text>
-
-        {/* Feature List */}
-        <View className="mb-8">
-          <View style={styles.featureItem}>
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text className="ml-2 text-gray-700">Portfolio showcase for creatives</Text>
+        <View className="flex-1 justify-center self-center px-8">
+          {/* Hero Image/Icon */}
+          <View className="my-6 items-center">
+            <Ionicons name="rocket" size={20} color="#4F46E5" />
           </View>
-          <View style={styles.featureItem}>
-            <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-            <Text className="ml-2 text-gray-700">Real-time booking system</Text>
+
+          <Text className="mb-4 text-center text-2xl font-bold text-gray-900">
+            Exciting Updates Coming Soon!
+          </Text>
+
+          <Text className="mb-6 text-center text-base leading-relaxed text-gray-600">
+            We're revolutionizing how artisans and service providers connect with clients. Our team
+            is working hard building a new features for this purpose Our next release will include:
+          </Text>
+
+          {/* Feature List */}
+          <View className="mb-8">
+            <View style={styles.featureItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10B981" />
+              <Text className="ml-2 text-gray-700">Portfolio showcase for creatives</Text>
+            </View>
+            <View style={styles.featureItem}>
+              <Ionicons name="checkmark-circle" size={20} color="#10B981" />
+              <Text className="ml-2 text-gray-700">Real-time booking system</Text>
+            </View>
           </View>
-        </View>
 
-        {/* CTA Card */}
-        <View className="w-full rounded-xl bg-indigo-50 p-5 mb-6">
-          <Text className="text-center text-lg font-semibold text-indigo-800 mb-3">
-            Join our exclusive waitlist!
-          </Text>
-          <Text className="text-center text-sm text-indigo-600 mb-4">
-          Stay tuned for our next release - we can't wait to show you what we've been working on!
-          Be the first to access new features and get special early-bird perks.
-          </Text>
-          <TouchableOpacity 
-            onPress={openWaitlist}
-            className="bg-indigo-600 py-3 px-6 rounded-lg items-center"
-            >
-            <Text className="text-white font-medium">Reserve My Spot</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Additional Links */}
-        <View className="flex-row  justify-around mb-8">
-          <TouchableOpacity onPress={handlePress}>
-            <Text style={styles.linkText}>
-              <Ionicons name="globe" size={16} color="#3B82F6" /> Website
+          {/* CTA Card */}
+          <View className="mb-6 w-full rounded-xl bg-indigo-50 p-5">
+            <Text className="mb-3 text-center text-lg font-semibold text-indigo-800">
+              Join our exclusive waitlist!
             </Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity onPress={contactSupport}>
-            <Text style={styles.linkText}>
-              <Ionicons name="mail" size={16} color="#3B82F6" /> Contact Us
+            <Text className="mb-4 text-center text-sm text-indigo-600">
+              Stay tuned for our next release - we can't wait to show you what we've been working
+              on! Be the first to access new features and get special early-bird perks.
             </Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              onPress={openWaitlist}
+              className="items-center rounded-lg bg-indigo-600 px-6 py-3">
+              <Text className="font-medium text-white">Reserve My Spot</Text>
+            </TouchableOpacity>
+          </View>
 
-       
+          {/* Additional Links */}
+          <View className="mb-8  flex-row justify-around">
+            <TouchableOpacity onPress={handlePress}>
+              <Text style={styles.linkText}>
+                <Ionicons name="globe" size={16} color="#3B82F6" /> Website
+              </Text>
+            </TouchableOpacity>
 
-        <Text className="mt-2 text-center text-sm text-gray-400">
-          Market Trybe - Your Pocket-friendly Marketplace
-        </Text>
-        {/* <Text className="mt-1 text-center text-xs text-gray-400">
+            <TouchableOpacity onPress={contactSupport}>
+              <Text style={styles.linkText}>
+                <Ionicons name="mail" size={16} color="#3B82F6" /> Contact Us
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text className="mt-2 text-center text-sm text-gray-400">
+            Market Trybe - Your Personal Pocket Marketplace
+          </Text>
+          {/* <Text className="mt-1 text-center text-xs text-gray-400">
           Version 1.0.0 • Coming Summer 2025
         </Text> */}
-      </View>
-            </ScrollView>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
