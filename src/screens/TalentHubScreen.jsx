@@ -1,10 +1,38 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Linking, Image, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Linking,
+  Image,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TestHeader from '../components/TestHeader';
 import { Ionicons } from '@expo/vector-icons';
 
 const TalentHubScreen = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 bg-white">
+        <TestHeader title="TalentHub" />
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="#4F46E5" />
+        </View>
+      </SafeAreaView>
+    );
+  }
   const handlePress = () => {
     Linking.openURL('https://trybenode.space/about');
   };

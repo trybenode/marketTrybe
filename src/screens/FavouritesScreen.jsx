@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ListingCards from '../components/ListingCards';
 import UserProfile from '../components/UserProfile';
@@ -12,6 +12,17 @@ export default function FavouritesScreen() {
   useEffect(() => {
     fetchFavorites();
   }, [fetchFavorites]);
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 bg-white">
+        <TestHeader title="Favourites" extraComponent={<UserProfile />} />
+        <View className="flex-1 items-center justify-center">
+          <ActivityIndicator size="large" color="#4F46E5" />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-white">
