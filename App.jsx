@@ -16,6 +16,8 @@ import MyShopScreen from './src/screens/MyShopScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import ShopScreen from './src/screens/ShopScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
+import SellScreen from './src/screens/SellScreen';
+// import KycScreen from './src/screens/KycScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 import useFavoritesStore from "./src/store/FavouriteStore";
@@ -87,6 +89,8 @@ export default function App() {
           />
           <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
           <Stack.Screen name="MyShop" component={MyShopScreen} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} /> */}
+          <Stack.Screen name="Sell" component={SellScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

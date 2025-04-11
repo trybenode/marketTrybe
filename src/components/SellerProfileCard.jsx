@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import FastImage from 'react-native-fast-image';
 import { auth, db } from '../../firebaseConfig';
@@ -7,8 +7,8 @@ import { useRoute } from '@react-navigation/native';
 
 const SellerProfileCard = memo(({ sellerInfo }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const route = useRoute();
-
   const isOnShopScreen = route.name === 'Shop';
 
   useEffect(() => {
@@ -28,18 +28,21 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
         }
       } catch (error) {
         console.error('Error fetching user:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUserDetails();
   }, []);
 
-  // const selleryearCreated = user.createdAt ? new Date(user.createdAt).getFullYear() : 'N/A';
-  // const shopYearCreated = sellerInfo.createdAt ? new Date(sellerInfo.createdAt).getFullYear() : 'N/A';
-  // const shopYear = isOnShopScreen ? shopYearCreated : selleryearCreated;
+  const selectedUser = isOnShopScreen ? sellerInfo : user;
 
-  if (!user) {
-    return <Text className="text-center text-gray-600">User not found</Text>;
+
+  if (!selectedUser) {
+    return (
+      <Text className="text-center text-gray-600 py-4">User not found</Text>
+    );
   }
 
   return (
@@ -47,11 +50,9 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
       {/* Seller Profile Image */}
       <View className="h-[140px] w-[120px] overflow-hidden rounded-lg bg-gray-300">
         <Image
-          source={
-            isOnShopScreen
-              ? { uri: sellerInfo.profilePicture || 'https://via.placeholder.com/120x140' }
-              : { uri: user.profilePicture || 'https://via.placeholder.com/120x140' }
-          }
+          source={{
+            uri: selectedUser.profilePicture || 'https://via.placeholder.com/120x140',
+          }}
           style={{ width: '100%', height: '100%' }}
           resizeMode={FastImage.resizeMode.cover}
         />
@@ -60,25 +61,21 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
       <View className="w-full flex-col gap-6 pl-2">
         <View>
           <Text className="text-sm font-bold">
-            {isOnShopScreen ? sellerInfo.fullName : user.fullName}
+            {selectedUser.fullName}
           </Text>
           <Text className="text-xs text-gray-600">Name</Text>
         </View>
         <View>
           <Text className="mt-2 text-sm font-bold">
-            {isOnShopScreen
-              ? sellerInfo.createdAt
-                ? new Date(user.createdAt).getFullYear()
-                : 'N/A'
-              : user.createdAt
-                ? new Date(user.createdAt).getFullYear()
-                : 'N/A'}
+            {selectedUser.createdAt
+              ? new Date(selectedUser.createdAt).getFullYear()
+              : 'N/A'}
           </Text>
           <Text className="text-xs text-gray-600">Year Created</Text>
         </View>
         <View className="flex-col">
           <Text className="mt-2 text-sm font-bold" style={{ width: '50%', flexWrap: 'wrap' }}>
-            {isOnShopScreen ? sellerInfo.address || 'No Address' : user.address || 'No Address'}
+            {selectedUser.address || 'No Address'}
           </Text>
           <Text className="text-xs text-gray-600">Location</Text>
         </View>
