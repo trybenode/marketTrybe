@@ -54,7 +54,6 @@ export default function ListingDetailsScreen({ route }) {
           return;
         }
 
-  
         if (itemId) {
           const docRef = doc(db, 'products', itemId);
           const docSnap = await getDoc(docRef);
@@ -212,24 +211,23 @@ export default function ListingDetailsScreen({ route }) {
             {/* Carousel with pop-up (modal) on click */}
             <View className="mt-5">
               <View className="mt-5">
-                  <FlatList
-                    data={images}
-                    keyExtractor={(item, index) => index.toString()}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ paddingBottom: 0 }}
-                    className="flex-grow-0"
-                    renderItem={({ item, index }) => (
-                      <TouchableOpacity onPress={() => openModal(item.url || item)}>
-                        <Image
-                          source={{ uri: item.url || item }}
-                          className="mr-3 h-72 w-72 rounded-lg"
-                          resizeMode="cover"
-                        />
-                      </TouchableOpacity>
-                    )}
-                  />
-                
+                <FlatList
+                  data={images}
+                  keyExtractor={(item, index) => index.toString()}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{ paddingBottom: 0 }}
+                  className="flex-grow-0"
+                  renderItem={({ item, index }) => (
+                    <TouchableOpacity onPress={() => openModal(item.url || item)}>
+                      <Image
+                        source={{ uri: item.url || item }}
+                        className="mr-3 h-72 w-72 rounded-lg"
+                        resizeMode="cover"
+                      />
+                    </TouchableOpacity>
+                  )}
+                />
               </View>
 
               {/* Title and Price Section */}
@@ -265,14 +263,16 @@ export default function ListingDetailsScreen({ route }) {
                       </View>
                     ))}
                   </View>
-                  <View className=" flex flex-col">
-                    <Text className="mx-auto ml-2 flex w-full text-start font-bold text-gray-800">
-                      Detailed Product description
-                    </Text>
-                    <Text className="mb-4 ml-2 flex text-gray-600">
-                      {description || 'No description available'}
-                    </Text>
-                  </View>
+                </View>
+              </View>
+              <View className="border-b-hairline mb-4 rounded-lg  border-blue-500 bg-gray-100  p-4">
+                <View className=" flex flex-col">
+                  <Text className="mx-auto ml-2 flex w-full text-start font-bold text-gray-800">
+                    Detailed Product description
+                  </Text>
+                  <Text className="mb-4 ml-2 flex text-gray-600">
+                    {description || 'No description available'}
+                  </Text>
                 </View>
               </View>
 
