@@ -1,21 +1,14 @@
-import { FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import CustomProfileOption from "../components/CustomProfileOption";
-import { useUser } from "../context/UserContext";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebaseConfig"; // Ensure this is correctly imported
+import CustomProfileOption from '../components/CustomProfileOption';
+import { useUser } from '../context/UserContext';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebaseConfig'; // Ensure this is correctly imported
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -24,21 +17,20 @@ export default function ProfileScreen() {
   const confirmSignOut = async () => {
     try {
       await signOut(auth);
-      navigation.replace("Login"); // Ensure user cannot go back after sign-out
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
     } catch (error) {
-      console.error("Error signing out:", error.message);
+      console.error('Error signing out:', error.message);
     }
   };
 
   const handleSignOut = () => {
-    Alert.alert(
-      "Sign Out",
-      "Are you sure you want to sign out?",
-      [
-        { text: "Cancel", style: "cancel" },
-        { text: "Yes", onPress: confirmSignOut },
-      ]
-    );
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Yes', onPress: confirmSignOut },
+    ]);
   };
 
   if (!currentUser) {
@@ -68,23 +60,16 @@ export default function ProfileScreen() {
         {/* User Info */}
         <View className="ml-4">
           <View className="flex-row items-center">
-            <Text className="text-lg font-semibold mr-2">
-              {currentUser.fullName || "Guest"}
-            </Text>
+            <Text className="mr-2 text-lg font-semibold">{currentUser.fullName || 'Guest'}</Text>
 
             {/* Show verification tick if user is verified */}
             {currentUser.isVerified && (
-              <MaterialIcons
-                name="verified"
-                size={18}
-                color="green"
-                className="ml-1"
-              />
+              <MaterialIcons name="verified" size={18} color="green" className="ml-1" />
             )}
           </View>
 
           {/* Email */}
-          <Text className="text-gray-500">{currentUser.email || "No email"}</Text>
+          <Text className="text-gray-500">{currentUser.email || 'No email'}</Text>
         </View>
       </View>
 
@@ -92,13 +77,13 @@ export default function ProfileScreen() {
       <View className="flex flex-col gap-6">
         <CustomProfileOption
           title="My Shop"
-          onPress={() => navigation.navigate("MyShop")}
+          onPress={() => navigation.navigate('MyShop')}
           iconName="shopping-store"
           iconType="Fontisto"
         />
         <CustomProfileOption
           title="Edit Profile"
-          onPress={() => navigation.navigate("EditProfile")}
+          onPress={() => navigation.navigate('EditProfile')}
           iconName="user"
           iconType="FontAwesome"
         />
@@ -107,7 +92,7 @@ export default function ProfileScreen() {
         {!currentUser.isVerified && (
           <CustomProfileOption
             title="KYC Verification"
-            onPress={() => navigation.navigate("Kyc")}
+            onPress={() => navigation.navigate('Kyc')}
             iconName="verified-user"
             iconType="MaterialIcons"
           />
@@ -115,7 +100,7 @@ export default function ProfileScreen() {
 
         <CustomProfileOption
           title="Contact Support"
-          onPress={() => console.log("Contact Support")}
+          onPress={() => console.log('Contact Support')}
           iconName="support-agent"
           iconType="MaterialIcons"
         />
