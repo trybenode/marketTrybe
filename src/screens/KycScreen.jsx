@@ -149,7 +149,7 @@ export default function KycScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <CustomHeader screenName="Profile" title="KYC Registration" extraComponent={<UserProfile />} />
+      <CustomHeader screenName="MainTabs" title="KYC Registration" extraComponent={<UserProfile />} />
       <ScrollView className="mt-5 flex-1 p-3">
         <View className="mt-2 p-2">
           <CustomTextInput placeholder="Full Name" value={fullName} onChangeText={setFullName} />
@@ -191,7 +191,7 @@ export default function KycScreen() {
         iconType={modalIconType}
         onClose={() => {
         setModalVisible(false);
-        navigation.navigate("Profile");
+        navigation.goBack();
         }}
       />
       

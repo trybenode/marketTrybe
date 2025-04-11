@@ -1,5 +1,5 @@
-import { useNavigation } from '@react-navigation/native';
-import { collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { collection,getDoc, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
@@ -25,6 +25,7 @@ import TermsAndConditionsCheckbox from '../components/TermsAndConditionsCheckbox
 import UploadImages from '../components/UploadImages';
 import Toast from 'react-native-toast-message';
 import SellScreenHeader from '../components/SellScreenHeader';
+import { onAuthStateChanged } from 'firebase/auth';
 
 export default function SellScreen({ route }) {
   const [productName, setProductName] = useState('');
@@ -46,28 +47,103 @@ export default function SellScreen({ route }) {
   const isEditMode = route.params?.product !== undefined;
   const product = route.params?.product;
   const navigation = useNavigation();
+  const [checkVerification, setCheckVerification] = useState(true);
+  const [showVerificationAlert, setShowVerificationAlert] = useState(false);
+  
+// Track whether user is verified and show appropriate alert
+useFocusEffect(
+  useCallback(() => {
+    let isActive = true;
 
-  //prefills form if in edit mode
-  useEffect(() => {
-    if (isEditMode && product) {
-      setProductName(product.name);
-      setSelectedValue(product.categoryId);
-      setSubCategory(product.subcategory);
-      setIsNegotiable(product.negotiable);
-      setProductDescription(product.description);
-      setBrand(product.brand);
-      setCondition(product.condition);
-      setColor(product.color);
-      setPrice(product.price);
-      setOriginalPrice(product.originalPrice);
-      setYear(product.year);
-      setImages(Array.isArray(product.images) ? product.images : []);
-    }
-  }, [isEditMode, product]);
+    const verifyUser = async () => {
+      try {
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+          if (isActive) {
+            setShowVerificationAlert(true);
+            setCheckVerification(false);  // Don't render the form if unverified
+          }
+          return;
+        }
 
-  // cleanup on unmount
-  useEffect(() => {
+        const userDocRef = doc(db, 'users', currentUser.uid);
+        const userSnap = await getDoc(userDocRef);
+        const isVerified = userSnap.exists() && userSnap.data()?.isVerified;
+
+        if (isActive) {
+          if (!isVerified) {
+            setShowVerificationAlert(true);
+            setCheckVerification(false);  // User is not verified, prevent further rendering
+          } else {
+            setCheckVerification(false); // Verified, allow rendering form
+          }
+        }
+      } catch (error) {
+        console.error('Verification error:', error);
+        if (isActive) setShowVerificationAlert(true);
+      }
+    };
+
+    verifyUser();
+
     return () => {
+      isActive = false;
+    };
+  }, [])
+);
+
+// Show verification alert when needed
+useEffect(() => {
+  if (showVerificationAlert) {
+    Alert.alert(
+      'You are not verified',
+      'Please complete KYC to upload products',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => {
+            setShowVerificationAlert(false);
+            navigation.goBack();
+          },
+        },
+        {
+          text: 'Proceed',
+          style: 'default',
+          onPress: () => {
+            setShowVerificationAlert(false);
+            navigation.navigate('Kyc');
+          },
+        },
+      ]
+    );
+  }
+}, [showVerificationAlert]);
+
+
+// Prefill form if in edit mode
+useEffect(() => {
+  if (isEditMode && product) {
+    setProductName(product.name);
+    setSelectedValue(product.categoryId);
+    setSubCategory(product.subcategory);
+    setIsNegotiable(product.negotiable);
+    setProductDescription(product.description);
+    setBrand(product.brand);
+    setCondition(product.condition);
+    setColor(product.color);
+    setPrice(product.price);
+    setOriginalPrice(product.originalPrice);
+    setYear(product.year);
+    setImages(Array.isArray(product.images) ? product.images : []);
+  }
+}, [isEditMode, product]);
+
+// Render loading indicator while checking verification
+
+// cleanup on unmount
+useEffect(() => {
+  return () => {
       clearForm();
     };
   }, []);
@@ -89,7 +165,7 @@ export default function SellScreen({ route }) {
   });
   const arraysAreEqual = (arr1, arr2) =>
     arr1.length === arr2.length && arr1.every((val, index) => val === arr2[index]);
-
+  
   const hasUnsavedChanges = useCallback(() => {
     if (!isEditMode) {
       return (
@@ -104,7 +180,7 @@ export default function SellScreen({ route }) {
         images.length > 0
       );
     }
-
+    
     // Edit mode logic
     return (
       productName !== (product?.name || '') ||
@@ -147,38 +223,38 @@ export default function SellScreen({ route }) {
     color &&
     year &&
     images.length > 0;
-
-  //logic for image upload using cloudinary
-  const uploadImages = async (imageUris) => {
-    try {
-      if (!imageUris.length) throw new Error('No images selected!');
+    
+    //logic for image upload using cloudinary
+    const uploadImages = async (imageUris) => {
       setIsLoading(true);
-      const uploadedImageUrls = [];
-      for (const imageUri of imageUris) {
-        if (imageUri.startsWith('https://res.cloudinary.com')) {
-          uploadedImageUrls.push(imageUri); // is edit mode, use existing URL
-          continue;
-        }
-        const response = await fetch(imageUri);
-        const blob = await response.blob();
-        const data = new FormData();
-        data.append('file', {
-          uri: imageUri,
-          type: 'image/png',
-          name: `product_${Date.now()}.png`,
-        });
-        data.append('upload_preset', 'ProductImage');
+      try {
+        const uploadTasks = imageUris.map(async (imageUri) => {
+          if (imageUri.startsWith('https://res.cloudinary.com')) return imageUri;
+          
+          const data = new FormData();
+          data.append('file', {
+            uri: imageUri,
+            type: 'image/png',
+            name: `product_${Date.now()}.png`,
+          });
+          data.append('upload_preset', 'ProductImage');
         data.append('cloud_name', 'dj21x4jnt');
         data.append('folder', 'market_trybe_products');
-        const cloudResponse = await fetch(
+  
+        const response = await fetch(
           'https://api.cloudinary.com/v1_1/dj21x4jnt/image/upload',
-          { method: 'POST', body: data, headers: { 'Content-Type': 'multipart/form-data' } }
+          {
+            method: 'POST',
+            body: data,
+            headers: { 'Content-Type': 'multipart/form-data' },
+          }
         );
-        const result = await cloudResponse.json();
-        if (!result.secure_url)
-          throw new Error('Cloudinary Upload Failed: ' + JSON.stringify(result.error));
-        uploadedImageUrls.push(result.secure_url);
-      }
+        const result = await response.json();
+        if (!result.secure_url) throw new Error('Cloudinary upload failed');
+        return result.secure_url;
+      });
+  
+      const uploadedImageUrls = await Promise.all(uploadTasks);
       return uploadedImageUrls;
     } catch (error) {
       console.error('Upload Error:', error.message);
@@ -187,7 +263,7 @@ export default function SellScreen({ route }) {
       setIsLoading(false);
     }
   };
-
+  
   //logic for submitting/uploading product to db
   const handleSubmit = async () => {
     if (
@@ -211,7 +287,7 @@ export default function SellScreen({ route }) {
     try {
       setIsLoading(true);
       const uploadedImageUrls = await uploadImages(images);
-
+      
       const productData = {
         name: productName,
         subcategory: subCategory,
@@ -247,11 +323,11 @@ export default function SellScreen({ route }) {
       setIsLoading(false);
     }
   };
-
+  
   //logic for deleting products
   const handleDelete = async () => {
     if (!isEditMode || !product) return;
-
+    
     Alert.alert('Confirm Deletion', 'Are you sure you want to delete this product?', [
       { text: 'Cancel', style: 'cancel' },
       {
@@ -273,6 +349,13 @@ export default function SellScreen({ route }) {
       },
     ]);
   };
+  if (checkVerification) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#000" />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -392,3 +475,4 @@ export default function SellScreen({ route }) {
     </KeyboardAvoidingView>
   );
 }
+

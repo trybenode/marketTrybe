@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
   const [images, setImages] = useState(initialImages || []);
@@ -18,6 +19,15 @@ const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
   useEffect(() => {
     setImages(initialImages);
   }, [initialImages]);
+
+  const compressImage = async (uri) => {
+    const compressed = await ImageManipulator.manipulateAsync(
+      uri,
+      [{ resize: { width: 800 } }],
+      { compress: 0.6, format: ImageManipulator.SaveFormat.JPEG }
+    );
+    return compressed.uri;
+  };
 
   const selectImages = async () => {
     try {
@@ -40,7 +50,12 @@ const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
       });
 
       if (!result.canceled) {
-        const newImages = result.assets.map((asset) => asset.uri);
+        const newImages = await Promise.all(
+          result.assets.map(async (asset) => {
+            const compressedUri = await compressImage(asset.uri); // Compress the image
+            return compressedUri;
+          })
+        );
         const updatedImages = [...images, ...newImages].slice(0, 5); // Ensure max 5 images
         setImages(updatedImages);
         onImagesSelected(updatedImages); // Pass images back to parent
@@ -80,7 +95,7 @@ const UploadImages = memo(({ onImagesSelected, initialImages = [] }) => {
             <View>
               <Image
                 source={{ uri: item }}
-                className=" mr-2 h-36 w-36 rounded-lg "
+                className="mr-2 h-36 w-36 rounded-lg"
                 resizeMode="cover"
               />
               <TouchableOpacity
