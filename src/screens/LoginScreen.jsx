@@ -1,11 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../../firebaseConfig'; 
-import Toast from 'react-native-toast-message'; 
+import { auth } from '../../firebaseConfig';
+import Toast from 'react-native-toast-message';
+import { useGoogleAuth } from '../Services/auth/auth';
 
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
@@ -20,109 +28,133 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false); // for loading indicator
   // const { promptAsync } = useGoogleAuth();
 
-  const handleLogin = async () => {
-    setLoading(true);
-  
-    // Validate fields
-    if (!email || !password) {
+  const { promptAsync, userInfo } = useGoogleAuth();
+
+  useEffect(() => {
+    if (userInfo) {
       Toast.show({
-        type: "error",
-        text1: "Missing Fields",
-        text2: "Please fill in both email and password.",
+        type: 'success',
+        text1: 'Login Successful 🎉',
+        text2: `Welcome ${userInfo.displayName || ''}`,
       });
-      setLoading(false);
-      return;
-    }
-  
-    try {
-      // Attempt to sign in with Firebase
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-  
-      // Check if email is verified AFTER login
-      if (!user.emailVerified) {
-        Toast.show({
-          type: "error",
-          text1: "Email Not Verified",
-          text2: "Please check your email and verify your account before logging in.",
-        });
-  
-        await auth.signOut(); 
-        setLoading(false);
-        return;
-      }
-  
-      
-      // Show success toast
-      console.log("User email verified:", user.emailVerified);
-      
-      Toast.show({
-        type: "success",
-        text1: "Login Successful 🎉",
-        text2: "Welcome back!",
-      });
-      
-      // Change this line to use the proper async method
-      await useUserStore.getState().setUser({ 
-        id: user.uid, 
-        email: user.email 
+
+      // Save user to store
+      useUserStore.getState().setUser({
+        id: userInfo.uid,
+        email: userInfo.email,
+        displayName: userInfo.displayName,
+        photoURL: userInfo.photoURL,
       });
 
       navigation.reset({
         index: 0,
-        routes: [{ name: "MainTabs" }],
+        routes: [{ name: 'MainTabs' }],
       });
-      
+    }
+  }, [userInfo]);
+
+  const handleLogin = async () => {
+    setLoading(true);
+
+    // Validate fields
+    if (!email || !password) {
+      Toast.show({
+        type: 'error',
+        text1: 'Missing Fields',
+        text2: 'Please fill in both email and password.',
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Attempt to sign in with Firebase
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Check if email is verified AFTER login
+      if (!user.emailVerified) {
+        Toast.show({
+          type: 'error',
+          text1: 'Email Not Verified',
+          text2: 'Please check your email and verify your account before logging in.',
+        });
+
+        await auth.signOut();
+        setLoading(false);
+        return;
+      }
+
+      // Show success toast
+      console.log('User email verified:', user.emailVerified);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Login Successful 🎉',
+        text2: 'Welcome back!',
+      });
+
+      // Change this line to use the proper async method
+      await useUserStore.getState().setUser({
+        id: user.uid,
+        email: user.email,
+      });
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'MainTabs' }],
+      });
+
       // navigation.replace("MainTabs");
     } catch (err) {
-      console.error("Login error:", err.message);
-  
+      console.error('Login error:', err.message);
+
       // Extract error code
       const errorCode = err.code;
-      console.log("Email:", email);
-      console.log("Password:", password);
-      console.log("Loading State:", loading);
-            // Handle Firebase authentication errors
-      if (errorCode === "auth/user-not-found") {
+      console.log('Email:', email);
+      console.log('Password:', password);
+      console.log('Loading State:', loading);
+      // Handle Firebase authentication errors
+      if (errorCode === 'auth/user-not-found') {
         Toast.show({
-          type: "error",
-          text1: "User Not Found",
-          text2: "No account exists with this email.",
+          type: 'error',
+          text1: 'User Not Found',
+          text2: 'No account exists with this email.',
         });
-      } else if (errorCode === "auth/wrong-password") {
+      } else if (errorCode === 'auth/wrong-password') {
         Toast.show({
-          type: "error",
-          text1: "Incorrect Password",
-          text2: "Password is incorrect. Please try again.",
+          type: 'error',
+          text1: 'Incorrect Password',
+          text2: 'Password is incorrect. Please try again.',
         });
-      } else if (errorCode === "auth/invalid-email") {
+      } else if (errorCode === 'auth/invalid-email') {
         Toast.show({
-          type: "error",
-          text1: "Invalid Email",
-          text2: "Please enter a valid email address.",
+          type: 'error',
+          text1: 'Invalid Email',
+          text2: 'Please enter a valid email address.',
         });
-      } else if (errorCode === "auth/invalid-credential") {
+      } else if (errorCode === 'auth/invalid-credential') {
         Toast.show({
-          type: "error",
-          text1: "Invalid Credentials",
-          text2: "The email or password provided is incorrect.",
+          type: 'error',
+          text1: 'Invalid Credentials',
+          text2: 'The email or password provided is incorrect.',
         });
-      } else if (errorCode === "auth/too-many-requests") {
+      } else if (errorCode === 'auth/too-many-requests') {
         Toast.show({
-          type: "error",
-          text1: "Too Many Attempts",
-          text2: "Too many failed attempts. Please try again later.",
+          type: 'error',
+          text1: 'Too Many Attempts',
+          text2: 'Too many failed attempts. Please try again later.',
         });
-      } else if (errorCode === "auth/network-request-failed") {
+      } else if (errorCode === 'auth/network-request-failed') {
         Toast.show({
-          type: "error",
-          text1: "Network Error",
-          text2: "Please check your internet connection and try again.",
+          type: 'error',
+          text1: 'Network Error',
+          text2: 'Please check your internet connection and try again.',
         });
       } else {
         Toast.show({
-          type: "error",
-          text1: "Login Failed",
+          type: 'error',
+          text1: 'Login Failed',
           text2: `Unexpected error: ${errorCode}`,
         });
       }
@@ -130,7 +162,6 @@ export default function LoginScreen() {
       setLoading(false);
     }
   };
-  
 
   const handleForgotPassword = async () => {
     if (!email) {
@@ -141,13 +172,13 @@ export default function LoginScreen() {
       });
       return;
     }
-  
+
     try {
       await sendPasswordResetEmail(auth, email);
     } catch (error) {
-      console.log("Error:", error.message); // Log error for debugging
+      console.log('Error:', error.message); // Log error for debugging
     }
-  
+
     // Show the same success message regardless of whether the email exists or not
     Toast.show({
       type: 'success',
@@ -155,7 +186,6 @@ export default function LoginScreen() {
       text2: 'If this email is registered, you will receive reset instructions.',
     });
   };
-  
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -195,10 +225,9 @@ export default function LoginScreen() {
           {/* Forgot Password */}
           <TouchableOpacity onPress={handleForgotPassword}>
             <Text className="mb-3 mt-1 text-left text-blue-600">
-                Forgot Password? <Text className="font-bold">Reset</Text>
+              Forgot Password? <Text className="font-bold">Reset</Text>
             </Text>
           </TouchableOpacity>
-
 
           {/* Login Button with Loading */}
           <CustomButton
@@ -220,9 +249,9 @@ export default function LoginScreen() {
 
           {/* Social Auth Button */}
           <TouchableOpacity
-            className="flex-row border items-center self-center border-gray-300 justify-center p-2 rounded-lg gap-2 w-4/5"
-            accessibilityLabel="Social Login Buttons" onPress={() => console.log("Hey Google")}
-          >
+            className="w-4/5 flex-row items-center justify-center gap-2 self-center rounded-lg border border-gray-300 p-2"
+            accessibilityLabel="Social Login Buttons"
+            onPress={() => promptAsync()}>
             <SocialAuthButton
               name="google"
               type="FontAwesome"
@@ -230,7 +259,6 @@ export default function LoginScreen() {
               accessibilityLabel="Google Login Button"
             />
             <Text className="text-grey-700">Sign in with Google</Text>
-            
           </TouchableOpacity>
 
           {/* Sign Up Link */}
@@ -238,12 +266,10 @@ export default function LoginScreen() {
             <Text className="text-gray-600">Don't have an account?</Text>
             <TouchableOpacity
               onPress={() => navigation.navigate('SignUp')}
-              accessibilityLabel="Sign Up Link"
-            >
+              accessibilityLabel="Sign Up Link">
               <Text className="text-blue-600">Sign Up</Text>
             </TouchableOpacity>
           </View>
-
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
