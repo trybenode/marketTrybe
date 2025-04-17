@@ -10,9 +10,8 @@ import {
 } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { doc, setDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
-import { auth, db } from '../../firebaseConfig';
+import { auth } from '../../firebaseConfig';
 import Toast from 'react-native-toast-message';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
@@ -24,6 +23,14 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com',
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
+    });
+  }, []);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -136,100 +143,59 @@ export default function LoginScreen() {
 
   const handleGoogleLogin = async () => {
     try {
+      setLoading(true);
+      // Check if Play Services are available
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-  
+      
+      // Sign in with Google
       const { idToken } = await GoogleSignin.signIn();
-  
+      
+      // Create a Google credential with the token
       const googleCredential = GoogleAuthProvider.credential(idToken);
+      
+      // Sign in to Firebase with the Google credential
       const userCredential = await signInWithCredential(auth, googleCredential);
       const user = userCredential.user;
-  
+
+      // Update user store
+      await useUserStore.getState().setUser({
+        id: user.uid,
+        email: user.email,
+        fullName: user.displayName,
+        profilePicture: user.photoURL,
+      });
+
       Toast.show({
         type: 'success',
         text1: 'Login Successful',
         text2: `Welcome ${user.displayName}`,
       });
-  
-      // Navigate to home
-      navigation.navigate('Home');
+
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'MainTabs' }],
+      });
     } catch (error) {
-      console.error(error);
+      console.error('Google Sign-In Error:', error);
+      let errorMessage = 'Something went wrong';
+      
+      if (error.code === 'SIGN_IN_CANCELLED') {
+        errorMessage = 'Sign-in was cancelled';
+      } else if (error.code === 'PLAY_SERVICES_NOT_AVAILABLE') {
+        errorMessage = 'Google Play Services is not available';
+      } else if (error.code === '12501') {
+        errorMessage = 'Google Sign-In popup was closed';
+      }
+      
       Toast.show({
         type: 'error',
         text1: 'Google Sign-In Failed',
-        text2: error.message || 'Something went wrong',
+        text2: errorMessage,
       });
+    } finally {
+      setLoading(false);
     }
   };
-  
-
-  // const handleGoogleLogin = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const user = await signIn();
-  //     if (user) {
-  //       handleGoogleSuccess(user);
-  //     }
-  //   } catch (error) {
-  //     console.error('Google Sign-In Error:', error);
-  //     let errorMessage = 'Something went wrong';
-  //     if (error.code === 'SIGN_IN_CANCELLED') {
-  //       errorMessage = 'Sign-in was cancelled';
-  //     } else if (error.code === 'PLAY_SERVICES_NOT_AVAILABLE') {
-  //       errorMessage = 'Google Play Services is not available';
-  //     }
-      
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Google Sign-In Failed',
-  //       text2: errorMessage,
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const handleGoogleSuccess = async (user) => {
-  //   try {
-  //     // Store user in Firestore
-  //     const userRef = doc(db, 'users', user.uid);
-  //     await setDoc(userRef, {
-  //       uid: user.uid,
-  //       email: user.email,
-  //       fullName: user.displayName,
-  //       emailVerified: true,
-  //       isVerified: true,
-  //       createdAt: new Date().toISOString(),
-  //       profilePicture: user.photoURL,
-  //     }, { merge: true });
-
-  //     // Store in userStore
-  //     await useUserStore.getState().setUser({
-  //       id: user.uid,
-  //       email: user.email,
-  //       fullName: user.displayName,
-  //       profilePicture: user.photoURL,
-  //     });
-
-  //     Toast.show({
-  //       type: 'success',
-  //       text1: 'Login Successful',
-  //       text2: `Welcome ${user.displayName}`,
-  //     });
-
-  //     navigation.reset({
-  //       index: 0,
-  //       routes: [{ name: 'MainTabs' }],
-  //     });
-  //   } catch (error) {
-  //     console.error('Google Sign-In Error:', error);
-  //     Toast.show({
-  //       type: 'error',
-  //       text1: 'Google Sign-In Failed',
-  //       text2: error.message || 'Something went wrong',
-  //     });
-  //   }
-  // };
 
   const handleForgotPassword = async () => {
     if (!email) {
