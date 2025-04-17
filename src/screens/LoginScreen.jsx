@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../../firebaseConfig';
+import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { auth, db } from '../../firebaseConfig';
 import Toast from 'react-native-toast-message';
 import { useGoogleAuth } from '../Services/auth/auth';
-
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
@@ -163,6 +163,45 @@ export default function LoginScreen() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+  
+      const { idToken } = await GoogleSignin.signIn();
+  
+      const googleCredential = GoogleAuthProvider.credential(idToken);
+      const userCredential = await signInWithCredential(auth, googleCredential);
+      const user = userCredential.user;
+  
+      // Store user in Firestore
+      const userRef = doc(db, 'users', user.uid);
+      await setDoc(userRef, {
+        uid: user.uid,
+        email: user.email,
+        fullName: user.displayName,
+        emailVerified: user.emailVerified,
+        isVerified: true,
+        createdAt: new Date().toISOString(),
+      }, { merge: true });
+  
+      Toast.show({
+        type: 'success',
+        text1: 'Login Successful',
+        text2: `Welcome ${user.displayName}`,
+      });
+  
+      // Navigate to home
+      navigation.navigate('Home');
+    } catch (error) {
+      console.error(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Google Sign-In Failed',
+        text2: error.message || 'Something went wrong',
+      });
+    }
+  };
+
   const handleForgotPassword = async () => {
     if (!email) {
       Toast.show({
@@ -251,7 +290,7 @@ export default function LoginScreen() {
           <TouchableOpacity
             className="w-4/5 flex-row items-center justify-center gap-2 self-center rounded-lg border border-gray-300 p-2"
             accessibilityLabel="Social Login Buttons"
-            onPress={() => promptAsync()}>
+            onPress={() => handleGoogleLogin()}>
             <SocialAuthButton
               name="google"
               type="FontAwesome"

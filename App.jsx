@@ -23,6 +23,7 @@ import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 import useFavoritesStore from "./src/store/FavouriteStore";
 import NetworkListener from './src/Services/NetworkListener'
 import Toast from 'react-native-toast-message';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import './global.css';
 import { useEffect } from 'react';
@@ -33,6 +34,13 @@ export default function App() {
   const loadFavorites = useFavoritesStore((state) => state.loadFavorites);
   useEffect(() => {
     loadFavorites();
+  }, []);
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: 'autoDetect',
+      offlineAccess: true,
+    });
   }, []);
 //screens in bottom tab nav contains navbar
   return (
