@@ -3,7 +3,7 @@
     "name": "my-expo-app",
     "slug": "markettrybe",
     "version": "1.0.0",
-    "scheme": "my-expo-app",
+    "scheme": "com.markettrybe.myexpoapp",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",

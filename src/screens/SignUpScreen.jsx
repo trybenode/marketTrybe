@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { auth, db } from '../../firebaseConfig';
 
 import Toast from 'react-native-toast-message'; // for displaying Flash Messages
@@ -19,6 +19,7 @@ import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
 import { setDoc, doc } from 'firebase/firestore';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 export default function SignUpScreen() {
   const navigation = useNavigation();
@@ -129,44 +130,47 @@ export default function SignUpScreen() {
 
   const handleGoogleLogin = async () => {
     try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      setLoading(true);
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      
+      if (userInfo.idToken) {
+        const googleCredential = GoogleAuthProvider.credential(userInfo.idToken);
+        const userCredential = await signInWithCredential(auth, googleCredential);
+        const user = userCredential.user;
 
-      const { idToken } = await GoogleSignin.signIn();
+        // Store user in Firestore
+        const userRef = doc(db, 'users', user.uid);
+        await setDoc(userRef, {
+          uid: user.uid,
+          email: user.email,
+          fullName: user.displayName,
+          emailVerified: true,
+          isVerified: true,
+          createdAt: new Date().toISOString(),
+          profilePicture: user.photoURL,
+        }, { merge: true });
 
-      const googleCredential = GoogleAuthProvider.credential(idToken);
-      const userCredential = await signInWithCredential(auth, googleCredential);
-      const user = userCredential.user;
+        Toast.show({
+          type: 'success',
+          text1: 'Sign Up Successful',
+          text2: `Welcome ${user.displayName}`,
+        });
 
-      // Store user in Firestore
-      // const userRef = doc(db, 'users', user.uid);
-      // await setDoc(
-      //   userRef,
-      //   {
-      //     uid: user.uid,
-      //     email: user.email,
-      //     fullName: user.displayName,
-      //     emailVerified: user.emailVerified,
-      //     isVerified: true,
-      //     createdAt: new Date().toISOString(),
-      //   },
-      //   { merge: true }
-      // );
-
-      Toast.show({
-        type: 'success',
-        text1: 'Login Successful',
-        text2: `Welcome ${user.displayName}`,
-      });
-
-      // Navigate to home
-      navigation.navigate('Home');
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MainTabs' }],
+        });
+      }
     } catch (error) {
-      console.error(error);
+      console.error('Google Sign-In Error:', error);
       Toast.show({
         type: 'error',
         text1: 'Google Sign-In Failed',
         text2: error.message || 'Something went wrong',
       });
+    } finally {
+      setLoading(false);
     }
   };
 

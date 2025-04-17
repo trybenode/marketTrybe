@@ -8,50 +8,22 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import { signInWithEmailAndPassword, getAuth, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 import { auth, db } from '../../firebaseConfig';
 import Toast from 'react-native-toast-message';
-import { useGoogleAuth } from '../Services/auth/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
 import SocialAuthButton from '../components/SocialAuthButton';
 import useUserStore from '../store/userStore';
-// import getUserIdOfSeller from '../util/getUserIdOfSeller';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false); // for loading indicator
-  // const { promptAsync } = useGoogleAuth();
-
-  const { promptAsync, userInfo } = useGoogleAuth();
-
-  useEffect(() => {
-    if (userInfo) {
-      Toast.show({
-        type: 'success',
-        text1: 'Login Successful 🎉',
-        text2: `Welcome ${userInfo.displayName || ''}`,
-      });
-
-      // Save user to store
-      useUserStore.getState().setUser({
-        id: userInfo.uid,
-        email: userInfo.email,
-        displayName: userInfo.displayName,
-        photoURL: userInfo.photoURL,
-      });
-
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'MainTabs' }],
-      });
-    }
-  }, [userInfo]);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -105,7 +77,6 @@ export default function LoginScreen() {
         routes: [{ name: 'MainTabs' }],
       });
 
-      // navigation.replace("MainTabs");
     } catch (err) {
       console.error('Login error:', err.message);
 
@@ -173,17 +144,6 @@ export default function LoginScreen() {
       const userCredential = await signInWithCredential(auth, googleCredential);
       const user = userCredential.user;
   
-      // Store user in Firestore
-      const userRef = doc(db, 'users', user.uid);
-      await setDoc(userRef, {
-        uid: user.uid,
-        email: user.email,
-        fullName: user.displayName,
-        emailVerified: user.emailVerified,
-        isVerified: true,
-        createdAt: new Date().toISOString(),
-      }, { merge: true });
-  
       Toast.show({
         type: 'success',
         text1: 'Login Successful',
@@ -201,6 +161,75 @@ export default function LoginScreen() {
       });
     }
   };
+  
+
+  // const handleGoogleLogin = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const user = await signIn();
+  //     if (user) {
+  //       handleGoogleSuccess(user);
+  //     }
+  //   } catch (error) {
+  //     console.error('Google Sign-In Error:', error);
+  //     let errorMessage = 'Something went wrong';
+  //     if (error.code === 'SIGN_IN_CANCELLED') {
+  //       errorMessage = 'Sign-in was cancelled';
+  //     } else if (error.code === 'PLAY_SERVICES_NOT_AVAILABLE') {
+  //       errorMessage = 'Google Play Services is not available';
+  //     }
+      
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Google Sign-In Failed',
+  //       text2: errorMessage,
+  //     });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // const handleGoogleSuccess = async (user) => {
+  //   try {
+  //     // Store user in Firestore
+  //     const userRef = doc(db, 'users', user.uid);
+  //     await setDoc(userRef, {
+  //       uid: user.uid,
+  //       email: user.email,
+  //       fullName: user.displayName,
+  //       emailVerified: true,
+  //       isVerified: true,
+  //       createdAt: new Date().toISOString(),
+  //       profilePicture: user.photoURL,
+  //     }, { merge: true });
+
+  //     // Store in userStore
+  //     await useUserStore.getState().setUser({
+  //       id: user.uid,
+  //       email: user.email,
+  //       fullName: user.displayName,
+  //       profilePicture: user.photoURL,
+  //     });
+
+  //     Toast.show({
+  //       type: 'success',
+  //       text1: 'Login Successful',
+  //       text2: `Welcome ${user.displayName}`,
+  //     });
+
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{ name: 'MainTabs' }],
+  //     });
+  //   } catch (error) {
+  //     console.error('Google Sign-In Error:', error);
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Google Sign-In Failed',
+  //       text2: error.message || 'Something went wrong',
+  //     });
+  //   }
+  // };
 
   const handleForgotPassword = async () => {
     if (!email) {
@@ -290,7 +319,8 @@ export default function LoginScreen() {
           <TouchableOpacity
             className="w-4/5 flex-row items-center justify-center gap-2 self-center rounded-lg border border-gray-300 p-2"
             accessibilityLabel="Social Login Buttons"
-            onPress={() => handleGoogleLogin()}>
+            onPress={handleGoogleLogin}
+            disabled={loading}>
             <SocialAuthButton
               name="google"
               type="FontAwesome"

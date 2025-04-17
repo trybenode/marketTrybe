@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { UserProvider } from './src/context/UserContext';
 import BottomTabNavigator from './src/navigation/BottomTabNavigator';
 import CategoryProductList from './src/screens/CategoryProductList';
@@ -17,13 +18,11 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import ShopScreen from './src/screens/ShopScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import SellScreen from './src/screens/SellScreen';
-// import KycScreen from './src/screens/KycScreen';
 import WelcomeScreen from './src/screens/WelcomeScreen';
 import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
 import useFavoritesStore from "./src/store/FavouriteStore";
-import NetworkListener from './src/Services/NetworkListener'
+import NetworkListener from './src/Services/NetworkListener';
 import Toast from 'react-native-toast-message';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import './global.css';
 import { useEffect } from 'react';
@@ -32,17 +31,15 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const loadFavorites = useFavoritesStore((state) => state.loadFavorites);
+  
   useEffect(() => {
     loadFavorites();
   }, []);
-
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: 'autoDetect',
-      offlineAccess: true,
+      webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com', // web client ID from google-services.json
     });
   }, []);
-//screens in bottom tab nav contains navbar
   return (
     <UserProvider>
       <NavigationContainer>
@@ -57,7 +54,6 @@ export default function App() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="Market" component={HomeScreen} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="Sell" component={SellScreen} options={{ headerShown: false }}  /> */}
           <Stack.Screen
             name="ListingDetails"
             component={ListingDetailsScreen}
@@ -97,7 +93,6 @@ export default function App() {
           />
           <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
           <Stack.Screen name="MyShop" component={MyShopScreen} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="Kyc" component={KycScreen} options={{ headerShown: false }} /> */}
           <Stack.Screen name="Sell" component={SellScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
