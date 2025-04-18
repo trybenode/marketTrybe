@@ -37,7 +37,7 @@ export default function App() {
   }, []);
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com', // web client ID from google-services.json
+      webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com',
     });
   }, []);
   return (

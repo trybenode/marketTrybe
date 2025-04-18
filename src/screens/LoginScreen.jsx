@@ -10,7 +10,12 @@ import {
 } from 'react-native';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  GoogleAuthProvider,
+  signInWithCredential,
+} from 'firebase/auth';
 import { auth } from '../../firebaseConfig';
 import Toast from 'react-native-toast-message';
 import CustomButton from '../components/CustomButton';
@@ -24,13 +29,13 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com',
-      // offlineAccess: true,
-      // forceCodeForRefreshToken: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   GoogleSignin.configure({
+  //     webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com',
+  //     // offlineAccess: true,
+  //     // forceCodeForRefreshToken: true,
+  //   });
+  // }, []);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -83,7 +88,6 @@ export default function LoginScreen() {
         index: 0,
         routes: [{ name: 'MainTabs' }],
       });
-
     } catch (err) {
       console.error('Login error:', err.message);
 
@@ -146,14 +150,17 @@ export default function LoginScreen() {
       setLoading(true);
       // Check if Play Services are available
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      
+      // sign out first
+      await GoogleSignin.signOut();
       // Sign in with Google
-      const { idToken } = await GoogleSignin.signIn();
-      console.log(idToken)
-      
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo.data.idToken); // 👀 this should have idToken and user
+      // const { idToken } = await GoogleSignin.signIn();
+      // console.log(idToken)
+
       // Create a Google credential with the token
-      const googleCredential = GoogleAuthProvider.credential(idToken);
-      
+      const googleCredential = GoogleAuthProvider.credential(userInfo.data.idToken);
+
       // Sign in to Firebase with the Google credential
       const userCredential = await signInWithCredential(auth, googleCredential);
       const user = userCredential.user;
@@ -179,7 +186,7 @@ export default function LoginScreen() {
     } catch (error) {
       console.error('Google Sign-In Error:', error);
       let errorMessage = 'Something went wrong';
-      
+
       if (error.code === 'SIGN_IN_CANCELLED') {
         errorMessage = 'Sign-in was cancelled';
       } else if (error.code === 'PLAY_SERVICES_NOT_AVAILABLE') {
@@ -187,7 +194,7 @@ export default function LoginScreen() {
       } else if (error.code === '12501') {
         errorMessage = 'Google Sign-In popup was closed';
       }
-      
+
       Toast.show({
         type: 'error',
         text1: 'Google Sign-In Failed',
