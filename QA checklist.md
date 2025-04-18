@@ -20,7 +20,7 @@ A developer-focused pre-launch and maintenance checklist for production-grade mo
 ## 🔐 Firebase Security & Backend
 
 - [ ] Firebase rules restrict read/write based on `auth.uid`
-- [ ] Users can't access other users’ data
+- [ ] Users should have access read-only other users’ data 
 - [ ] Products are read-only unless admin
 - [ ] Firestore `runTransaction` or `batchWrite` used for atomic updates
 - [ ] Use `serverTimestamp()` for all timestamps
