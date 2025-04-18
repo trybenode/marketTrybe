@@ -29,13 +29,6 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   GoogleSignin.configure({
-  //     webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com',
-  //     // offlineAccess: true,
-  //     // forceCodeForRefreshToken: true,
-  //   });
-  // }, []);
 
   const handleLogin = async () => {
     setLoading(true);
