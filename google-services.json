@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "639389979099-tq2nf0ce59hra4jpddi2pall7f1ssete.apps.googleusercontent.com",
+          "client_id": "639389979099-0lrou8tfdo55dtm8ml9l9inner4g177k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.markettrybe.myexpoapp",
-            "certificate_hash": "129b418b76677d221092f03ddb41e1f3fbe6fc86"
+            "certificate_hash": "9c0451e9e68409068d149c03242145686285303d"
           }
         },
         {

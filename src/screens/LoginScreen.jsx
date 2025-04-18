@@ -27,8 +27,8 @@ export default function LoginScreen() {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com',
-      offlineAccess: true,
-      forceCodeForRefreshToken: true,
+      // offlineAccess: true,
+      // forceCodeForRefreshToken: true,
     });
   }, []);
 
@@ -149,6 +149,7 @@ export default function LoginScreen() {
       
       // Sign in with Google
       const { idToken } = await GoogleSignin.signIn();
+      console.log(idToken)
       
       // Create a Google credential with the token
       const googleCredential = GoogleAuthProvider.credential(idToken);
