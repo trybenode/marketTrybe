@@ -1,64 +1,32 @@
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-auth-session/providers/google';
-import {
-  getAuth,
-  signInWithCredential,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-} from 'firebase/auth';
-import { useEffect, useState } from 'react';
-import { androidId, auth, expoId, webId, iosId } from '../../../firebaseConfig';
-import * as AuthSession from 'expo-auth-session';
-WebBrowser.maybeCompleteAuthSession();
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import { useState, useEffect } from 'react';
+import { auth } from '../../../firebaseConfig';
 
 export const useGoogleAuth = () => {
-  const [userInfo, setUserInfo] = useState();
-
-  const redirectUri = AuthSession.makeRedirectUri({
-    useProxy: true,
-  });
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId: expoId,
-    webClientId: webId,
-    iosClientId: iosId,
-    androidClientId: androidId,
-    redirectUri,
-  });
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    if (response?.type === 'success') {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-      signInWithCredential(auth, credential)
-        .then(() => {
-          console.log('Firebase sign-in successful');
-        })
-        .catch((err) => {
-          console.error('Firebase sign-in error:', err.message);
-        });
-    }
-  }, [response]);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        console.log(JSON.stringify(user, null, 2));
-        setUserInfo(user);
-      } else {
-        console.log('failed');
-      }
+    GoogleSignin.configure({
+      webClientId: '639389979099-gc53a496vc1a9umlev2rcorphi471evn.apps.googleusercontent.com', // web client ID from google-services.json
     });
-    return () => {
-      unsubscribe();
-    };
   }, []);
 
-  return { promptAsync, userInfo };
-};
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      
+      if (userInfo.idToken) {
+        const credential = GoogleAuthProvider.credential(userInfo.idToken);
+        const userCredential = await signInWithCredential(auth, credential);
+        setUserInfo(userCredential.user);
+        return userCredential.user;
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
 
-// export const useGoogleAuth = () => {
-//   const [userInfo, setUserInfo] = useState();
-//   const [request, response, promptAsync] = Google.useAuthRequest({
-//     iosClientId: iosId,
-//   });
-// };
+  return { signIn, userInfo };
+};

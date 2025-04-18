@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import FastImage from 'react-native-fast-image';
 import { auth, db } from '../../firebaseConfig';
 import { useRoute } from '@react-navigation/native';
 
@@ -54,7 +53,7 @@ const SellerProfileCard = memo(({ sellerInfo }) => {
             uri: selectedUser.profilePicture || 'https://via.placeholder.com/120x140',
           }}
           style={{ width: '100%', height: '100%' }}
-          resizeMode={FastImage.resizeMode.cover}
+          resizeMode="cover"
         />
       </View>
 

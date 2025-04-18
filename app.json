@@ -1,17 +1,9 @@
 {
   "expo": {
     "name": "my-expo-app",
-    "slug": "my-expo-app",
+    "slug": "markettrybe",
     "version": "1.0.0",
-    "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro"
-    },
-    "scheme": "my-expo-app",
-    "experiments": {
-      "tsconfigPaths": true
-    },
-    "plugins": ["expo-secure-store", "expo-router"],
+    "scheme": "com.markettrybe.myexpoapp",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,17 +12,52 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "plugins": [
+      "expo-secure-store",
+      "expo-router",
+      ["@react-native-google-signin/google-signin"],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "googleServicesFile": "./google-services.json"
+          },
+          "ios": {
+            "googleServicesFile": "./GoogleService-Info.plist"
+          }
+        }
+      ]
+    ],
     "ios": {
       "supportsTablet": true,
-      "newArchEnabled": true
+      "newArchEnabled": true,
+      "bundleIdentifier": "com.markettrybe.myexpoapp",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "package": "com.markettrybe.myexpoapp",
+      "googleServicesFile": "./google-services.json",
       "newArchEnabled": true
-    }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d3ec2d98-15ec-4f3e-af10-0d524e1b6093"
+      }
+    },
+    "owner": "douglasallendev"
   }
 }
